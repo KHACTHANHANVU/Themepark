@@ -51,7 +51,29 @@ a{
     border-radius: 5%;
     text-shadow: 2px 2px 5px rgb(36, 36, 36);
     box-shadow: 5px 5px 5px rgb(35, 35, 35);
+    animation-duration: 1s;
+    animation-name: fadeDown;
 }
+.pricing-header{
+    animation-duration: 1s;
+    animation-name: fadeDown;
+}
+.free-card{
+    animation-duration: 1s;
+    animation-name: fadeDown;
+}
+.pro-card{
+    animation-delay: 1s;
+    animation-duration: 1s;
+    animation-name: fadeDown;
+}
+.business-card{
+    animation-delay: 2s;
+    animation-duration: 1s;
+    animation-name: fadeDown;
+}
+
+
 @keyframes fadeDown {
     0% {
        opacity: 0;
