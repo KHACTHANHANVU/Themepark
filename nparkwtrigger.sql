@@ -29,7 +29,6 @@ create table novapark.department (
     
 );
 
-alter table novapark.department add foreign key (manager_no) references novapark.staff(staff_no); 
 
 create table novapark.staff (
 	staff_no smallint primary key auto_increment,
@@ -44,6 +43,7 @@ create table novapark.staff (
     foreign key(dept_no) references novapark.department(d_no)
 );
 
+alter table novapark.department add foreign key (manager_no) references novapark.staff(staff_no); 
 
 create table novapark.amusement_ride (
 	ride_name varchar(12) not null,
@@ -177,36 +177,52 @@ describe novapark.ticket;
 alter table novapark.visitor modify num_of_visitations int default 1;
 describe novapark.visitor;
 
-create trigger trigger_Employee_inserthour on novapark.staff for update
-as
-begin
-if (@@rowcount = 0)
-begin
-Print N'Table Staff does not have any data'
-return
-end
-if exists (select hours_work > 40 from staff where staff1.staff_no >< staff2.staff_no)
-begin
-Print N'Table staff cannot be update'
-update week_wage set week_wage*1.5*hours_work
-from novapark.staff
-where hours_work > 40
-end
-end
+DELIMITER //
+CREATE TRIGGER trigger_Employee_inserthour BEFORE UPDATE ON novapark.staff
+FOR EACH ROW
+BEGIN
+    DECLARE rowCount INT;
+    
+    SELECT COUNT(*) INTO rowCount FROM novapark.staff;
+    
+    IF rowCount = 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Table Staff does not have any data';
+    END IF;
 
-create trigger trigger_visitor_ispresent on novapark.visitor for update
-as
-begin
-if (@@rowcount = 0)
-begin
-Print N'Table Staff does not have any data'
-return
-end
-if exists (select t_no from novapark.ticket where ticket.t_no = visitor.ticket_no and ticket.t_no is not null)
-begin
-Print N'You are qualified for coupons'
-update price set price*0.75
-from novapark.ticket
-where is_present = true
-end
-end
+    IF NEW.hours_work > 40 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Table staff cannot be updated';
+    END IF;
+    
+    IF NEW.hours_work > 40 THEN
+        UPDATE week_wage
+        SET week_wage = week_wage * 1.5 * NEW.hours_work
+        WHERE staff_no = NEW.staff_no;
+    END IF;
+END;
+//
+DELIMITER ;
+
+
+DELIMITER //
+CREATE TRIGGER trigger_visitor_ispresent BEFORE UPDATE ON novapark.visitor
+FOR EACH ROW
+BEGIN
+    DECLARE rowCount INT;
+    
+    SELECT COUNT(*) INTO rowCount FROM novapark.visitor;
+    
+    IF rowCount = 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Table Visitor does not have any data';
+    END IF;
+
+    IF NEW.ticket_no IS NOT NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You are qualified for coupons';
+    END IF;
+    
+    IF NEW.is_present = TRUE THEN
+        UPDATE novapark.price
+        SET price = price * 0.75;
+    END IF;
+END;
+//
+DELIMITER ;

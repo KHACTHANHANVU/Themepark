@@ -1,5 +1,5 @@
 .bg-img-1 {
-    background-image: url('https://media.disneylandparis.com/d4th/en-usd/images/HD13302_2_2050jan01_world_disneyland-park-dlp-website-visual_5-2_tcm1861-248638.jpg?w=1920&f=webp');
+    background-image: url('https://img.texasmonthly.com/2023/07/texasland.jpg?auto=compress&crop=faces&fit=fit&fm=jpg&h=0&ixlib=php-3.3.1&q=45&w=1250');
 }
 
 .bg-img-2 {
@@ -59,16 +59,17 @@ a{
     animation-name: fadeDown;
 }
 .free-card{
+    animation-delay: 0.5s;
     animation-duration: 1s;
     animation-name: fadeDown;
 }
 .pro-card{
-    animation-delay: 1s;
+    animation-delay: 0.75s;
     animation-duration: 1s;
     animation-name: fadeDown;
 }
-.business-card{
-    animation-delay: 2s;
+.enterprise-card{
+    animation-delay: 1s;
     animation-duration: 1s;
     animation-name: fadeDown;
 }
