@@ -16,10 +16,22 @@
     const month = document.getElementById('month');
     const day = document.getElementById('day');
     const year = document.getElementById('year');
+    const employeeid = document.getElementById('username');
+    const phone = document.getElementById('phone');
+    const address = document.getElementById('address')
+    const repair = document.getElementById('repaircause');
 
 
     function f() {
-
+      firstname.value;
+      lastname.value;
+      month.value;
+      day.value;
+      year.value;
+      employeeid.value;
+      phone.value;
+      address.value;
+      repair.value;
     }
 
     submitbutton.addEventListener('click', f())
@@ -97,21 +109,21 @@
               
       
                   <div class="col-12">
-                    <label for="address" class="form-label">Phone number</label>
-                    <input type="text" class="form-control" id="address" placeholder="" required="">
+                    <label for="phone" class="form-label">Phone number</label>
+                    <input type="text" class="form-control" id="phone" placeholder="" required="">
                     <div class="invalid-feedback">
                       Please enter your shipping address.
                     </div>
                   </div>
       
                   <div class="col-12">
-                    <label for="address2" class="form-label">Address<span class="text-body-secondary"></span></label>
+                    <label for="address" class="form-label">Address<span class="text-body-secondary"></span></label>
                     <input type="text" class="form-control" id="address" placeholder="Apartment or suite">
                   </div>
       
                   <div class="mb-3">
-                    <label for="exampleFormControlTextarea1" class="form-label">Reason for Repair</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder=""></textarea>
+                    <label for="repaircause" class="form-label">Reason for Repair</label>
+                    <textarea class="form-control" id="repaircause" rows="3" placeholder=""></textarea>
                   </div>
       
                 <button class="w-100 btn btn-primary btn-lg" id="submitbutton" type="submit">Submit repair log</button>
