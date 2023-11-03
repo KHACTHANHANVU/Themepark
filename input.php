@@ -7,6 +7,7 @@ $password = "Password1"
 $conn = new mysqli($host, $user, $password);
 
 // azure database for mysql servers -> themeparkprojectdb
+// themeparkprojectdb.mysql.database.azure.com
 
 $CREATE = "create database if not exists novapark;";
 
