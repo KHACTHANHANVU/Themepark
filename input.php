@@ -8,3 +8,6 @@ $conn = new mysqli($host, $user, $password);
 $CREATE = "create database if not exists novapark;";
 
 ?>
+
+# https://storageforwebsite.z13.web.core.windows.net/
+# https://storageforwebsite-secondary.z13.web.core.windows.net/
