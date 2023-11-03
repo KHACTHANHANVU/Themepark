@@ -1,0 +1,1 @@
+var conn=mysql.createConnection({host:"themeparkprojectdb.mysql.database.azure.com", user:"team3", password:"{your_password}", database:"{your_database}", port:3306, ssl:{ca:fs.readFileSync("{ca-cert filename}")}});
