@@ -27,9 +27,21 @@
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
           <li><a href="./feature.html" class="nav-link px-2 text-white">Restaurants</a></li>
+          <li><a href="./Entertainment.html" class="nav-link px-2 text-white">Entertainment</a></li>
           <li><a href="./pricing.html" class="nav-link px-2 text-white">Pricing</a></li>
-          <li><a href="./sales.html" class="nav-link px-2 text-white">Management</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">About</a></li>
+          <li><a href="./sales.html" class="nav-link px-2 text-white">Sales</a></li>
+          <li><div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Management
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="./repair log.html">Repair Log</a></li>
+              <li><a class="dropdown-item" href="./reservation.html">Reservation</a></li>
+              <li><a class="dropdown-item" href="./addingitem.html">Adding Item</a></li>
+              <li><a class="dropdown-item" href="./visitor.html">Visitors</a></li>
+            </ul>
+          </div></li>
+          
         </ul>
 
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
@@ -38,10 +50,10 @@
 
         <div class="text-end">
           <button type="button" class="btn btn-outline-light me-2">
-            <a href="./signin.html" alt="signin">
+            <a href="./connect.html" alt="signin">
             Login
             </a></button>
-          <button type="button" class="btn btn-primary"><a href="./signup.html">Sign-up</a></button>
+          <button type="button" class="btn btn-primary"><a href="./connect.html">Sign-up</a></button>
         </div>
       </div>
     </div>
@@ -49,7 +61,7 @@
   <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
     <div class="container fixed-top page-title">
         <h1>WELCOME TO OUR THEME PARK</h1>
-        <p><a class="btn btn-lg btn-primary" href="./signup.html">Sign up today</a></p>
+        <p><a class="btn btn-lg btn-primary" href="./connect.html">Sign up today</a></p>
       </div>
     </div>
     <div class="carousel-inner">
@@ -62,7 +74,15 @@
       </div>
     </div>
   </div>
- 
+  <script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="text/javascript">
+  var $ = jQuery.noConflict();
+  $(document).ready(function() { 
+      $('#myCarousel').carousel({ interval: 3000, cycle: true });
+  }); 
+</script>
 </body>
 
 </html>

@@ -12,10 +12,30 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Pixelify+Sans&display=swap" rel="stylesheet">
+    <style>
+      .reservation{
+        animation-duration: 1s;
+    animation-name: fadeDown;
+      }
+      .firstname{
+        animation-duration: 1s;
+    animation-name: fadeDown;
+      }
+      @keyframes fadeDown {
+    0% {
+       opacity: 0;
+       transform: translateY(-20px);
+    }
+    100% {
+       opacity: 1;
+       transform: translateY(0);
+    }
+ }
+    </style>
 </head>
 <body>
     <div class="container" >
-        <main>
+        <main class="reservation">
           <div class="py-5 text-center">
            
             <h2>Reservation</h2>
@@ -23,7 +43,7 @@
           </div>
       
         
-            <div class="col-md-12 ">
+            <div class="firstname col-md-12 ">
               <h4 class="mb-3">Customer Information</h4>
               <form class="needs-validation" novalidate="">
                 <div class="row g-3">
@@ -420,9 +440,10 @@
                   </div>
                 </div>
       
-                <hr class="my-4">
+                <br class="my-5">
+                <br class="my-5">
       
-                <button class="w-100 btn btn-primary btn-lg" type="submit">Submit my reservation</button>
+                <button class="w-100 btn btn-dark btn-lg mb-5" type="submit">Submit my reservation</button>
               </form>
             </div>
           </div>

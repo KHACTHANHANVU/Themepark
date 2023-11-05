@@ -35,14 +35,35 @@
     }
 
     submitbutton.addEventListener('click', f())
+    
 
   </script>
+  <style>
+    .repair{
+      animation-duration: 1s;
+  animation-name: fadeDown;
+    }
+    .firstname{
+      animation-duration: 1s;
+  animation-name: fadeDown;
+    }
+    @keyframes fadeDown {
+  0% {
+     opacity: 0;
+     transform: translateY(-20px);
+  }
+  100% {
+     opacity: 1;
+     transform: translateY(0);
+  }
+}
+  </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Pixelify+Sans&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container" >
+    <div class="repair container" >
         <main>
           <div class="py-5 text-center">
            
@@ -126,7 +147,7 @@
                     <textarea class="form-control" id="repaircause" rows="3" placeholder=""></textarea>
                   </div>
       
-                <button class="w-100 btn btn-primary btn-lg" id="submitbutton" type="submit">Submit repair log</button>
+                <button class="w-100 btn btn-dark btn-lg mb-5" id="submitbutton" type="submit">Submit repair log</button>
               </form>
             </div>
           </div>
