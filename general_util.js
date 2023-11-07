@@ -1,7 +1,7 @@
 var mysql = require('mysql');
 var fs = require('fs');
 var config = {
-    host:"themeparkprojectdb.mysql.database.azure.com",
+    host:"themeparkproject.mysql.database.azure.com",
     user:"team3",
     password:"Password1",
     database:"novapark",
@@ -15,7 +15,12 @@ conn.connect(function(err) {
 });
 
 
-function check_login_creds(username, password) {
-    conn.query("SELECT * FROM * WHERE ( = ?) AND ( = ?)", [username, password])
+function get_users(age) {
+    query = conn.query("SELECT first_name FROM novapark.visitor WHERE (age > ?)", [age])
     conn.end()
+    console.log(query)
 };
+
+// check_login_creds('team3','password')
+get_users(10)
+
