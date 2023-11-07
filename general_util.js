@@ -16,7 +16,10 @@ conn.connect(function(err) {
 
 
 function get_users(age) {
-    query = conn.query("SELECT first_name FROM novapark.visitor WHERE (age > ?)", [age])
+    query = conn.query("SELECT first_name FROM novapark.visitor WHERE (age > ?)", [age], function (err, result, field) {
+        if (err) throw err;
+        console.log(result);
+    })
     conn.end()
     console.log(query)
 };
