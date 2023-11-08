@@ -1,0 +1,12 @@
+{
+    "name": "themepark",
+    "main": "app.js",
+    "dependencies": {
+        "mysql": "2.18.1",
+        "mysql2": "3.6.2",
+        "react": "^18.2.0"
+    },
+    "scripts": {
+        "start": "node src/app.js"
+    }
+}

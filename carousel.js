@@ -18,3 +18,4 @@ get_users(10);
 
 // Implement your carousel functionality here
 // You can continue using the 'conn' object for database operations as needed.
+
