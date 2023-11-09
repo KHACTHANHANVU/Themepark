@@ -2,3 +2,5 @@
 node_modules
 script.sh
 .venv
+.DS_Store
+.vscode
