@@ -1,4 +1,3 @@
-'''
 import http.server
 import socketserver
 import os
@@ -150,11 +149,3 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 with socketserver.TCPServer(("", PORT), ThemeParkHandler) as httpd:
     print("serving at port", PORT)
     httpd.serve_forever()
-'''
-from flask import Flask
-
-app = Flask(__name__)
-
-@app.route('/')
-def index():
-    return render_template('index.html')
