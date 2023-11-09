@@ -17,7 +17,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             file = b""
             try:
-                file = open("../public/addingitem.html", "rb").read()
+                file = open("public/addingitem.html", "rb").read()
             finally:
                 ...
             self.wfile.write(file)
@@ -29,7 +29,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             file = b""
             try:
-                file = open("../public/carousel.html", "rb").read()
+                file = open("public/carousel.html", "rb").read()
             finally:
                 ...
             self.wfile.write(file)
@@ -41,7 +41,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             file = b""
             try:
-                file = open("../public/connect.html", "rb").read()
+                file = open("public/connect.html", "rb").read()
             finally:
                 ...
             self.wfile.write(file)
@@ -53,7 +53,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             file = b""
             try:
-                file = open("../public/Entertainment.html", "rb").read()
+                file = open("public/Entertainment.html", "rb").read()
             finally:
                 ...
             self.wfile.write(file)
@@ -65,7 +65,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             file = b""
             try:
-                file = open("../public/feature.html", "rb").read()
+                file = open("public/feature.html", "rb").read()
             finally:
                 ...
             self.wfile.write(file)
@@ -77,7 +77,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             file = b""
             try:
-                file = open("../public/repair log.html", "rb").read()
+                file = open("public/repair log.html", "rb").read()
             finally:
                 ...
             self.wfile.write(file)
@@ -89,7 +89,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             file = b""
             try:
-                file = open("../public/sales_report.html", "rb").read()
+                file = open("public/sales_report.html", "rb").read()
             finally:
                 ...
             self.wfile.write(file)
@@ -101,7 +101,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             file = b""
             try:
-                file = open("../public/sales_style.css", "rb").read()
+                file = open("public/sales_style.css", "rb").read()
             finally:
                 ...
             self.wfile.write(file)
@@ -113,7 +113,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             file = b""
             try:
-                file = open("../public/sales.html", "rb").read()
+                file = open("public/sales.html", "rb").read()
             finally:
                 ...
             self.wfile.write(file)
@@ -125,7 +125,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             file = b""
             try:
-                file = open("../public/styles.css", "rb").read()
+                file = open("public/styles.css", "rb").read()
             finally:
                 ...
             self.wfile.write(file)
