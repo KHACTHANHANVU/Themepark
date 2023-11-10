@@ -1,13 +1,12 @@
 function validateDates() {
-  alert('can you even see me')
   const startDateStr = document.getElementById('startDate').value;
   const endDateStr = document.getElementById('endDate').value;
 
-  console.log(startDate);
-  console.log(endDate);
+  console.log(startDateStr);
+  console.log(endDateStr);
 
-  // Define the date pattern (MM/DD/YYYY)
-  const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
+  // Define the date pattern (YYYY/MM/DD)
+  const datePattern = /^\d{4}-\d{2}-\d{2}$/;
 
   if (!datePattern.test(startDateStr) || !datePattern.test(endDateStr)) {
       document.getElementById('message').textContent = 'Please enter dates in the MM/DD/YYYY format.';
@@ -20,15 +19,12 @@ function validateDates() {
 
   // Check if the parsed dates are valid
   if (isNaN(startDate)) {
-    alert("first error");
     document.getElementById('message').textContent = 'Please enter valid start date.';
   } 
   else if (isNaN(endDate)) {
-    alert("second error");
     document.getElementById('message').textContent = 'Please enter valid end date.';
   }
   else {
-    alert("somehow success?");
     json = {
       startDate: startDate,
       endDate: endDate

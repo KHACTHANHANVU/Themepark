@@ -5,6 +5,7 @@ from urllib import parse
 import re
 from query import check_login_cred
 from src import rides_script
+import json
 
 PORT = 8000
 
@@ -200,7 +201,28 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
-        
+        elif (urlinfo.path == '/src/rides_script.js'):
+            self.send_response(200)
+            self.send_header('Content-type', 'application/javascript')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("src/rides_script.js", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
+        elif (urlinfo.path == '/src/sales_script.js'):
+            self.send_response(200)
+            self.send_header('Content-type', 'application/javascript')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("src/sales_script.js", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
         else:
             self.send_response(404)
             self.send_header('Content-type', 'text/html')
@@ -219,8 +241,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
         #return super().do_GET()
     
     def do_POST(self):
-        print(self.path)
-        print('yeah')
         urlinfo = parse.urlparse(self.path)
         urlinfo.path
 
@@ -229,6 +249,8 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
         elif (urlinfo.path == '/rides'):
             length = int(self.headers['Content-length'])
             print(self.rfile.read(length))
+            print(length)
+            json.load(self.rfile.read(length))
             
 
 

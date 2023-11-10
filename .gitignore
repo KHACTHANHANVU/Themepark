@@ -5,3 +5,4 @@ script.sh
 .DS_Store
 .vscode
 __pycache__
+src/__pycache__
