@@ -1,4 +1,5 @@
 import mysql.connector
+from datetime import datetime
 
 def generate_report(start_date, end_date):
   db = mysql.connector.connect(
@@ -9,6 +10,10 @@ def generate_report(start_date, end_date):
   )
   
   cursor = db.cursor()
+
+  # reformat dates for mysql
+  start_date = start_date.strftime('%Y-%m-%d %H:%M:%S')
+  end_date = end_date.strftime('%Y-%m-%d %H:%M:%S')
   
   # Q1: get the total number of riders for each ride
   cursor.execute("SELECT ar.ride_name, SUM(dr.num_of_rides) AS total_riders FROM novapark.amusement_ride AS ar, novapark.daily_rides AS dr WHERE ar.ride_no = dr.ride_no AND dr._date BETWEEN %s AND %s", (start_date, end_date))
