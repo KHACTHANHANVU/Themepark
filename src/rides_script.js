@@ -1,6 +1,10 @@
 function validateDates() {
+  alert('can you even see me')
   const startDateStr = document.getElementById('startDate').value;
   const endDateStr = document.getElementById('endDate').value;
+
+  console.log(startDate);
+  console.log(endDate);
 
   // Define the date pattern (MM/DD/YYYY)
   const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
@@ -16,14 +20,28 @@ function validateDates() {
 
   // Check if the parsed dates are valid
   if (isNaN(startDate)) {
-      document.getElementById('message').textContent = 'Please enter valid start date.';
+    alert("first error");
+    document.getElementById('message').textContent = 'Please enter valid start date.';
   } 
   else if (isNaN(endDate)) {
+    alert("second error");
     document.getElementById('message').textContent = 'Please enter valid end date.';
   }
   else {
-      document.getElementById('message').textContent = `Start Date: ${startDate.toLocaleDateString()}, End Date: ${endDate.toLocaleDateString()}`;
-      generate_report(startDate, startDate)
+    alert("somehow success?");
+    json = {
+      startDate: startDate,
+      endDate: endDate
+    };
+    document.getElementById('message').textContent = `Start Date: ${startDate.toLocaleDateString()}, End Date: ${endDate.toLocaleDateString()}`;
+    fetch("/rides", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(json)
+    });
+    generate_report(startDate, startDate)
   }
 }
 
