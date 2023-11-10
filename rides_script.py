@@ -5,12 +5,12 @@ def validate_dates():
 
 def generate_report(start_date, end_date):
   db = mysql.connector.connect(
-    host="localhost",
-    user="yourusername",
-    password="yourpassword",
-    database="mydatabase"
+    host="themeparkproject.mysql.database.azure.com",
+    user="team3",
+    password="Password1",
+    database="novapark"
   )
-
+  
   cursor = db.cursor()
   
   # Q1: get the total number of riders for each ride
