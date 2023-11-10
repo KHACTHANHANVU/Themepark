@@ -19,9 +19,11 @@ function validateDates() {
 
   // Check if the parsed dates are valid
   if (isNaN(startDate)) {
+    alert('please enter a valid start date');
     document.getElementById('message').textContent = 'Please enter valid start date.';
   } 
   else if (isNaN(endDate)) {
+    alert('Please enter a valid end date');
     document.getElementById('message').textContent = 'Please enter valid end date.';
   }
   else {
