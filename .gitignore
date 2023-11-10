@@ -1,3 +1,6 @@
 # ignore node_modules, node.js will auto install
 node_modules
 script.sh
+.venv
+.DS_Store
+.vscode
