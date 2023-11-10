@@ -1,4 +1,5 @@
 import mysql.connector
+from datetime import datetime
 
 def generate_report(start_date, end_date):
   db = mysql.connector.connect(
@@ -10,6 +11,10 @@ def generate_report(start_date, end_date):
   
   cursor = db.cursor()
 
+  # reformat dates for mysql
+  start_date = start_date.strftime('%Y-%m-%d %H:%M:%S')
+  end_date = end_date.strftime('%Y-%m-%d %H:%M:%S')
+  
   # Q1: total revenue of all sectors
   cursor.execute("SELECT SUM(ride_revenue + vendor_revenue +  resort_revenue + restaurant_revenue) AS total_revenue FROM novapark.business_day WHERE b_date BETWEEN %s AND %s", (start_date, end_date))
 
