@@ -1,8 +1,5 @@
 import mysql.connector
 
-def validate_dates():
-  return
-
 def generate_report(start_date, end_date):
   db = mysql.connector.connect(
     host="themeparkproject.mysql.database.azure.com",
