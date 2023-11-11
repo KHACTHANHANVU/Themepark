@@ -4,10 +4,10 @@ import mysql.connector
 mysql.connector
 
 mydb = mysql.connector.connect(
-  host="themeparkproject.mysql.database.azure.com",
-  user="team3",
-  password="Password1",
-  database="novapark"
+    host="themeparkproject.mysql.database.azure.com",
+    user="team3",
+    password="Password1",
+    database="novapark"
 )
 
 '''
@@ -24,18 +24,22 @@ def check_login_cred(username, password):
     result=cursor.fetchone() != 0
 
     if result:
-        
+        ...
     else:
         cursor.execute("SELECT COUNT(*) FROM novapark.staff AS s WHERE s.username == %s AND s.password == %s", (username, password))
         result1=cursor.fetchone() > 0
     
         if result1:
-            cursor.execute("SELECT COUNT(*) FROM novapark.staff AS s WHERE (s.username == %s AND s.password == %s) AND (s.job == "manager" OR s.job == "supervisor")" (username, password))
+            cursor.execute("SELECT COUNT(*) FROM novapark.staff AS s WHERE (s.username == %s AND s.password == %s) AND (s.job == \"manager\" OR s.job == \"supervisor\")", (username, password))
             result2=cursor.fetchone() > 0
             if result2:
                 # manager/admin
+                ...
             else:
                 # staff 
+                ...
+        else:
+            ...
 
     val = cursor.fetchone()
     print(val)

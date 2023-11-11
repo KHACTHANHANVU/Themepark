@@ -2,7 +2,7 @@ create database if not exists novapark;
 use novapark;
 
 create table novapark.ticket (
-	t_no char(7) primary key,
+    t_no char(7) primary key,
     price numeric(4,2) not null check(price > 0.5),
     t_type enum('silver', 'gold', 'platinum') default 'gold'
 );

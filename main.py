@@ -80,6 +80,17 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
+        elif (urlinfo.path == '/portal.html'):
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("public/portal.html", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
         elif (urlinfo.path == '/pricing.html'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
