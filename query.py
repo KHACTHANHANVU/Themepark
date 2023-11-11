@@ -18,6 +18,27 @@ for x in cursor:
     print(x)
 '''
 def check_login_cred(username, password):
+    cursor = mydb.cursor()
+    
+    cursor.execute("SELECT COUNT(*) FROM novapark.customer AS c WHERE c.username == %s AND c.password == %s", (username, password))
+    result=cursor.fetchone() != 0
+
+    if result:
+        
+    else:
+        cursor.execute("SELECT COUNT(*) FROM novapark.staff AS s WHERE s.username == %s AND s.password == %s", (username, password))
+        result1=cursor.fetchone() > 0
+    
+        if result1:
+            cursor.execute("SELECT COUNT(*) FROM novapark.staff AS s WHERE (s.username == %s AND s.password == %s) AND (s.job == "manager" OR s.job == "supervisor")" (username, password))
+            result2=cursor.fetchone() > 0
+            if result2:
+                # manager/admin
+            else:
+                # staff 
+
+    val = cursor.fetchone()
+    print(val)
     if username == 'kevin' and password == 'qwerty':
         return True
     else:
