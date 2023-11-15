@@ -3,7 +3,7 @@ import socketserver
 import os
 from urllib import parse 
 import re
-from src import rides_script
+#from src import rides_script
 from src.query import check_login_cred
 import json
 
@@ -39,17 +39,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
         elif (urlinfo.path == '/connect.html'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
-
-            if (urlinfo.query != ""):
-                user_pssd = re.split("&", urlinfo.query)
-                user = re.split("=", user_pssd[0])[1]
-                pssd = re.split("=", user_pssd[1])[1]
-
-                if check_login_cred(user, pssd):
-                    print("login successful")
-                else:
-                    print("login failed")
-
             self.end_headers()
 
             file = b""
@@ -58,6 +47,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
+
 
         elif (urlinfo.path == '/Entertainment.html'):
             self.send_response(200)
@@ -266,6 +256,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
     
     def do_POST(self):
         urlinfo = parse.urlparse(self.path)
+        print(urlinfo)
 
         if (urlinfo.path == '/data'):
             print('received')
@@ -275,9 +266,36 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             rides_script.generate_report(content['startDate'], content['endDate'])
             print(content['startDate'])
             print(content['endDate'])
-        elif (urlinfo.path == '/connect'):
-            print("we got it")
+        elif (urlinfo.path == '/login'):
+            self.send_response(200)
+            data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8") 
+            print(data)
+
+            user_pssd = re.split("&", data)
+            user = re.split("=", user_pssd[0])[1]
+            pssd = re.split("=", user_pssd[1])[1]
+
+            print(user)
+            print(pssd)
+
+            if check_login_cred(user, pssd):
+                print("login successful")
+            else:
+                print("login failed")
+
+
+            self.send_header('Location', 'google.com')
+            self.end_headers()
+
+    def redirect(self):
+        self.send_response(200)
+        self.send_header('Location', 'google.com')
+        self.end_headers()
+
 
 with socketserver.TCPServer(("", PORT), ThemeParkHandler) as httpd:
     print("serving at port", PORT)
-    httpd.serve_forever()
+    try:
+        httpd.serve_forever()
+    except:
+        print("closing")

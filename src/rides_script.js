@@ -35,6 +35,5 @@ function validateDates() {
       		headers: {"Content-Type": "application/json"},
 			body: JSON.stringify(json)
     	});
-    	generate_report(startDate, startDate)
   	}
 }
