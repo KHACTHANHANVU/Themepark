@@ -3,8 +3,8 @@ import socketserver
 import os
 from urllib import parse 
 import re
-from query import check_login_cred
 from src import rides_script
+from src.query import check_login_cred
 import json
 
 PORT = 8000
@@ -39,6 +39,17 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
         elif (urlinfo.path == '/connect.html'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
+
+            if (urlinfo.query != ""):
+                user_pssd = re.split("&", urlinfo.query)
+                user = re.split("=", user_pssd[0])[1]
+                pssd = re.split("=", user_pssd[1])[1]
+
+                if check_login_cred(user, pssd):
+                    print("login successful")
+                else:
+                    print("login failed")
+
             self.end_headers()
 
             file = b""
@@ -47,16 +58,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
-
-            if (urlinfo.query != ""):
-                user_pssd = re.split("&", urlinfo.query)
-                user = re.split("=", user_pssd[0])[1]
-                pssd = re.split("=", user_pssd[1])[1]
-                
-                if check_login_cred(user, pssd):
-                    print("login successful")
-                else:
-                    print("login failed")
 
         elif (urlinfo.path == '/Entertainment.html'):
             self.send_response(200)
@@ -212,6 +213,18 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
+        elif (urlinfo.path == '/src/connect.js'):
+            self.send_response(200)
+            self.send_header('Content-type', 'application/javascript')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("src/connect.js", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
+
         elif (urlinfo.path == '/src/rides_script.js'):
             self.send_response(200)
             self.send_header('Content-type', 'application/javascript')
@@ -253,7 +266,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
     
     def do_POST(self):
         urlinfo = parse.urlparse(self.path)
-        urlinfo.path
 
         if (urlinfo.path == '/data'):
             print('received')
@@ -263,11 +275,8 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             rides_script.generate_report(content['startDate'], content['endDate'])
             print(content['startDate'])
             print(content['endDate'])
-            
-            
-
-
-
+        elif (urlinfo.path == '/connect'):
+            print("we got it")
 
 with socketserver.TCPServer(("", PORT), ThemeParkHandler) as httpd:
     print("serving at port", PORT)
