@@ -288,11 +288,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_header('Location', '/connect.html')
             self.end_headers()
 
-    def redirect(self):
-        self.send_response(301)
-        self.send_header('Location', 'google.com')
-        self.end_headers()
-
 
 with socketserver.TCPServer(("", PORT), ThemeParkHandler) as httpd:
     print("serving at port", PORT)
