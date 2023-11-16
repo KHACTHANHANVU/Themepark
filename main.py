@@ -74,16 +74,36 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 ...
             self.wfile.write(file)
         elif (urlinfo.path == '/portal.html'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            file = b""
+            account = None
             try:
-                file = open("public/portal.html", "rb").read()
-            finally:
+                account = re.split("=", self.headers['Cookie'])
+                print(account)
+            except:
                 ...
-            self.wfile.write(file)
+                
+            if account:
+                self.send_response(200)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+
+                file = b""
+                try:
+                    file = open("public/portal.html", "rb").read()
+                finally:
+                    ...
+                self.wfile.write(file)
+            else:
+                self.send_response(401)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+                
+                file = b""
+                try:
+                    file = open("public/forbidden.html", "rb").read()
+                finally:
+                    ...
+                self.wfile.write(file)
+
         elif (urlinfo.path == '/pricing.html'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -284,7 +304,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             else:
                 print("login failed")
                 self.send_response(302)
-                self.send_header("Set-Cookie", "cred=failed")
                 self.send_header('Location', '/connect.html')
             self.end_headers()
 

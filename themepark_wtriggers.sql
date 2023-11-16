@@ -1,9 +1,9 @@
 -- Active: 1700086382953@@themeparkproject.mysql.database.azure.com@3306@novapark
-CREATE DATABASE IF NOT EXISTS themepark;
+CREATE DATABASE IF NOT EXISTS novapark;
 
-USE themepark;
+USE novapark;
 
-CREATE TABLE themepark.account (
+CREATE TABLE novapark.account (
     username VARCHAR(30),
     pssd VARCHAR(30),
     customer_id INT NOT NULL AUTO_INCREMENT,
@@ -11,9 +11,22 @@ CREATE TABLE themepark.account (
     FOREIGN KEY(customer_id),
 );
 
-ALTER TABLE themepark.account customer_id=100;
+create table novapark.staff (
+	staff_no smallint primary key auto_increment,
+    phone_no char(10),
+    address varchar(35),
+    supervisor_id char(7),
+    hours_work char(3),
+    salary numeric(8,2) not null check(week_wage > 300 and week_wage < 850),
+    dob date not null,
+    job enum('supervisor', 'manager', 'sales', 'security', 'domestic') not null,
+    dept_no tinyint not null,
+    foreign key(dept_no) references novapark.department(d_no)
+);
 
-CREATE TABLE themepark.customer (
+ALTER TABLE novapark.account customer_id=100;
+
+CREATE TABLE novapark.customer (
     customer_id INT PRIMARY KEY,
     first_name VARCHAR(30),
     last_name VARCHAR(30),
@@ -23,10 +36,12 @@ CREATE TABLE themepark.customer (
     numb_tickets_bought INT DEFAULT 0,
 );
 
-CREATE TABLE themepark.ticket (
+CREATE TABLE novapark.ticket (
     ticket_no INT PRIMARY KEY,
-    price DECIMAL(6, 2);
-    TICKET_TYPE ENUM('SILVER', 'GOLD', 'PLATINUM')
+    price DECIMAL(6, 2),
+    ticket_type ENUM('SILVER', 'GOLD', 'PLATINUM'),
+    park_number INT,
+    FOREIGN KEY (park_number) REFERENCES novapark.a
 );
 
 create table novapark.department (
@@ -37,23 +52,9 @@ create table novapark.department (
     -- weekly_expenses numeric(7,2)
 );
 
-
-create table novapark.staff (
-	staff_no smallint primary key auto_increment,
-    phone_no char(10),
-    address varchar(35),
-    supervisor_id char(7),
-    hours_work char(3),
-    week_wage numeric(8,2) not null check(week_wage > 300 and week_wage < 850),
-    dob date not null,
-    job enum('supervisor', 'manager', 'sales', 'security', 'domestic') not null,
-    dept_no tinyint not null,
-    foreign key(dept_no) references novapark.department(d_no)
-);
-
 alter table novapark.department add foreign key (manager_no) references novapark.staff(staff_no); 
 
-CREATE TABLE themepark.amusement_ride (
+CREATE TABLE novapark.amusement_ride (
 	ride_name VARCHAR(12) NOT NULL,
     ride_no SMALLINT PRIMARY KEY,
     is_working bool default true,
@@ -116,11 +117,10 @@ create table novapark.variable (
     -- expected_min_restaurant_revenue numeric
 );
 
-
 create table novapark.resort_reservation (
-	ticket_no char(7) not null,
+	TICKET_NO char(7) not null,
     room_no smallint not null,
-    foreign key(ticket_no) references novapark.ticket(t_no)
+    FOREIGN KEY (TICKET_NO) REFERENCES novapark.ticket(t_no)
 );
 
 create table novapark.restaurant_reservation (
@@ -175,7 +175,7 @@ describe novapark.ticket;
 alter table novapark.visitor modify num_of_visitations int default 1;
 describe novapark.visitor;
 
-CREATE TRIGGER TRIGGER_ON_SIGNUP BEFORE INSERT ON THEMEPARK.
+CREATE TRIGGER TRIGGER_ON_SIGNUP BEFORE INSERT ON novapark.
 
 DELIMITER //
 CREATE TRIGGER trigger_Employee_inserthour BEFORE UPDATE ON novapark.staff
