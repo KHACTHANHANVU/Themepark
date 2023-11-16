@@ -14,7 +14,7 @@ CREATE TABLE novapark.account (
 create table novapark.staff (
 	staff_no smallint primary key auto_increment,
     phone_no char(10),
-    address varchar(35),
+    addr varchar(35),
     supervisor_id char(7),
     hours_work char(3),
     salary numeric(8,2) not null check(week_wage > 300 and week_wage < 850),

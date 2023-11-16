@@ -7,4 +7,4 @@ script.sh
 __pycache__
 src/__pycache__
 .gitignore
-themepark_wtriggers.sql
+# still have simply value reproduciton.
