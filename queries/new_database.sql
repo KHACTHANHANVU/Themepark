@@ -4,17 +4,18 @@ CREATE DATABASE IF NOT EXISTS novapark;
 USE novapark;
 
 CREATE TABLE novapark.account (
-    username VARCHAR(30),
-    pssd VARCHAR(30),
+    username VARCHAR(30) NOT NULL UNIQUE,
+    pswd VARCHAR(30),
     customer_id INT NOT NULL AUTO_INCREMENT,
     PRIMARY KEY(username),
     FOREIGN KEY(customer_id),
 );
 
 create table novapark.staff (
-	staff_no smallint primary key auto_increment,
+	staff_id smallint primary key auto_increment,
+    pswd VARCHAR(10),
     phone_no char(10),
-    addr varchar(35),
+    addrs varchar(35),
     supervisor_id char(7),
     hours_work char(3),
     salary numeric(8,2) not null check(week_wage > 300 and week_wage < 850),
@@ -30,7 +31,8 @@ CREATE TABLE novapark.customer (
     customer_id INT PRIMARY KEY,
     first_name VARCHAR(30),
     last_name VARCHAR(30),
-    email VARCHAR(35),
+    pswd VARCHAR(10),
+    email VARCHAR(35) NOT NULL UNIQUE,
     phone CHAR(10),
     age INT NOT NULL,
     numb_tickets_bought INT DEFAULT 0,

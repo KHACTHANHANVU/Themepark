@@ -4,7 +4,7 @@ import os
 from urllib import parse 
 import re
 from src import rides_script
-from src.query import check_login_cred
+from src.login import check_login_cred
 import json
 
 PORT = 8000
@@ -294,9 +294,9 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             user = re.split("=", user_pssd[0])[1]
             pssd = re.split("=", user_pssd[1])[1]
 
-            creds, successful_login = check_login_cred(user, pssd)
+            creds = check_login_cred(user, pssd)
             print(creds)
-            if successful_login:
+            if creds == "V":
                 self.send_response(302)
                 print("login successful")
                 self.send_header("Set-Cookie", "cred=%s" % str(creds))
