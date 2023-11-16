@@ -14,15 +14,22 @@ mydb = mysql.connector.connect(
 )
 
 def check_login_cred(username, password):
-    cookies = SimpleCookie() #os.getenv("HTTP_COOKIE") inside constructor
     cursor = mydb.cursor()
     
     #cursor.execute("SELECT COUNT(*) FROM novapark.customer AS c WHERE c.username == %s AND c.password == %s;", (username, password,))
     cursor.execute("""SELECT COUNT(*)
                         FROM novapark.visitor AS c 
                         WHERE c.first_name = '%s' AND c.last_name = '%s';""" % (username, password,))
-    result=cursor.fetchone() != 0
-    print(result)
+    result=cursor.fetchone()[0] != 0
+
+    if result:
+        cursor.execute("""  SELECT *
+                            FROM novapark.visitor AS c 
+                            WHERE c.first_name = '%s' AND c.last_name = '%s';""" % (username, password,))
+        creds = cursor.fetchone()
+        return creds, True
+    else:
+        return None, False
 
     if result:
         cookies["login"] = "true"
@@ -52,5 +59,3 @@ def check_login_cred(username, password):
             # not customer or staff member
             cookies["login"] = "false"
             cookies["access_level"] = "none"
-
-    return True

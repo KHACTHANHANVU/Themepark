@@ -3,7 +3,7 @@ import socketserver
 import os
 from urllib import parse 
 import re
-#from src import rides_script
+from src import rides_script
 from src.query import check_login_cred
 import json
 
@@ -37,6 +37,8 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 ...
             self.wfile.write(file)
         elif (urlinfo.path == '/connect.html'):
+            print(self.headers['Cookie'])
+            # cookie = json.loads(self.rfile.read(length))
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
@@ -249,14 +251,12 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 ...
             self.wfile.write(file)
             # print(self.path)
-
-
         
         #return super().do_GET()
     
     def do_POST(self):
         urlinfo = parse.urlparse(self.path)
-        print(urlinfo)
+        urlinfo.path
 
         if (urlinfo.path == '/data'):
             print('received')
@@ -267,7 +267,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             print(content['startDate'])
             print(content['endDate'])
         elif (urlinfo.path == '/login'):
-            self.send_response(200)
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8") 
             print(data)
 
@@ -275,20 +274,22 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             user = re.split("=", user_pssd[0])[1]
             pssd = re.split("=", user_pssd[1])[1]
 
-            print(user)
-            print(pssd)
-
-            if check_login_cred(user, pssd):
+            creds, successful_login = check_login_cred(user, pssd)
+            print(creds)
+            if successful_login:
+                self.send_response(302)
                 print("login successful")
+                self.send_header("Set-Cookie", "cred=%s" % str(creds))
+                self.send_header('Location', '/portal.html')
             else:
                 print("login failed")
-
-
-            self.send_header('Location', 'google.com')
+                self.send_response(302)
+                self.send_header("Set-Cookie", "cred=failed")
+                self.send_header('Location', '/connect.html')
             self.end_headers()
 
     def redirect(self):
-        self.send_response(200)
+        self.send_response(301)
         self.send_header('Location', 'google.com')
         self.end_headers()
 

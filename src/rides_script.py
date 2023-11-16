@@ -1,9 +1,10 @@
 import mysql.connector
+'''
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.platypus import Table, TableStyle
 from reportlab.lib import colors
-
+'''
 def generate_report(start_date, end_date):
   db = mysql.connector.connect(
     host="localhost",
