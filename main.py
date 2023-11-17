@@ -6,6 +6,8 @@ import re
 from src import rides_script
 from src.login import check_login_cred
 import json
+from http.cookies import SimpleCookie
+from string import Template
 
 PORT = 8000
 
@@ -35,7 +37,15 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 file = open("public/carousel.html", "rb").read()
             finally:
                 ...
+            print(file)
             self.wfile.write(file)
+
+            cookies = SimpleCookie()
+            cookies["creds"] = "creds"
+            cookies["authorization_level"] = "V"
+            for morsel in cookies.values():
+                print(morsel.output())
+
         elif (urlinfo.path == '/connect.html'):
             print(self.headers['Cookie'])
             # cookie = json.loads(self.rfile.read(length))
@@ -86,11 +96,14 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_header('Content-type', 'text/html')
                 self.end_headers()
 
-                file = b""
+                template_file = b""
                 try:
-                    file = open("public/portal.html", "rb").read()
+                    template_file = open("public/portal.html", "rb").read()
                 finally:
                     ...
+
+                template_file = Template(template_file.decode('utf-8'))
+                file = template_file.substitute(name="Kevin").encode('utf-8')
                 self.wfile.write(file)
             else:
                 self.send_response(401)
@@ -297,14 +310,28 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             creds = check_login_cred(user, pssd)
             print(creds)
             if creds == "V":
-                self.send_response(302)
                 print("login successful")
-                self.send_header("Set-Cookie", "cred=%s" % str(creds))
+                self.send_response(302)
                 self.send_header('Location', '/portal.html')
-            else:
+
+                cookies = SimpleCookie()
+                cookies["creds"] = creds
+                cookies["authorization_level"] = "V"
+                for morsel in cookies.values():
+                    self.send_header("Set-Cookie", morsel.OutputString())
+            elif creds == "S":
+                cookies = SimpleCookie()
+                cookies["creds"] = creds
+                cookies["authorization_level"] = "S"
+                for morsel in cookies.values():
+                    self.send_header("Set-Cookie", "cred=%s" % str(creds))
+
+            elif creds == "N":
                 print("login failed")
                 self.send_response(302)
                 self.send_header('Location', '/connect.html')
+            else:
+                raise Exception()
             self.end_headers()
 
 
