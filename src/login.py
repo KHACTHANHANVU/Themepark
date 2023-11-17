@@ -18,8 +18,8 @@ def check_login_cred(username, password):
     
     #cursor.execute("SELECT COUNT(*) FROM novapark.customer AS c WHERE c.username == %s AND c.password == %s;", (username, password,))
     cursor.execute("""SELECT COUNT(*)
-                        FROM novapark.visitor AS c 
-                        WHERE c.first_name = '%s' AND c.last_name = '%s';""" % (username, password,))
+                      FROM novapark.visitor AS c 
+                      WHERE c.first_name = '%s' AND c.last_name = '%s';""" % (username, password,))
     result = cursor.fetchall()
 
     if (result[0][0]):

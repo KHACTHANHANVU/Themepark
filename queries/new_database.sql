@@ -3,58 +3,35 @@ CREATE DATABASE IF NOT EXISTS novapark;
 
 USE novapark;
 
-CREATE TABLE novapark.account (
-    username VARCHAR(30) NOT NULL UNIQUE,
-    pswd VARCHAR(30),
-    customer_id INT NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY(username),
-    FOREIGN KEY(customer_id),
-);
 
 create table novapark.staff (
 	staff_id smallint primary key auto_increment,
-    pswd VARCHAR(10),
+    pswrd VARCHAR(10),
     phone_no char(10),
     addrs varchar(35),
     supervisor_id char(7),
     hours_work char(3),
-    salary numeric(8,2) not null check(week_wage > 300 and week_wage < 850),
+    hourly_wage numeric(8,2) not null check(hourly_wage > 7.25),
     dob date not null,
-    job enum('supervisor', 'manager', 'sales', 'security', 'domestic') not null,
-    dept_no tinyint not null,
-    foreign key(dept_no) references novapark.department(d_no)
+    job enum('manager', 'repair', 'rides') not null,
 );
-
-ALTER TABLE novapark.account customer_id=100;
 
 CREATE TABLE novapark.customer (
-    customer_id INT PRIMARY KEY,
     first_name VARCHAR(30),
     last_name VARCHAR(30),
-    pswd VARCHAR(10),
-    email VARCHAR(35) NOT NULL UNIQUE,
+    pswrd VARCHAR(10),
+    email VARCHAR(35) PRIMARY KEY,
     phone CHAR(10),
-    age INT NOT NULL,
-    numb_tickets_bought INT DEFAULT 0,
+    pass_credits SMALLINT,
+    num_passes INT
 );
 
-CREATE TABLE novapark.ticket (
-    ticket_no INT PRIMARY KEY,
-    price DECIMAL(6, 2),
-    ticket_type ENUM('SILVER', 'GOLD', 'PLATINUM'),
-    park_number INT,
-    FOREIGN KEY (park_number) REFERENCES novapark.a
+CREATE TABLE novapark.park_pass (
+    cust_email INT PRIMARY KEY,
+    num_passes INT,
+    date_bought datetime,
+    is_valid boolean
 );
-
-create table novapark.department (
-	d_name varchar(6) not null,
-    d_no tinyint primary key auto_increment,
-    manager_no smallint not null,
-    weekly_budget numeric(8,2) default 5400
-    -- weekly_expenses numeric(7,2)
-);
-
-alter table novapark.department add foreign key (manager_no) references novapark.staff(staff_no); 
 
 CREATE TABLE novapark.amusement_ride (
 	ride_name VARCHAR(12) NOT NULL,
@@ -65,112 +42,25 @@ CREATE TABLE novapark.amusement_ride (
 
 create table novapark.ride_repair (
 	ride_no smallint,
-    repairer_no smallint,
-    repair_date date not null,
-    cost double not null,
+    date_of_issue datetime NOT NULL,
+    repair_date datetime NOT NULL,
+    repair_cost FLOAT not null,
     foreign key (ride_no) references novapark.amusement_ride(ride_no),
-    foreign key (repairer_no) references novapark.staff(staff_no)
+);
+
+create table novapark.events (
+	event_no smallint primary key auto_increment,
+    e_name varchar(22) not null,
+    start_date date,
+    end_date date
 );
 
 create table novapark.business_day (
 	num_of_visitors smallint not null check(num_of_visitors > -1),
-    num_of_rainouts tinyint default 0 check(num_of_rainouts > -1),
     b_date date primary key,
-    ride_revenue numeric(8,2) not null check(ride_revenue > 0.0),
-    vendor_revenue numeric(8,2) not null check(vendor_revenue > 0.0),
-    resort_revenue numeric(8,2) not null check(resort_revenue > 0.0),
-    restaurant_revenue numeric(8,2) not null check(restaurant_revenue > 0.0),
-    vendor_expenses numeric(8,2) not null check(vendor_expenses > 0.0),
-    resort_expenses numeric(8,2) not null check(resort_expenses > 0.0),
-    restaurant_expenses numeric(8,2) not null check(restaurant_expenses > 0.0)
-    
+    revenue numeric(8,2) not null check (revenue > 0.0),
+    expenses numeric(8,2) not null check (expenses > 0.0)    
 );
-
-create table novapark.daily_rides (
-	ride_no smallint not null,
-    num_of_rides smallint default 0,
-    _date date not null,
-    foreign key (ride_no) references novapark.amusement_ride(ride_no)
-);
-
--- create table novapark.dept_daily_expenses(
--- 	d_no tinyint not null,
---     amount numeric(8,2) not null,
---     _date date primary key
--- );
-
-create table novapark.sale (
-	-- receipt_prefix char(7) auto_increment, 
-    discount_applied_percent numeric(3,1) default 0.0 check(discount_applied_percent >= 0.0),
-    sale_time datetime primary key,
-    ticket_no char(7) not null,
-    dept_no tinyint not null,
-    foreign key(ticket_no) references novapark.ticket(t_no),
-    foreign key(dept_no) references novapark.department(d_no)
-);
-
-create table novapark.variable (
-	ticket_price numeric(4,2) check(ticket_price > 0.0),
-    max_refund numeric(4,2) check(max_refund > 0.0),
-    max_discount_percent numeric(3,1) check(max_discount_percent >= 0.0),
-    -- min_restaurant_capacity smallint,
-    default_capacity smallint check(default_capacity > 0),
-    start_date date
-    -- expected_min_restaurant_revenue numeric
-);
-
-create table novapark.resort_reservation (
-	TICKET_NO char(7) not null,
-    room_no smallint not null,
-    FOREIGN KEY (TICKET_NO) REFERENCES novapark.ticket(t_no)
-);
-
-create table novapark.restaurant_reservation (
-	ticket_no char(7) not null,
-    restaurant_no tinyint not null,
-    foreign key(ticket_no) references novapark.ticket(t_no)
-);
-
-create table novapark.restaurant (
-	_name varchar(15) not null,
-    _no tinyint primary key auto_increment,
-    menu_no tinyint not null default 1,
-     thumbnail varchar(75),
-    capacity smallint default 50 check(capacity > 0)
-);
-
-create table novapark.meal (
-	restaurant_no tinyint not null,
-    _name varchar(22) not null,
-    price smallint not null,
-    calories smallint not null,
-     thumbnail varchar(75),
-    foreign key (restaurant_no) references novapark.restaurant(_no)
-);
-
-create table novapark.event_hall (
-	hall_no tinyint not null,
-    capacity smallint not null,
-    address varchar(45) default 'Not Specified',
-    thumbnail varchar(75),
-    manager_no smallint,
-    phone char(10),
-    foreign key (manager_no) references novapark.staff(staff_no)
-);
-
-create table novapark.theme_event (
-	event_no smallint primary key auto_increment,
-    hall_no tinyint not null,
-    _name varchar(22) not null,
-    thumbnail_path varchar(45)
-);
-
-create table novapark.feedback (
-	cust_name varchar(30) not null,
-    _comment varchar(120),
-    _date date primary key
-);
-
 
 
 describe novapark.ticket;
