@@ -36,26 +36,26 @@ CREATE TABLE novapark.park_pass (
 CREATE TABLE novapark.amusement_ride (
 	ride_name VARCHAR(12) NOT NULL,
     ride_no SMALLINT PRIMARY KEY,
-    is_working bool default true,
-    date_of_last_repair date,
+    is_working BOOL DEFAULT TRUE,
+    date_of_last_repair DATETIME,
 );
 
-create table novapark.ride_repair (
-	ride_no smallint,
-    date_of_issue datetime NOT NULL,
-    repair_date datetime NOT NULL,
-    repair_cost FLOAT not null,
-    foreign key (ride_no) references novapark.amusement_ride(ride_no),
+CREATE TABLE novapark.ride_repair (
+	ride_no SMALLINT,
+    date_of_issue DATETIME NOT NULL,
+    repair_date DATETIME NOT NULL,
+    repair_cost FLOAT NOT NULL,
+    FOREIGN KEY (ride_no) REFERENCES novapark.amusement_ride(ride_no),
 );
 
-create table novapark.events (
+CREATE TABLE novapark.events (
 	event_no smallint primary key auto_increment,
     e_name varchar(22) not null,
     start_date date,
     end_date date
 );
 
-create table novapark.business_day (
+CREATE TABLE novapark.business_day (
 	num_of_visitors smallint not null check(num_of_visitors > -1),
     b_date date primary key,
     revenue numeric(8,2) not null check (revenue > 0.0),
@@ -63,58 +63,3 @@ create table novapark.business_day (
 );
 
 
-describe novapark.ticket;
-alter table novapark.visitor modify num_of_visitations int default 1;
-describe novapark.visitor;
-
-CREATE TRIGGER TRIGGER_ON_SIGNUP BEFORE INSERT ON novapark.
-
-DELIMITER //
-CREATE TRIGGER trigger_Employee_inserthour BEFORE UPDATE ON novapark.staff
-FOR EACH ROW
-BEGIN
-    DECLARE rowCount INT;
-    
-    SELECT COUNT(*) INTO rowCount FROM novapark.staff;
-    
-    IF rowCount = 0 THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Table Staff does not have any data';
-    END IF;
-
-    IF NEW.hours_work > 40 THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Table staff cannot be updated';
-    END IF;
-    
-    IF NEW.hours_work > 40 THEN
-        UPDATE week_wage
-        SET week_wage = week_wage * 1.5 * NEW.hours_work
-        WHERE staff_no = NEW.staff_no;
-    END IF;
-END;
-//
-DELIMITER ;
-
-
-DELIMITER //
-CREATE TRIGGER trigger_visitor_ispresent BEFORE UPDATE ON novapark.visitor
-FOR EACH ROW
-BEGIN
-    DECLARE rowCount INT;
-    
-    SELECT COUNT(*) INTO rowCount FROM novapark.visitor;
-    
-    IF rowCount = 0 THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Table Visitor does not have any data';
-    END IF;
-
-    IF NEW.ticket_no IS NOT NULL THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You are qualified for coupons';
-    END IF;
-    
-    IF NEW.is_present = TRUE THEN
-        UPDATE novapark.price
-        SET price = price * 0.75;
-    END IF;
-END;
-//
-DELIMITER ;
