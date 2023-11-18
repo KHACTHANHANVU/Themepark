@@ -5,3 +5,6 @@ SELECT * FROM novapark.visitor;
 DROP DATABASE novapark;
 
 DESCRIBE TABLE novapark.staff;
+
+USE novapark;
+
