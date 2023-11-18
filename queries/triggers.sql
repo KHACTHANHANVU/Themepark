@@ -1,15 +1,10 @@
-
-
-
-
 DELIMITER //
-
 CREATE TRIGGER trigger_on_pass_purchase BEFORE INSERT ON novapark.park_pass
-BEGIN
+FOR EACH ROW
     DECLARE last_pass_credit_date DATE;
 
-    SELECT last_credit_date INTO last_pass_credit_date 
-    FROM novapark.customer AS cs
+    SELECT last_credit_date AS last_pass_credit_date; 
+    FROM novapark.customer AS cs;
     WHERE new.cust_email = cs.email;
 
     IF DATEDIFF(month, new.date_bought, last_pass_credit_date) >= 30 THEN
@@ -24,15 +19,12 @@ BEGIN
             SET cs.last_credit_date = new.date_bought, cs.pass_credits = cs.pass_credits + 10;
             FROM novapark.customer AS cs
             WHERE new.cust_email = cs.email;
-            END IF;
+        END IF;
     END IF;
-
-        
-
 END
+DELIMITER ;
 
-
-
+/*
 DELIMITER //
 CREATE TRIGGER trigger_Employee_inserthour BEFORE UPDATE ON novapark.staff
 FOR EACH ROW
@@ -52,7 +44,7 @@ BEGIN
     IF NEW.hours_work > 40 THEN
         UPDATE week_wage
         SET week_wage = week_wage * 1.5 * NEW.hours_work
-        WHERE staff_no = NEW.staff_no;
+        WHERE staff_id = NEW.staff_id;
     END IF;
 END;
 //
@@ -82,3 +74,4 @@ BEGIN
 END;
 //
 DELIMITER ;
+*/
