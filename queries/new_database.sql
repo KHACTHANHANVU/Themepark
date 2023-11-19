@@ -32,6 +32,15 @@ CREATE TABLE novapark.customer (
     FOREIGN KEY (email) REFERENCES novapark.park_pass(cust_email)
 );
 
+CREATE TABLE novapark.card_info {
+    eamil VARCHAR(35) PRIMARY KEY,
+    card_num VARCHAR(16),
+    cvv VARCHAR(3),
+    exp_month VARCHAR(2),
+    exp_year VARCHAR(2)
+
+};
+
 ALTER TABLE novapark.customer AUTO_INCREMENT=100;
 
 CREATE TABLE novapark.park_pass (
@@ -40,7 +49,7 @@ CREATE TABLE novapark.park_pass (
     pass_type ENUM('daily', 'weekly', 'montly'),
     date_bought DATETIME,
     is_valid BOOLEAN,
-    PRIMARY KEY (cust_email)
+    PRIMARY KEY (cust_email, pass_type, date_bought)
 );
 
 
