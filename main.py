@@ -340,6 +340,8 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             else:
                 raise Exception()
             self.end_headers()
+        elif (urlinfo.path == '/signup'):
+            he = 0
 
 
 httpd = socketserver.TCPServer(("", PORT), ThemeParkHandler)
