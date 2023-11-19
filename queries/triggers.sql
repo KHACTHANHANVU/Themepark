@@ -26,8 +26,9 @@ END //
 DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER trigger_Employee_inserthour BEFORE UPDATE ON novapark.staff
-FOR EACH ROW
+CREATE TRIGGER trigger_Employee_inserthour
+    BEFORE UPDATE ON novapark.staff
+    FOR EACH ROW
 BEGIN
     DECLARE rowCount INT;
     
@@ -51,8 +52,9 @@ DELIMITER ;
 
 
 DELIMITER //
-CREATE TRIGGER trigger_visitor_ispresent BEFORE UPDATE ON novapark.visitor
-FOR EACH ROW
+CREATE TRIGGER trigger_visitor_ispresent
+    BEFORE UPDATE ON novapark.visitor
+    FOR EACH ROW
 BEGIN
     DECLARE rowCount INT;
     

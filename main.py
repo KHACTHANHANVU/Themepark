@@ -1,9 +1,8 @@
 import http.server
 import socketserver
-import os
 from urllib import parse 
 import re
-from src import rides_script
+from src import *
 from src.login import check_login_cred
 import json
 from http.cookies import SimpleCookie
@@ -13,6 +12,11 @@ PORT = 8000
 
 class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
+        """
+        This function handles GET requests from the browser.
+        
+        When the client first logs in, it sends a request to the root. Take the
+        """
         urlinfo = parse.urlparse(self.path)
         urlinfo.path
         
@@ -40,10 +44,10 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             print(file)
             self.wfile.write(file)
 
-            cookies = SimpleCookie()
-            cookies["creds"] = "creds"
-            cookies["authorization_level"] = "V"
-            for morsel in cookies.values():
+            cookie = SimpleCookie()
+            cookie["creds"] = "creds"
+            cookie["authorization_level"] = "V"
+            for morsel in cookie.values():
                 print(morsel.output())
 
         elif (urlinfo.path == '/connect.html'):
@@ -286,6 +290,9 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             # print(self.path)
         
         #return super().do_GET()
+
+
+
     
     def do_POST(self):
         urlinfo = parse.urlparse(self.path)
@@ -314,16 +321,16 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_response(302)
                 self.send_header('Location', '/portal.html')
 
-                cookies = SimpleCookie()
-                cookies["creds"] = creds
-                cookies["authorization_level"] = "V"
-                for morsel in cookies.values():
+                cookie = SimpleCookie()
+                cookie["creds"] = creds
+                cookie["authorization_level"] = "V"
+                for morsel in cookie.values():
                     self.send_header("Set-Cookie", morsel.OutputString())
             elif creds == "S":
-                cookies = SimpleCookie()
-                cookies["creds"] = creds
-                cookies["authorization_level"] = "S"
-                for morsel in cookies.values():
+                cookie = SimpleCookie()
+                cookie["creds"] = creds
+                cookie["authorization_level"] = "S"
+                for morsel in cookie.values():
                     self.send_header("Set-Cookie", "cred=%s" % str(creds))
 
             elif creds == "N":
@@ -335,9 +342,14 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
 
 
-with socketserver.TCPServer(("", PORT), ThemeParkHandler) as httpd:
-    print("serving at port", PORT)
-    try:
-        httpd.serve_forever()
-    except:
-        print("closing")
+httpd = socketserver.TCPServer(("", PORT), ThemeParkHandler)
+try:
+    print("starting up server")
+    httpd.serve_forever()
+    print("server up")
+except:
+    print("closing")
+finally:
+    httpd.server_close()
+
+print("server shut down")
