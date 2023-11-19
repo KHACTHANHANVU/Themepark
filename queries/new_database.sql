@@ -27,7 +27,8 @@ CREATE TABLE novapark.customer (
     email VARCHAR(35),
     phone CHAR(10),
     pass_credits SMALLINT,
-    num_passes INT,
+    num_passes INT DEFAULT 0,
+    b_day DATE,
     PRIMARY KEY (email),
     FOREIGN KEY (email) REFERENCES novapark.park_pass(cust_email)
 );

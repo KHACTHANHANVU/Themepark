@@ -41,7 +41,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 file = open("public/carousel.html", "rb").read()
             finally:
                 ...
-            print(file)
+            # print(file)
             self.wfile.write(file)
 
             cookie = SimpleCookie()
@@ -341,7 +341,22 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 raise Exception()
             self.end_headers()
         elif (urlinfo.path == '/signup'):
-            he = 0
+            data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8") 
+            print(data)
+            
+            split_data = re.split("&", data)
+            fname = re.split("=", split_data[0])[1]
+            lname = re.split("=", split_data[1])[1]
+            phone = re.split("=", split_data[2])[1]
+            email = re.split("=", split_data[3])[1]
+            pswrd = re.split("=", split_data[4])[1]
+            
+            print(fname)
+            print(lname)
+            print(phone)
+            print(email)
+            print(pswrd)
+            
 
 
 httpd = socketserver.TCPServer(("", PORT), ThemeParkHandler)

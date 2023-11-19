@@ -40,4 +40,6 @@ def check_login_cred(username, password):
 def sign_up(first_name, last_name, phone_num, username, password):
     cursor = mydb.cursor()
     cursor.execute("""INSERT INTO novapark.customer (first_name, last_name, phone, email, pswrd, pass_credits, num_passes)
-                      value (first_name, last_name, phone_num, username, password, 0, 0)""")
+                      value (%s, %s, %s, %s, %s, 0, 0)""" % (first_name, last_name, phone_num, username, password))
+    
+    return "yay"

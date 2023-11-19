@@ -8,3 +8,4 @@ DESCRIBE TABLE novapark.staff;
 
 USE novapark;
 
+SELECT * FROM novapark.customer;
