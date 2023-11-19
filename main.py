@@ -332,7 +332,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 cookie["authorization_level"] = "S"
                 for morsel in cookie.values():
                     self.send_header("Set-Cookie", "cred=%s" % str(creds))
-
             elif creds == "N":
                 print("login failed")
                 self.send_response(302)

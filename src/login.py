@@ -21,6 +21,7 @@ def check_login_cred(username, password):
                       FROM novapark.customer AS c 
                       WHERE c.email = '%s' AND c.pswrd = '%s';""" % (username, password,))
     result = cursor.fetchall()
+    print(result)
 
     if (result[0][0]):
         return "V" # V: visitor level credentials
@@ -40,6 +41,6 @@ def check_login_cred(username, password):
 def sign_up(first_name, last_name, phone_num, username, password):
     cursor = mydb.cursor()
     cursor.execute("""INSERT INTO novapark.customer (first_name, last_name, phone, email, pswrd, pass_credits, num_passes)
-                      value (%s, %s, %s, %s, %s, 0, 0)""" % (first_name, last_name, phone_num, username, password))
+                      VALUES ('%s', '%s', '%s', '%s', '%s', 0, 0))""" % (first_name, last_name, phone_num, username, password))
     
     return "yay"

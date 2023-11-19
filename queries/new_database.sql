@@ -1,4 +1,3 @@
--- Active: 1700086382953@@themeparkproject.mysql.database.azure.com@3306@novapark
 CREATE DATABASE IF NOT EXISTS novapark;
 
 USE novapark;
@@ -17,7 +16,6 @@ CREATE TABLE novapark.staff (
 );
 
 ALTER TABLE novapark.staff ADD FOREIGN KEY (supervisor_id) REFERENCES novapark.staff(staff_id);
-
 ALTER TABLE novapark.staff AUTO_INCREMENT=100;
 
 CREATE TABLE novapark.customer (
@@ -29,9 +27,10 @@ CREATE TABLE novapark.customer (
     pass_credits SMALLINT,
     num_passes INT DEFAULT 0,
     b_day DATE,
-    PRIMARY KEY (email),
-    FOREIGN KEY (email) REFERENCES novapark.park_pass(cust_email)
+    PRIMARY KEY (email)
+    # FOREIGN KEY (email) REFERENCES novapark.park_pass(cust_email)
 );
+
 
 CREATE TABLE novapark.card_info {
     eamil VARCHAR(35) PRIMARY KEY,
