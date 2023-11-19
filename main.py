@@ -3,7 +3,7 @@ import socketserver
 from urllib import parse 
 import re
 from src import *
-from src.login import check_login_cred
+from src.login import *
 import json
 from http.cookies import SimpleCookie
 from string import Template
@@ -355,6 +355,10 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             print(phone)
             print(email)
             print(pswrd)
+            
+            sign_up(fname, lname, phone, email, pswrd)
+            
+            
             
 
 
