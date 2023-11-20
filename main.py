@@ -15,7 +15,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
         """
         This function handles GET requests from the browser.
         
-        When the client first logs in, it sends a request to the root. Take the
+        When the client first logs in, it sends a request to the root. Take the carousel.html and send it right back
         """
         urlinfo = parse.urlparse(self.path)
         urlinfo.path
@@ -89,6 +89,39 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
+        elif (urlinfo.path == '/new_event'):
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("public/skeleton/new_event.html", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
+        elif (urlinfo.path == '/new_rides'):
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("public/skeleton/new_rides.html", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
+        elif (urlinfo.path == '/new_staff'):
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("public/skeleton/new_staff.html", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
         elif (urlinfo.path == '/portal'):
             account = None
             try:
@@ -142,7 +175,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             file = b""
             try:
-                file = open("public/repair log.html", "rb").read()
+                file = open("public/skeleton/repair log.html", "rb").read()
             finally:
                 ...
             self.wfile.write(file)
@@ -157,7 +190,18 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
-        elif (urlinfo.path == '/rides'):
+        elif (urlinfo.path == '/rides_repair'):
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("public/repair log.html", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
+        elif (urlinfo.path == '/rides_report'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
@@ -187,6 +231,17 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             file = b""
             try:
                 file = open("public/sales.html", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
+        elif (urlinfo.path == '/staff_portal'):
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("public/skeleton/staff_portal.html", "rb").read()
             finally:
                 ...
             self.wfile.write(file)
@@ -335,7 +390,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             elif cookie["authorization_level"].value == "M":
                 print("login successful")
                 self.send_response(302)
-                self.send_header('Location', '/portal')
+                self.send_header('Location', '/manager_portal')
                 
                 for morsel in cookie.values():
                     self.send_header("Set-Cookie", morsel.OutputString())
