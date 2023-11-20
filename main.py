@@ -309,23 +309,28 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             pssd = re.split("=", user_pssd[1])[1]
 
             cookie = check_login_cred(user, pssd)
-            cookie["authorization_level"]
-            cookie["first_name"]
-            if cookie["authorization_level"] == "V" or :
+            if cookie["authorization_level"].value == "V":
                 print("login successful")
                 self.send_response(302)
                 self.send_header('Location', '/portal.html')
 
                 for morsel in cookie.values():
                     self.send_header("Set-Cookie", morsel.OutputString())
-            elif cookie["authorization_level"] == "S":
+            elif cookie["authorization_level"].value == "S":
                 print("login successful")
                 self.send_response(302)
                 self.send_header('Location', '/portal.html')
                 
                 for morsel in cookie.values():
                     self.send_header("Set-Cookie", morsel.OutputString())
-            elif cookie["authorization_level"] == "N":
+            elif cookie["authorization_level"].value == "M":
+                print("login successful")
+                self.send_response(302)
+                self.send_header('Location', '/portal.html')
+                
+                for morsel in cookie.values():
+                    self.send_header("Set-Cookie", morsel.OutputString())
+            elif cookie["authorization_level"].value == "N":
                 print("login failed")
                 self.send_response(302)
                 self.send_header('Location', '/connect.html')
@@ -342,12 +347,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             phone = re.split("=", split_data[2])[1]
             email = re.split("=", split_data[3])[1]
             pswrd = re.split("=", split_data[4])[1]
-            
-            print(fname)
-            print(lname)
-            print(phone)
-            print(email)
-            print(pswrd)
             
             cookies = sign_up(fname, lname, phone, email, pswrd)
             
