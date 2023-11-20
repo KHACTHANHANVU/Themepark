@@ -31,7 +31,6 @@ def check_login_cred(username, password):
                           FROM novapark.staff AS s 
                           WHERE s.staff_id = '%s' AND s.pswrd = '%s';""" % (username, password,))
         result = cursor.fetchall()
-        print(result)
         if (len(result) != 0):
             cookie["staff_id"] = result[0][0]
             if result[0][1] == 1:

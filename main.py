@@ -20,18 +20,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
         urlinfo = parse.urlparse(self.path)
         urlinfo.path
         
-        if (urlinfo.path == '/addingitem.html'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/addingitem.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
-        elif (urlinfo.path == '/'):
+        if (urlinfo.path == '/'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
@@ -43,7 +32,18 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 ...
             # print(file)
             self.wfile.write(file)
-        elif (urlinfo.path == '/connect.html'):
+        elif (urlinfo.path == '/addingitem'):
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("public/addingitem.html", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
+        elif (urlinfo.path == '/connect'):
             print(self.headers['Cookie'])
             # cookie = json.loads(self.rfile.read(length))
             self.send_response(200)
@@ -56,9 +56,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
-
-
-        elif (urlinfo.path == '/Entertainment.html'):
+        elif (urlinfo.path == '/Entertainment'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
@@ -69,7 +67,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
-        elif (urlinfo.path == '/feature.html'):
+        elif (urlinfo.path == '/feature'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
@@ -80,13 +78,24 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
-        elif (urlinfo.path == '/portal.html'):
+        elif (urlinfo.path == '/manager_portal'):
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("public/skeleton/manager_portal.html", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
+        elif (urlinfo.path == '/portal'):
             account = None
             try:
                 account = re.split("=", self.headers['Cookie'])
                 print(account)
             except:
-                print("rsadfsasfdsafiojfpoqwemasipofj")
+                print("no cookies given")
                 ...
                 
             if account:
@@ -115,7 +124,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                     ...
                 self.wfile.write(file)
 
-        elif (urlinfo.path == '/pricing.html'):
+        elif (urlinfo.path == '/pricing'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
@@ -126,7 +135,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
-        elif (urlinfo.path == '/repair%20log.html'):
+        elif (urlinfo.path == '/repair%20log'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
@@ -137,7 +146,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
-        elif (urlinfo.path == '/reservation.html'):
+        elif (urlinfo.path == '/reservation'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
@@ -145,6 +154,50 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             file = b""
             try:
                 file = open("public/reservation.html", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
+        elif (urlinfo.path == '/rides'):
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("public/rides.html", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
+        elif (urlinfo.path == '/sales_report'):
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("public/sales_report.html", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
+        elif (urlinfo.path == '/sales'):
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("public/sales.html", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
+        elif (urlinfo.path == '/visitor'):
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("public/visitor.html", "rb").read()
             finally:
                 ...
             self.wfile.write(file)
@@ -159,28 +212,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
-        elif (urlinfo.path == '/rides.html'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/rides.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
-        elif (urlinfo.path == '/sales_report.html'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/sales_report.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
         elif (urlinfo.path == '/sales_style.css'):
             self.send_response(200)
             self.send_header('Content-type', 'text/css')
@@ -189,17 +220,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             file = b""
             try:
                 file = open("public/sales_style.css", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
-        elif (urlinfo.path == '/sales.html'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/sales.html", "rb").read()
             finally:
                 ...
             self.wfile.write(file)
@@ -222,17 +242,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             file = b""
             try:
                 file = open("public/visitor.css", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
-        elif (urlinfo.path == '/visitor.html'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/visitor.html", "rb").read()
             finally:
                 ...
             self.wfile.write(file)
@@ -312,28 +321,28 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             if cookie["authorization_level"].value == "V":
                 print("login successful")
                 self.send_response(302)
-                self.send_header('Location', '/portal.html')
+                self.send_header('Location', '/portal')
 
                 for morsel in cookie.values():
                     self.send_header("Set-Cookie", morsel.OutputString())
             elif cookie["authorization_level"].value == "S":
                 print("login successful")
                 self.send_response(302)
-                self.send_header('Location', '/portal.html')
+                self.send_header('Location', '/portal')
                 
                 for morsel in cookie.values():
                     self.send_header("Set-Cookie", morsel.OutputString())
             elif cookie["authorization_level"].value == "M":
                 print("login successful")
                 self.send_response(302)
-                self.send_header('Location', '/portal.html')
+                self.send_header('Location', '/portal')
                 
                 for morsel in cookie.values():
                     self.send_header("Set-Cookie", morsel.OutputString())
             elif cookie["authorization_level"].value == "N":
                 print("login failed")
                 self.send_response(302)
-                self.send_header('Location', '/connect.html')
+                self.send_header('Location', '/connect')
             else:
                 raise Exception()
             self.end_headers()
@@ -351,7 +360,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             cookies = sign_up(fname, lname, phone, email, pswrd)
             
             self.send_response(302)
-            self.send_header('Location', '/portal.html')
+            self.send_header('Location', '/portal')
             self.end_headers()
             
             
