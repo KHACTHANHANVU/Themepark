@@ -411,9 +411,11 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
         elif (urlinfo.path == '/rides'):
             length = int(self.headers['Content-length'])
             content = json.loads(self.rfile.read(length))
-            rides_script.generate_report(content['startDate'], content['endDate'])
+            # rides_script.generate_report(content['startDate'], content['endDate'])
             print(content['startDate'])
             print(content['endDate'])
+            rides = ride_report(content['startDate'], content['endDate'])
+            print(rides)
         elif (urlinfo.path == '/login'):
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8") 
             print(data)

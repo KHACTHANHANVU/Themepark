@@ -59,3 +59,20 @@ def load_profile(username):
                       WHERE email = '%s';""" % (username,))
     result = cursor.fetchall()
     return result
+
+def ride_report(start_date, end_date):
+    cursor = mydb.cursor()
+    cursor.execute("""SELECT ar.ride_name, ar.ride_no, ar.date_of_last_repair, 
+                      COALESCE(repair_count, 0) AS times_repaired, COALESCE(total_repair_cost, 0.0)
+                      AS total_cost_of_repairs, ar.is_working
+                      FROM novapark.amusement_ride ar
+                      LEFT JOIN (
+                          SELECT ride_no, COUNT(*) AS repair_count, SUM(repair_cost) AS 
+                          total_repair_cost
+                          FROM novapark.ride_repair
+                          WHERE repair_date BETWEEN '%s' AND '%s'
+                          GROUP BY ride_no
+                      ) rr ON ar.ride_no = rr.ride_no
+                      ORDER BY ar.ride_name;""" % (start_date, end_date))
+    result = cursor.fetchall()
+    return result
