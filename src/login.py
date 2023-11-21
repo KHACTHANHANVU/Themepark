@@ -2,6 +2,7 @@
 import mysql.connector
 import json
 import os
+import datetime
 from http.cookies import SimpleCookie
 
 #cookies = SimpleCookie(os.getenv("HTTP_COOKIE"))
@@ -22,7 +23,6 @@ def check_login_cred(username, password):
     cookie = SimpleCookie()
             
     if (len(result) != 0):
-        cookie["name"] = "test"
         cookie["first_name"] = result[0][0]
         cookie["email"] = result[0][1]
         cookie["authorization_level"] = "V" # V: visitor level credentials
@@ -76,3 +76,40 @@ def ride_report(start_date, end_date):
                       ORDER BY ar.ride_name;""" % (start_date, end_date))
     result = cursor.fetchall()
     return result
+
+def insert_ticket_purchase(card_first_name, card_last_name, ticket_type, card_number, cvv, exp_month, exp_year, email, num_tickets):
+    cost = 0
+    ticket_type = ticket_type.capitalize()
+    cur_time = datetime.datetime.now()
+    if(ticket_type == "Silver"):
+        cost = num_tickets * 20
+    elif(ticket_type == "Gold"):
+        cost = num_tickets * 30
+    else:
+        cost = num_tickets * 60
+    cursor = mydb.cursor()
+    cursor.execute("""INSERT INTO novapark.park_pass (cust_email, num_passes, sale_cost, 
+                      pass_type, date_bought, card_fname, card_lname, card_num, cvv, exp_month,
+                      exp_year)
+                      VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');""" 
+                      % (email, num_tickets, cost, ticket_type, cur_time, card_first_name, card_last_name, card_number, cvv, exp_month, exp_year))
+    return "Yay!"
+
+    
+
+"""    
+    CREATE TABLE novapark.park_pass (
+    cust_email VARCHAR(35),
+    num_passes INT,
+    sale_cost INT,
+    pass_type ENUM('Silver', 'Gold', 'Platinum'),
+    date_bought DATETIME,
+    card_fname VARCHAR(30),
+    card_lname VARCHAR(30),
+    card_num VARCHAR(16),
+    cvv VARCHAR(3),
+    exp_month VARCHAR(2),
+    exp_year VARCHAR(2)
+    PRIMARY KEY (cust_email, date_bought)
+);
+"""

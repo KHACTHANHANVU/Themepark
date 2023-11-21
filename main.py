@@ -32,14 +32,14 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 ...
             # print(file)
             self.wfile.write(file)
-        elif (urlinfo.path == '/addingitem'):
+        elif (urlinfo.path == '/buyticket'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
 
             file = b""
             try:
-                file = open("public/addingitem.html", "rb").read()
+                file = open("public/buy_ticket.html", "rb").read()
             finally:
                 ...
             self.wfile.write(file)
@@ -194,7 +194,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 html = file.read()
             
             updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
-            self.wfile.write(updated_html.encode())          
+            self.wfile.write(updated_html.encode())
         elif (urlinfo.path == '/repair%20log'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -360,20 +360,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 file = open("src/sales_script.js", "rb").read()
             finally:
                 ...
-            self.wfile.write(file)
-        elif(urlinfo.path == "/logout"):
-            self.send_response(200)
-            self.send_header("Set-Cookie", "test=name; Max-Age=0")
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/carousel.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
-            
+            self.wfile.write(file)       
         else:
             self.send_response(404)
             self.send_header('Content-type', 'text/html')
@@ -445,6 +432,11 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             else:
                 raise Exception()
             self.end_headers()
+        elif(urlinfo.path == "/logout"):
+            self.send_response(302)
+            self.send_header("Set-Cookie", "authorization_level=N")
+            self.send_header('Location', '/')
+            self.end_headers()
         elif (urlinfo.path == '/signup'):
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8") 
             print(data)
@@ -461,6 +453,30 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.send_response(302)
             self.send_header('Location', '/portal')
             self.end_headers()
+        elif (urlinfo.path == "/ticketpurchase"):
+            data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
+            print(data)
+
+            split_data = re.split("&", data)
+            ticket_type = re.split("=", split_data[0])[1]
+            num_tickets = re.split("=", split_data[1])[1]
+            card_first_name = re.split("=", split_data[2])[1]
+            card_last_name = re.split("=", split_data[3])[1]
+            card_number = re.split("=", split_data[4])[1]
+            cvv = re.split("=", split_data[5])[1]
+            exp_month = re.split("=", split_data[6])[1]
+            exp_year = re.split("=", split_data[7])[1]
+            print(card_first_name, card_last_name, ticket_type, card_number, cvv, exp_month, exp_year, num_tickets)
+
+            info = self.headers['Cookie'].split("; ")
+            email_pair = [pair for pair in info if pair.startswith('email=')]
+            email = email_pair[0].split('=')[1]
+            print(email)
+            insert_ticket_purchase(card_first_name, card_last_name, ticket_type, card_number, cvv, exp_month, exp_year, email, num_tickets)
+            self.send_response(302)
+            self.send_header('Location', '/portal')
+            self.end_headers()
+
             
 
 

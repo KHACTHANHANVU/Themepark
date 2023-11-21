@@ -1,22 +1,73 @@
-<html lang="en" data-bs-theme="dark">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
-    crossorigin="anonymous"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Pixelify+Sans&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./styles.css">
+  <meta charset="UTF-8">
+  <title>Buy Tickets</title>
+  <script>
+    function formatCardNumber(input) {
+      // Remove non-numeric characters
+      let cardNumber = input.value.replace(/\D/g, '');
+      
+      // Format the card number with spaces after every 4 digits
+      cardNumber = cardNumber.replace(/(\d{4})(?=\d)/g, '$1-');
+      
+      // Limit card number to 10 digits
+      if (cardNumber.length > 19) {
+        cardNumber = cardNumber.slice(0, 19);
+      }
+      
+      input.value = cardNumber;
+    }
 
-    <title>Portal</title>
+    function restrictToNumbers(event) {
+      // Allow only numeric characters in the input fields
+      const charCode = event.which ? event.which : event.keyCode;
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        event.preventDefault();
+      }
+    }
+
+    function limitCVVLength(input) {
+      // Limit CVV to 3 digits
+      if (input.value.length > 3) {
+        input.value = input.value.slice(0, 3);
+      }
+    }
+  </script>
 </head>
 <body>
-
+  <h1>Buy Tickets</h1>
+  
+  <form action="/ticketpurchase" method="post">
+    <label for="ticketType">Select Ticket Type:</label>
+    <select id="ticketType" name="ticketType">
+      <option value="silver">Silver</option>
+      <option value="gold">Gold</option>
+      <option value="platinum">Platinum</option>
+    </select>
+    <label for="numtickets">Number of Tickets</label>
+    <input type="text" id="numtickets" name="numtickets" placeholder="Enter number of tickets">
+    <br><br>
+    <label for="firstname">First Name</label>
+    <input type="text" id="firstname" name="firstname" placeholder="Enter first name">
+    <label for="lastname">Last Name</label>
+    <input type="text" id="lastname" name="lastname" placeholder="Enter last name">
+    <br><br>
+    <label for="cardNumber">Card Number:</label>
+    <input type="text" id="cardNumber" name="cardNumber" placeholder="Enter card number" oninput="formatCardNumber(this)" onkeypress="restrictToNumbers(event)" required>
+    <br><br>
+    
+    <label for="cvv">CVV:</label>
+    <input type="text" id="cvv" name="cvv" placeholder="Enter CVV" onkeypress="restrictToNumbers(event); limitCVVLength(this)" required maxlength="3">
+    <br><br>
+    
+    <label for="expirationMonth">Expiration Month:</label>
+    <input type="text" id="expirationMonth" name="expirationMonth" placeholder="MM" onkeypress="restrictToNumbers(event)" required maxlength="2">
+    /
+    <input type="text" id="expirationYear" name="expirationYear" placeholder="YYYY" onkeypress="restrictToNumbers(event)" required maxlength="4">
+    <br><br>
+    
+    <input type="submit" value="Purchase Tickets">
+  </form>
 </body>
 </html>

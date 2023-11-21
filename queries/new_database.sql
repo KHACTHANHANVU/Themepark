@@ -31,7 +31,6 @@ CREATE TABLE novapark.customer (
     email VARCHAR(35),
     phone CHAR(10),
     pass_credits SMALLINT DEFAULT 0,
-    num_passes INT DEFAULT 0,
     PRIMARY KEY (email)
 );
 
