@@ -5,6 +5,8 @@ USE novapark;
 
 CREATE TABLE novapark.staff (
 	staff_id SMALLINT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(30),
+    last_name VARCHAR(30),
     pswrd VARCHAR(10),
     phone_no CHAR(10),
     addrs VARCHAR(35),
