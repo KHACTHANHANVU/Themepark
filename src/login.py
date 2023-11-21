@@ -15,7 +15,6 @@ mydb = mysql.connector.connect(
 
 def check_login_cred(username, password):
     cursor = mydb.cursor()
-    
     cursor.execute("""SELECT first_name, email
                       FROM novapark.customer AS c 
                       WHERE c.email = '%s' AND c.pswrd = '%s';""" % (username, password))
@@ -23,6 +22,7 @@ def check_login_cred(username, password):
     cookie = SimpleCookie()
             
     if (len(result) != 0):
+        cookie["name"] = "test"
         cookie["first_name"] = result[0][0]
         cookie["email"] = result[0][1]
         cookie["authorization_level"] = "V" # V: visitor level credentials
@@ -50,3 +50,12 @@ def sign_up(first_name, last_name, phone_num, username, password):
     result = cursor.fetchall()
     print(result)
     return "yay"
+
+def load_profile(username):
+    print(username)
+    cursor = mydb.cursor()
+    cursor.execute("""SELECT first_name, last_name, email, phone, pass_credits
+                      FROM novapark.customer  
+                      WHERE email = '%s';""" % (username,))
+    result = cursor.fetchall()
+    return result

@@ -168,6 +168,41 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
+        elif (urlinfo.path == '/viewprofile'):
+            info = self.headers['Cookie'].split("; ")
+            email_pair = [pair for pair in info if pair.startswith('email=')]
+            email = email_pair[0].split('=')[1]
+            print(email)
+            profile_info = load_profile(email)
+            print(profile_info)
+
+            formated_info = ''
+            for tuple in profile_info:
+                for value in tuple:
+                    if (type(value) == str):
+                        value = value.replace("%40", "@")
+                    formated_info += f'<td>{value}</td>'
+            
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            with open('public/viewprofile.html', 'r') as file:
+                html = file.read()
+            
+            updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
+            self.wfile.write(updated_html.encode())
+
+
+            """
+            file = b""
+            try:
+                file = open("public/viewprofile.html", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
+            """
+            
         elif (urlinfo.path == '/repair%20log'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -334,6 +369,19 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
+        elif(urlinfo.path == "/logout"):
+            self.send_response(200)
+            self.send_header("Set-Cookie", "test=name; Max-Age=0")
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("public/carousel.html", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
+            
         else:
             self.send_response(404)
             self.send_header('Content-type', 'text/html')
@@ -346,6 +394,8 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 ...
             self.wfile.write(file)
             # print(self.path)
+
+        
         
         #return super().do_GET()
 
@@ -417,7 +467,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.send_response(302)
             self.send_header('Location', '/portal')
             self.end_headers()
-            
             
 
 
