@@ -143,7 +143,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                     ...
 
                 template_file = Template(template_file.decode('utf-8'))
-                file = template_file.substitute(name="Kevin").encode('utf-8')
+                file = template_file.substitute(name=self.headers['Cookie']).encode('utf-8')
                 self.wfile.write(file)
             else:
                 self.send_response(401)
