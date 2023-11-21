@@ -26,19 +26,14 @@ CREATE TABLE novapark.customer (
     phone CHAR(10),
     pass_credits SMALLINT,
     num_passes INT DEFAULT 0,
+    card_num VARCHAR(16),
+    cvv VARCHAR(3),
+    exp_month VARCHAR(2),
+    exp_year VARCHAR(2),
     PRIMARY KEY (email)
     # FOREIGN KEY (email) REFERENCES novapark.park_pass(cust_email)
 );
 
-
-CREATE TABLE novapark.card_info {
-    eamil VARCHAR(35) PRIMARY KEY,
-    card_num VARCHAR(16),
-    cvv VARCHAR(3),
-    exp_month VARCHAR(2),
-    exp_year VARCHAR(2)
-
-};
 
 ALTER TABLE novapark.customer AUTO_INCREMENT=100;
 
@@ -47,7 +42,12 @@ CREATE TABLE novapark.park_pass (
     num_passes INT,
     pass_type ENUM('daily', 'weekly', 'montly'),
     date_bought DATETIME,
-    is_valid BOOLEAN,
+    card_fname VARCHAR(30),
+    card_lname VARCHAR(30),
+    card_num VARCHAR(16),
+    cvv VARCHAR(3),
+    exp_month VARCHAR(2),
+    exp_year VARCHAR(2)
     PRIMARY KEY (cust_email, pass_type, date_bought)
 );
 
