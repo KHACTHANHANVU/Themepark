@@ -143,7 +143,10 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                     ...
 
                 template_file = Template(template_file.decode('utf-8'))
-                file = template_file.substitute(name=self.headers['Cookie']).encode('utf-8')
+                info = self.headers['Cookie'].split("; ")
+                name_pair = [pair for pair in info if pair.startswith('first_name=')]
+                first_name = name_pair[0].split('=')[1]
+                file = template_file.substitute(name=first_name.capitalize()).encode('utf-8')
                 self.wfile.write(file)
             else:
                 self.send_response(401)
@@ -191,18 +194,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 html = file.read()
             
             updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
-            self.wfile.write(updated_html.encode())
-
-
-            """
-            file = b""
-            try:
-                file = open("public/viewprofile.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
-            """
-            
+            self.wfile.write(updated_html.encode())          
         elif (urlinfo.path == '/repair%20log'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
