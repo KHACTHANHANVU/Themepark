@@ -69,6 +69,14 @@ def load_profile_edit(username):
     result = cursor.fetchall()
     return result
 
+def update_profile(email, first_name, last_name, phone_num, password):
+    cursor = mydb.cursor()
+    cursor.execute("""UPDATE novapark.customer
+                      SET first_name = '%s', last_name = '%s', phone = '%s',
+                      pswrd = '%s'
+                      WHERE email = '%s';""" % (first_name, last_name, phone_num, password, email))
+    mydb.commit()
+
 def ride_report(start_date, end_date):
     cursor = mydb.cursor()
     cursor.execute("""SELECT ar.ride_name, ar.ride_no, ar.date_of_last_repair, 
@@ -102,6 +110,7 @@ def insert_ticket_purchase(card_first_name, card_last_name, ticket_type, card_nu
                       exp_year)
                       VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');""" 
                       % (email, num_tickets, cost, ticket_type, cur_time, card_first_name, card_last_name, card_number, cvv, exp_month, exp_year))
+    mydb.commit()
     return "Yay!"
 
 
@@ -128,20 +137,3 @@ def view_tickets(email):
 
 
     return num_silver, num_gold, num_platinum
-
-"""    
-    CREATE TABLE novapark.park_pass (
-    cust_email VARCHAR(35),
-    num_passes INT,
-    sale_cost INT,
-    pass_type ENUM('Silver', 'Gold', 'Platinum'),
-    date_bought DATETIME,
-    card_fname VARCHAR(30),
-    card_lname VARCHAR(30),
-    card_num VARCHAR(16),
-    cvv VARCHAR(3),
-    exp_month VARCHAR(2),
-    exp_year VARCHAR(2)
-    PRIMARY KEY (cust_email, date_bought)
-);
-"""

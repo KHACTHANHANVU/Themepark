@@ -29,15 +29,15 @@
 </head>
 <body>
   <h1>Edit Profile</h1>
-  <form action="/submit" method="post">
-    <label for="firstName">First Name:</label>
-    <input type="text" id="firstName" name="firstName" value="$first_name" required><br><br>
+  <form action="/updateprofile" method="post">
+    <label for="first_name">First Name:</label>
+    <input type="text" id="first_name" name="first_name" value="$first_name" required><br><br>
 
-    <label for="lastName">Last Name:</label>
-    <input type="text" id="lastName" name="lastName" value="$last_name" required><br><br>
+    <label for="last_name">Last Name:</label>
+    <input type="text" id="last_name" name="last_name" value="$last_name" required><br><br>
 
-    <label for="phoneNumber">Phone Number:</label>
-    <input type="tel" id="phoneNumber" name="phoneNumber" value ="$phone_num" oninput="formatPhoneNumber(this)" required><br><br>
+    <label for="phone_num">Phone Number:</label>
+    <input type="tel" id="phone_num" name="phone_num" value ="$phone_num" oninput="formatPhoneNumber(this)" required><br><br>
 
     <label for="password">Password:</label>
     <input type="text" id="password" name="password" value="$password" required><br><br>
