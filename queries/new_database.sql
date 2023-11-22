@@ -17,7 +17,7 @@ CREATE TABLE novapark.staff (
 );
 
 ALTER TABLE novapark.staff ADD FOREIGN KEY (supervisor_id) REFERENCES novapark.staff(staff_id);
-ALTER TABLE novapark.staff AUTO_INCREMENT=1;
+ALTER TABLE novapark.staff AUTO_INCREMENT = 100;
 
 CREATE TABLE novapark.hours_worked (
     staff_id SMALLINT,
@@ -69,12 +69,13 @@ CREATE TABLE novapark.ride_injury (
 
 CREATE TABLE novapark.amusement_ride (
 	ride_name VARCHAR(12) NOT NULL,
-    ride_no SMALLINT,
+    ride_no SMALLINT AUTO_INCREMENT,
     is_working BOOL DEFAULT TRUE,
     date_of_last_repair DATETIME,
     PRIMARY KEY (ride_no)
 );
 
+ALTER TABLE novapark.amusement_ride AUTO_INCREMENT = 1;
 
 CREATE TABLE novapark.ride_repair (
 	ride_no SMALLINT,
