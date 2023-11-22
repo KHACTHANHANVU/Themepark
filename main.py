@@ -507,6 +507,33 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header("Set-Cookie", "authorization_level=N")
             self.send_header('Location', '/')
             self.end_headers()
+        elif (urlinfo.path == "/addstaff"):
+            data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
+            print(data)
+
+            split_data = re.split("&", data)
+            first_name = re.split("=", split_data[0])[1]
+            last_name = re.split("=", split_data[1])[1]
+            password = re.split("=", split_data[2])[1]
+            phone_num = re.split("=", split_data[3])[1]
+            phone_num = phone_num.replace("-", "")
+            address = re.split("=", split_data[4])[1]
+            dob = re.split("=", split_data[5])[1]
+            job = re.split("=", split_data[6])[1]
+            hourly_wage = re.split("=", split_data[7])[1]
+            print(first_name, last_name, password, phone_num, address, dob, job, hourly_wage)
+
+            info = self.headers['Cookie'].split("; ")
+            sup_id_pair = [pair for pair in info if pair.startswith('staff_id=')]
+            sup_id = sup_id_pair[0].split('=')[1]
+            print(sup_id)
+
+            add_staff(sup_id, first_name, last_name, password, phone_num, address, dob, job, hourly_wage)
+
+
+            self.send_response(302)
+            self.send_header("Location", '/manager_portal')
+            self.end_headers()
         elif (urlinfo.path == '/signup'):
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8") 
             print(data)

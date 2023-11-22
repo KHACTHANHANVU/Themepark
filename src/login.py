@@ -137,3 +137,10 @@ def view_tickets(email):
 
 
     return num_silver, num_gold, num_platinum
+
+def add_staff(sup_id, first_name, last_name, password, phone_num, address, dob, job, hourly_wage):
+    cursor = mydb.cursor()
+    cursor.execute("""INSERT INTO novapark.staff (first_name, last_name, pswrd, phone, addrs, dob, job, hourly_wage, supervisor_id)
+                      VALUES '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s';""" 
+                      % (first_name, last_name, password, phone_num, address, dob, job, hourly_wage, sup_id))
+    return "Yay"
