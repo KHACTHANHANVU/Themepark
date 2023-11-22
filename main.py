@@ -69,6 +69,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             last_name = profile_info[0][1]
             phone = profile_info[0][2]
             password = profile_info[0][3]
+            phone = phone[0:3] + "-" + phone[3:6] + "-" + phone[6:]
             
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
