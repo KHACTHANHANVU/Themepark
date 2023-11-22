@@ -60,6 +60,15 @@ def load_profile(username):
     result = cursor.fetchall()
     return result
 
+def load_profile_edit(username):
+    print(username)
+    cursor = mydb.cursor()
+    cursor.execute("""SELECT first_name, last_name, phone, pswrd
+                      FROM novapark.customer  
+                      WHERE email = '%s';""" % (username,))
+    result = cursor.fetchall()
+    return result
+
 def ride_report(start_date, end_date):
     cursor = mydb.cursor()
     cursor.execute("""SELECT ar.ride_name, ar.ride_no, ar.date_of_last_repair, 
@@ -95,7 +104,30 @@ def insert_ticket_purchase(card_first_name, card_last_name, ticket_type, card_nu
                       % (email, num_tickets, cost, ticket_type, cur_time, card_first_name, card_last_name, card_number, cvv, exp_month, exp_year))
     return "Yay!"
 
+
+def view_tickets(email):
+    cursor = mydb.cursor()
+    cursor.execute("""SELECT SUM(num_passes)
+                      FROM novapark.park_pass
+                      WHERE  cust_email = '%s' AND pass_type = '%s';""" % (email, 'Silver'))
+    num_silver = cursor.fetchall()
     
+    cursor.execute("""SElECT SUM(num_passes)
+                      FROM novapark.park_pass
+                      WHERE cust_email = '%s' AND pass_type = '%s';""" % (email, 'Gold'))
+    num_gold = cursor.fetchall()
+    
+    cursor.execute("""SElECT SUM(num_passes)
+                      FROM novapark.park_pass
+                      WHERE cust_email = '%s' AND pass_type = '%s';""" % (email, 'Platinum'))
+    num_platinum = cursor.fetchall()
+
+    num_silver = num_silver[0][0] if num_silver[0][0] else 0
+    num_gold = num_gold[0][0] if num_gold[0][0] else 0
+    num_platinum = num_platinum[0][0] if num_platinum[0][0] else 0
+
+
+    return num_silver, num_gold, num_platinum
 
 """    
     CREATE TABLE novapark.park_pass (

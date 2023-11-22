@@ -13,18 +13,19 @@ CREATE TABLE novapark.staff (
     supervisor_id SMALLINT,
     hourly_wage NUMERIC(8,2) NOT NULL CHECK(hourly_wage > 7.25),
     dob DATE NOT NULL,
-    job ENUM('manager', 'repair', 'rides') NOT,
+    job ENUM('manager', 'repair', 'rides') NOT NULL,
 );
 
 ALTER TABLE novapark.staff ADD FOREIGN KEY (supervisor_id) REFERENCES novapark.staff(staff_id);
 ALTER TABLE novapark.staff AUTO_INCREMENT=1;
 
-CREATE TABLE novapark.hours_worked { 
+CREATE TABLE novapark.hours_worked (
     staff_id SMALLINT,
     num_hours SMALLINT,
-    cur_date DATE
-    PRIMARY KEY (staff_id, cur_date)
-};
+    cur_date DATE,
+    PRIMARY KEY (staff_id, cur_date),
+    FOREIGN KEY (staff_id) REFERENCES novapark.staff(staff_id)
+);
 
 CREATE TABLE novapark.customer (
     first_name VARCHAR(30),
@@ -47,8 +48,22 @@ CREATE TABLE novapark.park_pass (
     card_num VARCHAR(16),
     cvv VARCHAR(3),
     exp_month VARCHAR(2),
-    exp_year VARCHAR(2)
-    PRIMARY KEY (cust_email, date_bought)
+    exp_year VARCHAR(2),
+    PRIMARY KEY (cust_email, date_bought),
+    FOREIGN KEY (cust_email) REFERENCES novapark.customer(email)
+);
+
+CREATE TABLE novapark.ride_injury (
+    reporter_id SMALLINT,
+    ride_no SMALLINT,
+    email_of_injured VARCHAR(35),
+    injury_date DATETIME,
+    injury_description VARCHAR(100),
+    PRIMARY KEY (injury_date, email_of_injured),
+    FOREIGN KEY (reporter_id) REFERENCES novapark.staff(staff_id),
+    FOREIGN KEY (ride_no) REFERENCES novapark.amusement_ride(ride_no),
+    FOREIGN KEY (email_of_injured) REFERENCES novapark.customer(email)
+
 );
 
 
@@ -60,7 +75,6 @@ CREATE TABLE novapark.amusement_ride (
     PRIMARY KEY (ride_no)
 );
 
-ALTER TABLE novapark.amusement_ride ADD FOREIGN KEY (ride_no) REFERENCES novapark.ride_repair(ride_no);
 
 CREATE TABLE novapark.ride_repair (
 	ride_no SMALLINT,
@@ -73,9 +87,11 @@ CREATE TABLE novapark.ride_repair (
 
 CREATE TABLE novapark.events (
 	event_no SMALLINT PRIMARY KEY AUTO_INCREMENT,
+    manager_id SMALLINT,
     e_name VARCHAR(22) NOT NULL,
     start_date DATE,
-    end_date DATE
+    end_date DATE,
+    FOREIGN KEY (manager_id) REFERENCES novapark.staff(staff_id)
 );
 
 CREATE TABLE novapark.business_day (

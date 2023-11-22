@@ -56,6 +56,29 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
+        elif (urlinfo.path == '/editprofile'):
+            info = self.headers['Cookie'].split("; ")
+            email_pair = [pair for pair in info if pair.startswith('email=')]
+            email = email_pair[0].split('=')[1]
+            print(email)
+            profile_info = load_profile_edit(email)
+            print(profile_info)
+            email = email.replace("%40", "@")
+            
+            first_name = profile_info[0][0]
+            last_name = profile_info[0][1]
+            phone = profile_info[0][2]
+            password = profile_info[0][3]
+            
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            with open('public/skeleton/editprofile.html', 'r') as file:
+                html = file.read()
+
+            updated_html = html.format(first_name = first_name, last_name = last_name, phone_num = phone, password = password)
+            self.wfile.write(updated_html.encode())
         elif (urlinfo.path == '/Entertainment'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -191,6 +214,28 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
 
             with open('public/viewprofile.html', 'r') as file:
+                html = file.read()
+            
+            updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
+            self.wfile.write(updated_html.encode())
+        elif (urlinfo.path == '/viewtickets'):
+            info = self.headers['Cookie'].split("; ")
+            email_pair = [pair for pair in info if pair.startswith('email=')]
+            email = email_pair[0].split('=')[1]
+            print(email)
+            num_silver, num_gold, num_platinum = view_tickets(email)
+            print(num_silver, num_gold, num_platinum)
+
+            formated_info = "<tr> <td> Silver Tickets </td> <td> {} </td> </tr>".format(num_silver)
+            formated_info += "<tr> <td> Gold Tickets </td> <td> {} </td> </tr>".format(num_gold)
+            formated_info += "<tr> <td> Platinum Tickets </td> <td> {} </td> </tr>".format(num_platinum)
+
+            
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            with open('public/skeleton/viewtickets.html', 'r') as file:
                 html = file.read()
             
             updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
