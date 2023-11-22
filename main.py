@@ -69,7 +69,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             last_name = profile_info[0][1]
             phone = profile_info[0][2]
             password = profile_info[0][3]
-            phone = phone[0:3] + "-" + phone[3:6] + "-" + phone[6:]
             
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -105,16 +104,31 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 ...
             self.wfile.write(file)
         elif (urlinfo.path == '/manager_portal'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
+            cookie = SimpleCookie()
+            cookie.load(self.headers['Cookie'])
+            
+            if cookie["authorization_level"].output().split("=")[1] != "M":
+                self.send_response(403)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+                file = b""
+                try:
+                    file = open("public/skeleton/forbidden.html", "rb").read()
+                finally:
+                    ...
+                self.wfile.write(file)
+            else:
+                self.send_response(200)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
 
-            file = b""
-            try:
-                file = open("public/skeleton/manager_portal.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
+                file = b""
+                try:
+                    file = open("public/skeleton/manager_portal.html", "rb").read()
+                finally:
+                    ...
+                self.wfile.write(file)
+                
         elif (urlinfo.path == '/new_event'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -149,15 +163,19 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 ...
             self.wfile.write(file)
         elif (urlinfo.path == '/portal'):
-            account = None
-            try:
-                account = re.split("=", self.headers['Cookie'])
-                print(account)
-            except:
-                print("no cookies given")
-                ...
-                
-            if account:
+            cookie = SimpleCookie()
+            cookie.load(self.headers['Cookie'])
+            if cookie["authorization_level"].output().split("=")[1] != "V":
+                self.send_response(403)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+                file = b""
+                try:
+                    file = open("public/skeleton/forbidden.html", "rb").read()
+                finally:
+                    ...
+                self.wfile.write(file)
+            else:
                 self.send_response(200)
                 self.send_header('Content-type', 'text/html')
                 self.end_headers()
@@ -173,17 +191,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 name_pair = [pair for pair in info if pair.startswith('first_name=')]
                 first_name = name_pair[0].split('=')[1]
                 file = template_file.substitute(name=first_name.capitalize()).encode('utf-8')
-                self.wfile.write(file)
-            else:
-                self.send_response(401)
-                self.send_header('Content-type', 'text/html')
-                self.end_headers()
-                
-                file = b""
-                try:
-                    file = open("public/forbidden.html", "rb").read()
-                finally:
-                    ...
                 self.wfile.write(file)
 
         elif (urlinfo.path == '/pricing'):
@@ -310,16 +317,31 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 ...
             self.wfile.write(file)
         elif (urlinfo.path == '/staff_portal'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
+            cookie = SimpleCookie()
+            cookie.load(self.headers['Cookie'])
+            
+            if cookie["authorization_level"].output().split("=")[1] != "S":
+                self.send_response(403)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+                file = b""
+                try:
+                    file = open("public/skeleton/forbidden.html", "rb").read()
+                finally:
+                    ...
+                self.wfile.write(file)
+            else:
+                self.send_response(200)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
 
-            file = b""
-            try:
-                file = open("public/skeleton/staff_portal.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
+                file = b""
+                try:
+                    file = open("public/skeleton/staff_portal.html", "rb").read()
+                finally:
+                    ...
+                self.wfile.write(file)
+
         elif (urlinfo.path == '/visitor'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
