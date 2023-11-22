@@ -76,8 +76,10 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             with open('public/skeleton/editprofile.html', 'r') as file:
                 html = file.read()
+                
+            template_html = Template(html)
 
-            updated_html = html.format(first_name = first_name, last_name = last_name, phone_num = phone, password = password)
+            updated_html = template_html.substitute(first_name=first_name, last_name=last_name, phone_num = phone, password = password) # .format(first_name = first_name, last_name = last_name, phone_num = phone, password = password)
             self.wfile.write(updated_html.encode())
         elif (urlinfo.path == '/Entertainment'):
             self.send_response(200)
