@@ -14,7 +14,7 @@ CREATE TABLE novapark.staff (
     hourly_wage NUMERIC(8,2) NOT NULL CHECK(hourly_wage > 7.25),
     dob DATE NOT NULL,
     job ENUM('manager', 'repair', 'rides') NOT NULL,
-    FOREIGN KEY (supervisor_id) REFERENCES novapark.staff(staff_id),
+    FOREIGN KEY (supervisor_id) REFERENCES novapark.staff(staff_id)
 );
 
 ALTER TABLE novapark.staff AUTO_INCREMENT = 100;
@@ -34,9 +34,7 @@ CREATE TABLE novapark.customer (
     email VARCHAR(35),
     phone CHAR(10),
     pass_credits SMALLINT DEFAULT 0,
-    PRIMARY KEY (email),
-    FOREIGN KEY (email) REFERENCES novapark.park_pass(cust_email),
-    FOREIGN KEY (email) REFERENCES novapark.ride_injury(email_of_injured)
+    PRIMARY KEY (email)
 );
 
 CREATE TABLE novapark.park_pass (
@@ -52,6 +50,7 @@ CREATE TABLE novapark.park_pass (
     exp_month VARCHAR(2),
     exp_year VARCHAR(2),
     PRIMARY KEY (cust_email, date_bought),
+    FOREIGN KEY (cust_email) REFERENCES novapark.customer(email)
 );
 
 CREATE TABLE novapark.ride_injury (
@@ -61,7 +60,9 @@ CREATE TABLE novapark.ride_injury (
     injury_date DATETIME,
     injury_description VARCHAR(100),
     PRIMARY KEY (injury_date, email_of_injured),
-    FOREIGN KEY (reporter_id) REFERENCES novapark.staff(staff_id)
+    FOREIGN KEY (reporter_id) REFERENCES novapark.staff(staff_id),
+    FOREIGN KEY (email_of_injured) REFERENCES novapark.customer(email),
+    FOREIGN KEY (ride_no) REFERENCES novapark.amusement_ride(ride_no)
 );
 
 
@@ -70,9 +71,7 @@ CREATE TABLE novapark.amusement_ride (
     ride_no SMALLINT AUTO_INCREMENT,
     is_working BOOL DEFAULT TRUE,
     date_of_last_repair DATETIME,
-    PRIMARY KEY (ride_no),
-    FOREIGN KEY (ride_no) REFERENCES novapark.ride_injury(ride_no),
-    FOREIGN KEY (ride_no) REFERENCES novapark.ride_repair(ride_no)
+    PRIMARY KEY (ride_no)
 );
 
 ALTER TABLE novapark.amusement_ride AUTO_INCREMENT = 1;
@@ -83,6 +82,7 @@ CREATE TABLE novapark.ride_repair (
     repair_date DATETIME NOT NULL,
     repair_cost FLOAT NOT NULL,
     PRIMARY KEY (ride_no),
+    FOREIGN KEY (ride_no) REFERENCES novapark.amusement_ride(ride_no)
 );
 
 CREATE TABLE novapark.events (
