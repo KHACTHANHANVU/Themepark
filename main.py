@@ -321,7 +321,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
         elif (urlinfo.path == "/viewrides"):
             ride_info = load_rides()
 
-            fomated_info = ''
+            formated_info = ''
             tuple_number = 0
             for tuple in ride_info:
                 formated_info += "<tr>"
@@ -574,7 +574,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 print("login successful")
                 self.send_response(302)
                 self.send_header('Location', '/portal')
-                
+
                 for morsel in cookie.values():
                     self.send_header("Set-Cookie", morsel.OutputString())
             elif cookie["authorization_level"].value == "M":
