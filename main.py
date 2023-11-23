@@ -254,6 +254,26 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             
             updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
             self.wfile.write(updated_html.encode())
+        elif (urlinfo.path == "/viewevents"):
+            event_info = load_events()
+
+            formated_info = ''
+            for tuple in event_info:
+                formated_info += "<tr>"
+                for value in tuple:
+                    formated_info += f'<td>{value}</td>'
+                formated_info += "<td><a href='/editevent'>Edit</a></td>"
+                formated_info += "<td><a href='/delevent'>Delete</td></tr>"
+                
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            with open('public/skeleton/viewevents.html', 'r') as file:
+                html = file.read()
+            
+            updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
+            self.wfile.write(updated_html.encode())
         elif (urlinfo.path == '/viewstaff'):
             staff_info = load_staff()
 
