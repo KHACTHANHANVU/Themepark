@@ -90,6 +90,13 @@ def load_customers():
     result = cursor.fetchall()
     return result
 
+def load_rides():
+    cursor = mydb.cursor()
+    cursor.execute("""SELECT ride_name, ride_no, is_working, date_of_last_repair
+                      FROM novapark.amusement_ride;""")
+    result = cursor.fetchall()
+    return result
+
 def update_profile(email, first_name, last_name, phone_num, password):
     cursor = mydb.cursor()
     cursor.execute("""UPDATE novapark.customer
@@ -177,3 +184,24 @@ def add_event(sup_id, event_name, event_descrip, start_date, end_date):
     cursor.execute("""INSERT INTO novapark.events (manager_id, e_name, e_descrip, start_date, end_date)
                       VALUES '%s', '%s', '%s', '%s', '%s';""" % (sup_id, event_name, event_descrip, start_date, end_date))
     return "Yay"
+
+def del_staff(staff_id):
+    cursor = mydb.cursor()
+    #cursor.execute(""";""")
+    return "Del"
+
+def del_customer(email):
+    cursor = mydb.cursor()
+    #cursor.execute(""";""")
+    return "Del"
+
+def del_event(event_num):
+    cursor = mydb.cursor()
+    #cursor.execute(""";""")
+    return "Del"
+
+
+def del_ride(ride_no):
+    cursor = mydb.cursor()
+    #cursor.execute(""";""")
+    return "Del"

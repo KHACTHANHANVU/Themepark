@@ -302,7 +302,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             formated_info = ''
             tuple_number = 0
-            for tuple in staff_info:
+            for tuple in cust_info:
                 formated_info += "<tr>"
                 for value in tuple:
                     formated_info += f'<td>{value}</td>'
@@ -317,7 +317,28 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 html = file.read()
             
             updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
-            self.wfile.write(updated_html.encode())            
+            self.wfile.write(updated_html.encode())        
+        elif (urlinfo.path == "/viewrides"):
+            ride_info = load_rides()
+
+            fomated_info = ''
+            tuple_number = 0
+            for tuple in ride_info:
+                formated_info += "<tr>"
+                for value in tuple:
+                    formated_info += f'<td>{value}</td>'
+                formated_info += "<td><a href='/editride?$tuple"+str(tuple_number)+"'>Edit</a></td>"
+                formated_info += "<td><a href='/delride?$tuple"+str(tuple_number)+"'>Delete</a></td></tr>"
+                tuple_number += 1
+            
+            self.send_response(200)
+            self.send_header("Content-type", 'text/html')
+            self.end_headers()
+            with open('public/skeleton/viewrides.html', 'r') as file:
+                html = file.read()
+
+            updated_html = html.replace("<!--InsertTableHere -->", formated_info)
+            self.wfile.write(updated_html.encode())
         elif (urlinfo.path == '/repair%20log'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
