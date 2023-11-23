@@ -16,6 +16,10 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
         This function handles GET requests from the browser.
         
         When the client first logs in, it sends a request to the root. Take the carousel.html and send it right back
+        Link to different pages depending on whether the client is a customer, a staff member, or a manager.
+        
+        Template html files are used for displaying results. Link these template files with the information from the queries
+        to send a "compiled" html file which contains everything the client was looking for.
         """
         urlinfo = parse.urlparse(self.path)
         urlinfo.path
