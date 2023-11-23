@@ -69,6 +69,13 @@ def load_profile_edit(username):
     result = cursor.fetchall()
     return result
 
+def load_staff():
+    cursor = mydb.cursor()
+    cursor.execute("""SELECT first_name, last_name, staff_id, phone_no, addrs, dob, supervisor_id, job, hourly_wage
+                      FROM novapark.staff;""")
+    result = cursor.fetchall()
+    return result
+
 def update_profile(email, first_name, last_name, phone_num, password):
     cursor = mydb.cursor()
     cursor.execute("""UPDATE novapark.customer
