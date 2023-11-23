@@ -144,3 +144,16 @@ def add_staff(sup_id, first_name, last_name, password, phone_num, address, dob, 
                       VALUES '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s';""" 
                       % (first_name, last_name, password, phone_num, address, dob, job, hourly_wage, sup_id))
     return "Yay"
+
+def add_ride(ride_name):
+    cursor = mydb.cursor()
+    cursor.execute("""INSERT INTO novapark.amusement_ride (ride_name, is_working)
+                      VALUES '%s', '%s';""" % (ride_name, 1))
+    return "Yay"
+
+def add_event(sup_id, event_name, event_descrip, start_date, end_date):
+    cursor = mydb.cursor()
+    cursor.execute("""INSERT INTO novapark.events (manager_id, e_name, e_descrip, start_date, end_date)
+                      VALUES '%s', '%s', '%s', '%s', '%s' 
+;""" % (sup_id, event_name, event_descrip, start_date, end_date))
+    return "Yay"

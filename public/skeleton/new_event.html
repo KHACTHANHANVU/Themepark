@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Event</title>
+</head>
+<body>
+  <h1>New Event</h1>
+  <form action="/addevent" method="post">
+    <div>
+      <label for="event_name">Event Name:</label>
+      <input type="text" id="event_name" name="event_name" required>
+    </div>
+    <br><br>
+    <div>
+      <label for="event_descrip">Event Description (Max 200 characters):</label>
+      <textarea id="event_descrip" name="event_descrip" rows="4" cols="50" maxlength="200" required></textarea>
+    </div>
+    <br><br>
+    <div>
+      <label for="start_date">Start Date:</label>
+      <input type="date" id="start_date" name="start_date" required>
+    </div>
+    <br><br>
+    <div>
+      <label for="end_date">End Date:</label>
+      <input type="date" id="end_date" name="end_date" required>
+    </div>
+
+    <div>
+      <input type="submit" value="Submit">
+    </div>
+  </form>
+</body>
+</html>

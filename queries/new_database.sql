@@ -90,10 +90,13 @@ CREATE TABLE novapark.events (
 	event_no SMALLINT PRIMARY KEY AUTO_INCREMENT,
     manager_id SMALLINT,
     e_name VARCHAR(22) NOT NULL,
+    e_descrip VARCHAR(200),
     start_date DATE,
     end_date DATE,
     FOREIGN KEY (manager_id) REFERENCES novapark.staff(staff_id)
 );
+
+ALTER TABLE novapark.events AUTO_INCREMENT = 1;
 
 CREATE TABLE novapark.business_day (
     b_date DATE PRIMARY KEY,

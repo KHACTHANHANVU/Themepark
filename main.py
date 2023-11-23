@@ -147,7 +147,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             file = b""
             try:
-                file = open("public/skeleton/new_rides.html", "rb").read()
+                file = open("public/skeleton/new_ride.html", "rb").read()
             finally:
                 ...
             self.wfile.write(file)
@@ -531,6 +531,38 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             add_staff(sup_id, first_name, last_name, password, phone_num, address, dob, job, hourly_wage)
 
 
+            self.send_response(302)
+            self.send_header("Location", '/manager_portal')
+            self.end_headers()
+        elif (urlinfo.path == '/addride'):
+            data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
+            print(data)
+
+            split_data = re.split("&", data)
+            ride_name = re.split("&", split_data[0])[1]
+            print(ride_name)
+
+            add_ride(ride_name)
+            self.send_response(302)
+            self.send_header("Location", '/manager_portal')
+            self.end_headers()
+        elif (urlinfo.path == "/addevent"):
+            data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
+            print(data)
+
+            split_data = re.split("&", data)
+            event_name = re.split("&", split_data[0])[1]
+            event_descrip = re.split("&", split_data[1])[1]
+            start_date = re.split("&", split_data[2])[1]
+            end_date = re.split("&", split_data[3])[1]
+            print(event_name, event_descrip, start_date, end_date)
+
+            info = self.headers['Cookie'].split("; ")
+            sup_id_pair = [pair for pair in info if pair.startswith('staff_id=')]
+            sup_id = sup_id_pair[0].split('=')[1]
+            print(sup_id)
+
+            add_event(sup_id, event_name, event_descrip, start_date, end_date)
             self.send_response(302)
             self.send_header("Location", '/manager_portal')
             self.end_headers()
