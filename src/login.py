@@ -154,6 +154,5 @@ def add_ride(ride_name):
 def add_event(sup_id, event_name, event_descrip, start_date, end_date):
     cursor = mydb.cursor()
     cursor.execute("""INSERT INTO novapark.events (manager_id, e_name, e_descrip, start_date, end_date)
-                      VALUES '%s', '%s', '%s', '%s', '%s' 
-;""" % (sup_id, event_name, event_descrip, start_date, end_date))
+                      VALUES '%s', '%s', '%s', '%s', '%s';""" % (sup_id, event_name, event_descrip, start_date, end_date))
     return "Yay"
