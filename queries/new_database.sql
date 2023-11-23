@@ -14,10 +14,7 @@ CREATE TABLE novapark.staff (
     hourly_wage NUMERIC(8,2) NOT NULL CHECK(hourly_wage > 7.25),
     dob DATE NOT NULL,
     job ENUM('manager', 'repair', 'rides') NOT NULL,
-    FOREIGN KEY (staff_id) REFERENCES novapark.hours_worked(staff_id),
-    FOREIGN KEY (staff_id) REFERENCES novapark.staff(supervisor_id),
-    FOREIGN KEY (staff_id) REFERENCES novapark.ride_injury(reporter_id),
-    FOREIGN KEY (staff_id) REFERENCES novapark.events(manager_id)
+    FOREIGN KEY (supervisor_id) REFERENCES novapark.staff(staff_id),
 );
 
 ALTER TABLE novapark.staff AUTO_INCREMENT = 100;
@@ -26,7 +23,8 @@ CREATE TABLE novapark.hours_worked (
     staff_id SMALLINT,
     num_hours SMALLINT,
     cur_date DATE,
-    PRIMARY KEY (staff_id, cur_date)
+    PRIMARY KEY (staff_id, cur_date),
+    FOREIGN KEY (staff_id) REFERENCES novapark.staff(staff_id)
 );
 
 CREATE TABLE novapark.customer (
@@ -62,7 +60,8 @@ CREATE TABLE novapark.ride_injury (
     email_of_injured VARCHAR(35),
     injury_date DATETIME,
     injury_description VARCHAR(100),
-    PRIMARY KEY (injury_date, email_of_injured)
+    PRIMARY KEY (injury_date, email_of_injured),
+    FOREIGN KEY (reporter_id) REFERENCES novapark.staff(staff_id)
 );
 
 
@@ -93,6 +92,7 @@ CREATE TABLE novapark.events (
     e_descrip VARCHAR(200),
     start_date DATE,
     end_date DATE,
+    FOREIGN KEY (manager_id) REFERENCES novapark.staff(staff_id)
 );
 
 ALTER TABLE novapark.events AUTO_INCREMENT = 1;
