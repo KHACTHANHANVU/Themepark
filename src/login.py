@@ -94,7 +94,7 @@ def load_mgr_edit(username):
     return result
 
 def load_staff_edit(username):
-    cursor = mydb.crsor()
+    cursor = mydb.cursor()
     cursor.execute("""SELECT first_name, last_name, pswrd, phone_no, addrs
                       FROM novapark.staff
                       WHERE staff_id = %s;""" % (username,) )

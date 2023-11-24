@@ -116,6 +116,33 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             updated_html = template_html.substitute(first_name=first_name, last_name=last_name, phone_num = phone_num, dob = dob, job = job,
                                                     password = password, address = address, sup_id = sup_id, hourly_wage = hourly_wage)
             self.wfile.write(updated_html.encode())
+        elif (urlinfo.path == "/viewprofilestaff"):
+            info = self.headers['Cookie'].split("; ")
+            staff_id_pair = [pair for pair in info if pair.startswith('staff_id=')]
+            staff_id = staff_id_pair[0].split("=")[1]
+            print(staff_id)
+
+            staff_info = load_staff_edit(staff_id)
+            print(staff_info)
+
+            first_name = staff_info[0][0]
+            last_name = staff_info[0][1]
+            password = staff_info[0][2]
+            phone_num = staff_info[0][3]
+            address = staff_info[0][4]
+            phone_num = phone_num[0:3] + "-" + phone_num[3:6] + "-" + phone_num[6:]
+
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            with open('public/skeleton/viewstaffprofile.html', 'r') as file:
+                html = file.read()
+            
+            template_html = Template(html)
+            updated_html = template_html.substitute(first_name=first_name, last_name=last_name, phone_num = phone_num,
+                                                    password = password, address = address, )
+            self.wfile.write(updated_html.encode())            
         elif (urlinfo.path == '/Entertainment'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -506,6 +533,26 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             
             updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
             self.wfile.write(updated_html.encode())
+        elif (urlinfo.path == "/viewstaffprofile"):
+            info = self.headers["Cookie"].split("; ")
+            staff_pair = [pair for pair in info if pair.startswith('staff_id=')]
+            staff_id = staff_pair[0].split('=')[1]
+            staff_info = load_staff_profile(staff_id)
+
+            formated_info = ''
+            for tuple in staff_info:
+                for value in tuple:
+                    formated_info += f'<td>{value}</td>'
+            
+            print(formated_info)
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            with open('public/skeleton/viewstaffprofile.html', 'r') as file:
+                html = file.read()
+            
+            updated_html = html.replace('<!-- InsertTableHere -->', formated_info)            
         elif (urlinfo.path == '/rides_style.css'):
             self.send_response(200)
             self.send_header('Content-type', 'text/css')
