@@ -108,7 +108,7 @@ def load_events():
 
 def load_staff():
     cursor = mydb.cursor()
-    cursor.execute("""SELECT first_name, last_name, staff_id, phone_no, addrs, dob, supervisor_id, job, hourly_wage
+    cursor.execute("""SELECT first_name, last_name, staff_id, pswrd, phone_no, addrs, dob, supervisor_id, job, hourly_wage
                       FROM novapark.staff;""")
     result = cursor.fetchall()
     return result
@@ -216,7 +216,7 @@ def view_tickets(email):
 def add_staff(sup_id, first_name, last_name, password, phone_num, address, dob, job, hourly_wage):
     address = address.replace("+", " ")
     cursor = mydb.cursor()
-    cursor.execute("""INSERT INTO novapark.staff (first_name, last_name, pswrd, phone, addrs, dob, job, hourly_wage, supervisor_id)
+    cursor.execute("""INSERT INTO novapark.staff (first_name, last_name, pswrd, phone_no, addrs, dob, job, hourly_wage, supervisor_id)
                       VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s);""" 
                       % (first_name, last_name, password, phone_num, address, dob, job, hourly_wage, sup_id))
     return "Yay"

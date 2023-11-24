@@ -174,7 +174,31 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 finally:
                     ...
                 self.wfile.write(file)
-                
+        elif (urlinfo.path == "/staff_portal"):
+            cookie = SimpleCookie()
+            cookie.load(self.headers['Cookie'])
+
+            if cookie["authorization_level"].output().split("=")[1] != "S":
+                self.send_response(403)
+                self.send_header("Content-type", "text/html")
+                self.end_headers()
+                file = b""
+                try:
+                    file = open("public/skeleton/forbidden.html", "rb").read()
+                finally:
+                    ...
+                self.wfile.write(file)
+            else:
+                self.send_response(200)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+
+                file = b""
+                try:
+                    file = open("public/skeleton/staff_portal.html", "rb").read()
+                finally:
+                    ...
+                self.wfile.write(file)
         elif (urlinfo.path == '/new_event'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -602,7 +626,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             elif cookie["authorization_level"].value == "S":
                 print("login successful")
                 self.send_response(302)
-                self.send_header('Location', '/portal')
+                self.send_header('Location', '/staff_portal')
 
                 for morsel in cookie.values():
                     self.send_header("Set-Cookie", morsel.OutputString())
