@@ -1,11 +1,131 @@
-<html>
-    <head>
-        <title>
-            Staff Portal
-        </title>
-    </head>
-    <body>
-        <a href="/repair%20log">Log reapir</a>
-        <a href="/loghours">Log Hours</a>
-    </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Add Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Staff Dashvoard </title>
+
+    <style>
+        body {
+            padding-top: 0px;
+        }
+
+        .navbar {
+            background-color: #e5e9ed; 
+        }
+
+        .navbar-brand {
+            color:#010101; 
+            font-weight: bold; 
+        }
+
+        .navbar-toggler-icon {
+            background-color: #0b0606; 
+        }
+
+        .container-fluid {
+            margin-top: 100px;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-picture {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            margin-bottom:0px;
+            margin-top: 85px;
+        }
+
+        .nav-link i {
+            margin-right: 20px; 
+
+        }
+
+        .nav-link {
+            color: #fefefe; 
+        }
+
+        .nav-item {
+            margin-top: 0px;
+            margin-bottom: 10px; 
+        }
+        .btn-logout {
+            margin-bottom: 50px; 
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-md navbar-light fixed-top">
+        <a class="navbar-brand" href="#">NovaparkCorporate</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+     <!-- Sidebar -->
+    <div class="container-fluid">
+        <div class="row">
+           
+            <nav class="col-md-2 d-none d-md-block bg-dark sidebar">
+                <div class="sidebar-sticky">
+                    
+                    <div class="text-center">
+                        <img src="https://i.postimg.cc/52StNDyF/Leonardo-Diffusion-XL-logo-for-an-attraction-park-called-nova-2.jpg" alt="Profile Picture" class="profile-picture">
+                    </div>
+                    <p class="text-center" style="color: #fefefe;">Jane Doe</p>
+
+                    
+                    <ul class="nav flex-column">
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/repair%20log">
+                                <i class="fa-thin fa-hammer"></i> Log repair
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/loghours">
+                                <i class="fa-thin fa-user-clock"></i> Log Hours
+                            </a>
+                        </li>
+                    </ul>
+
+                    <button class="btn btn-danger">Logout</button>
+                </div>
+            </nav>
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <h2 class="text-center">Welcome to your portal</h2>
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
 </html>
