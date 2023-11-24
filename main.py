@@ -107,6 +107,17 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
+        elif (urlinfo.path == '/loghours'):
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("public/loghours.html", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
         elif (urlinfo.path == '/manager_portal'):
             cookie = SimpleCookie()
             cookie.load(self.headers['Cookie'])
@@ -208,6 +219,87 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
+        elif (urlinfo.path == '/reservation'):
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("public/reservation.html", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
+        elif (urlinfo.path == '/rides_repair'):
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("public/repair log.html", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
+        elif (urlinfo.path == '/rides_report'):
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("public/rides.html", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
+        elif (urlinfo.path == '/sales_report'):
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("public/sales_report.html", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
+        elif (urlinfo.path == '/sales'):
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("public/sales.html", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
+        elif (urlinfo.path == '/staff_portal'):
+            cookie = SimpleCookie()
+            cookie.load(self.headers['Cookie'])
+            
+            if cookie["authorization_level"].output().split("=")[1] != "S":
+                self.send_response(403)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+                file = b""
+                try:
+                    file = open("public/skeleton/forbidden.html", "rb").read()
+                finally:
+                    ...
+                self.wfile.write(file)
+            else:
+                self.send_response(200)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+
+                file = b""
+                try:
+                    file = open("public/skeleton/staff_portal.html", "rb").read()
+                finally:
+                    ...
+                self.wfile.write(file)
+                
         elif (urlinfo.path == '/viewprofile'):
             info = self.headers['Cookie'].split("; ")
             email_pair = [pair for pair in info if pair.startswith('email=')]
@@ -339,109 +431,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             updated_html = html.replace("<!--InsertTableHere -->", formated_info)
             self.wfile.write(updated_html.encode())
-        elif (urlinfo.path == '/repair%20log'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/skeleton/repair log.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
-        elif (urlinfo.path == '/reservation'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/reservation.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
-        elif (urlinfo.path == '/rides_repair'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/repair log.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
-        elif (urlinfo.path == '/rides_report'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/rides.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
-        elif (urlinfo.path == '/sales_report'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/sales_report.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
-        elif (urlinfo.path == '/sales'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/sales.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
-        elif (urlinfo.path == '/staff_portal'):
-            cookie = SimpleCookie()
-            cookie.load(self.headers['Cookie'])
-            
-            if cookie["authorization_level"].output().split("=")[1] != "S":
-                self.send_response(403)
-                self.send_header('Content-type', 'text/html')
-                self.end_headers()
-                file = b""
-                try:
-                    file = open("public/skeleton/forbidden.html", "rb").read()
-                finally:
-                    ...
-                self.wfile.write(file)
-            else:
-                self.send_response(200)
-                self.send_header('Content-type', 'text/html')
-                self.end_headers()
-
-                file = b""
-                try:
-                    file = open("public/skeleton/staff_portal.html", "rb").read()
-                finally:
-                    ...
-                self.wfile.write(file)
-
-        elif (urlinfo.path == '/visitor'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/visitor.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
         elif (urlinfo.path == '/rides_style.css'):
             self.send_response(200)
             self.send_header('Content-type', 'text/css')
