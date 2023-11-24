@@ -464,17 +464,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
-        elif (urlinfo.path == '/visitor.css'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/css')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/visitor.css", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
         elif (urlinfo.path == '/src/connect.js'):
             self.send_response(200)
             self.send_header('Content-type', 'application/javascript')
@@ -645,6 +634,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header("Location", '/manager_portal')
             self.end_headers()
         elif (urlinfo.path == '/signup'):
+            self.send_response(302)
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8") 
             print(data)
             
@@ -661,7 +651,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             for morsel in cookie.values():
                 self.send_header("Set-Cookie", morsel.OutputString())
             
-            self.send_response(302)
             self.send_header('Location', '/portal')
             self.end_headers()
         elif (urlinfo.path == "/ticketpurchase"):
