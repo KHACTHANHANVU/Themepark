@@ -28,7 +28,7 @@
   </script>
 </head>
 <body>
-  <h1>Edit Staff</h1>
+  <h1>Edit Staff #$staff_id</h1>
   <form action="/updatestaff" method="post">
     <label for="first_name">First Name:</label>
     <input type="text" id="first_name" name="first_name" value="$first_name" required><br><br>
@@ -36,14 +36,29 @@
     <label for="last_name">Last Name:</label>
     <input type="text" id="last_name" name="last_name" value="$last_name" required><br><br>
 
-    <label for="phone_num">Phone Number:</label>
-    <input type="tel" id="phone_num" name="phone_num" value ="$phone_num" oninput="formatPhoneNumber(this)" required><br><br>
+    <label for="sup_id">Supervisor ID</label>
+    <input type="text" id="sup_id" name="sup_id" value="$sup_id" require><br><br>
 
-    <label for="address">Address:</label>
-    <textarea type="text" id="address" name="address" value="$address" rows="4" cols="50" maxlength="200" required></textarea> <br><br>
+    <select id="job" name="job">
+        <option value="manager">Manager</option>
+        <option value="repair">Repair</option>
+        <option value="rides">Rides</option>
+      </select><br><br>
+      <!--Automatically select the staff's current job in the dropdown-->
+      <script>
+          var cur_job = "$job";
+          var dropdown = document.getElementById("myDropdown");
+        
+          for (var i = 0; i < dropdown.options.length; i++) {
+            if (dropdown.options[i].value === cur_job) {
+              dropdown.selectedIndex = i;
+              break;
+            }
+          }
+        </script>  
 
-    <label for="password">Password:</label>
-    <input type="text" id="password" name="password" value="$password" required><br><br>
+    <label for="hourly_wage">Hourly Wage:</label><br>
+    <input id="hourly_wage" name="hourly_wage" value="$hourly_wage"><br><br>
 
     <input type="submit" value="Submit">
   </form>

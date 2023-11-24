@@ -142,7 +142,28 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             template_html = Template(html)
             updated_html = template_html.substitute(first_name=first_name, last_name=last_name, phone_num = phone_num,
                                                     password = password, address = address, )
-            self.wfile.write(updated_html.encode())            
+            self.wfile.write(updated_html.encode()) 
+        elif (urlinfo.path == '/editstaff'):
+            staff_info = load_mgr_edit_staff(urlinfo.query)
+            print(staff_info[0])
+            
+            first_name = staff_info[0][0]
+            last_name = staff_info[0][1]
+            sup_id = staff_info[0][2]
+            hourly_wage = staff_info[0][3]
+            job = staff_info[0][4]
+            
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            
+            with open('public/skeleton/editstaff.html', 'r') as file:
+                html = file.read()
+            
+            template_html = Template(html)
+            updated_html = template_html.substitute(first_name=first_name, last_name=last_name, job = job, staff_id=urlinfo.query,
+                                                    sup_id = sup_id, hourly_wage = hourly_wage)
+            self.wfile.write(updated_html.encode())
         elif (urlinfo.path == '/Entertainment'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -433,9 +454,10 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             formated_info = ''
             tuple_number = 0
-            for tuple in event_info:
+            for event_tuple in event_info:
                 formated_info += "<tr>"
-                for value in tuple:
+                print(event_tuple)
+                for value in event_tuple:
                     formated_info += f'<td>{value}</td>'
                 formated_info += "<td><a href='/editevent?$tuple"+str(tuple_number)+"'>Edit</a></td>"
                 formated_info += "<td><a href='/delevent?$tuple"+str(tuple_number)+"'>Delete</a></td></tr>"
@@ -454,15 +476,13 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             staff_info = load_staff()
                 
             formated_info = ''
-            tuple_number = 0
-            for tuple in staff_info:
+            for staff_tuple in staff_info:
                 formated_info += "<tr>"
-                for value in tuple:
+                for value in staff_tuple:
                     formated_info += f'<td>{value}</td>'
-                formated_info += "<td><a href='/editstaff?$tuple"+str(tuple_number)+"'>Edit</a></td>"
-                formated_info += "<td><a href='/delstaff?$tuple"+str(tuple_number)+"'>Delete</a></td></tr>"
-                tuple_number += 1
-
+                formated_info += "<td><a href='/editstaff?"+str(staff_tuple[2])+"'>Edit</a></td>"
+                formated_info += "<td><a href='/delstaff?"+str(staff_tuple[2])+"'>Delete</a></td></tr>"
+                
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
