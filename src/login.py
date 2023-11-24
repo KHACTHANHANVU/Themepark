@@ -94,10 +94,12 @@ def load_mgr_edit(username):
     return result
 
 def load_staff_edit(username):
-    cursor = mydb.crsor()
-    cursor.execute("""SELECT first_name, last_name, pswrd, phone_no, addrs
+    cursor = mydb.cursor()
+    cursor.execute("""SELECT first_name, last_name, supervisor_id, hourly_wage, job
                       FROM novapark.staff
                       WHERE staff_id = %s;""" % (username,) )
+    result = cursor.fetchall()
+    return result
 
 def load_events():
     cursor = mydb.cursor()
