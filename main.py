@@ -85,6 +85,37 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             updated_html = template_html.substitute(first_name=first_name, last_name=last_name, phone_num = phone, password = password) # .format(first_name = first_name, last_name = last_name, phone_num = phone, password = password)
             self.wfile.write(updated_html.encode())
+        elif (urlinfo.path == "/editprofilemgr"):
+            info = self.headers['Cookie'].split("; ")
+            staff_id_pair = [pair for pair in info if pair.startswith('staff_id=')]
+            staff_id = staff_id_pair[0].split("=")[1]
+            print(staff_id)
+
+            staff_info = load_mgr_edit(staff_id)
+            print(staff_info)
+
+            first_name = staff_info[0][0]
+            last_name = staff_info[0][1]
+            password = staff_info[0][2]
+            phone_num = staff_info[0][3]
+            address = staff_info[0][4]
+            sup_id = staff_info[0][5]
+            hourly_wage = staff_info[0][6]
+            dob = staff_info[0][7]
+            job = staff_info[0][8]
+            phone_num = phone_num[0:3] + "-" + phone_num[3:6] + "-" + phone_num[6:]
+
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            with open('public/skeleton/editprofilemgr.html', 'r') as file:
+                html = file.read()
+            
+            template_html = Template(html)
+            updated_html = template_html.substitute(first_name=first_name, last_name=last_name, phone_num = phone_num, dob = dob, job = job,
+                                                    password = password, address = address, sup_id = sup_id, hourly_wage = hourly_wage)
+            self.wfile.write(updated_html.encode())
         elif (urlinfo.path == '/Entertainment'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -430,7 +461,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             with open('public/skeleton/viewrides.html', 'r') as file:
                 html = file.read()
-        elif (urlinfo.path == "/viewstaffprofile"):
+        elif (urlinfo.path == "/viewmgrprofile"):
             info = self.headers['Cookie'].split("; ")
             staff_pair = [pair for pair in info if pair.startswith('staff_id=')]
             staff_id = staff_pair[0].split('=')[1]
@@ -446,7 +477,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header('Content-type', 'text/html')
             self.end_headers()
 
-            with open('public/skeleton/viewstaffprofile.html', 'r') as file:
+            with open('public/skeleton/viewmgrprofile.html', 'r') as file:
                 html = file.read()
             
             updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
@@ -664,6 +695,8 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             phone = re.split("=", split_data[2])[1]
             email = re.split("=", split_data[3])[1]
             pswrd = re.split("=", split_data[4])[1]
+
+            phone = phone.replace("-", "")
             
             cookie = sign_up(fname, lname, phone, email, pswrd)
             
@@ -715,6 +748,32 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             update_profile(email, first_name, last_name, phone_num, password)
             self.send_response(302)
             self.send_header('Location', '/profile')
+            self.end_headers()
+        elif (urlinfo.path == "/updatemgr"):
+            data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
+            
+            
+            split_data = re.split("&", data)
+            first_name = re.split("=", split_data[0])[1]
+            last_name = re.split("=", split_data[1])[1]
+            phone_num = re.split("=", split_data[2])[1]
+            address = re.split("=", split_data[3])[1]
+            sup_id = re.split("=", split_data[4])[1]
+            dob = re.split("=", split_data[5])[1]
+            job = re.split("=", split_data[6])[1]
+            hourly_wage = re.split("=", split_data[7])[1]
+            password = re.split("=", split_data[8])[1]
+
+            address = address.replace("+", " ")
+            phone_num = phone_num.replace("-", "")
+
+            info = self.headers['Cookie'].split("; ")
+            staff_id_pair = [pair for pair in info if pair.startswith('staff_id=')]
+            staff_id = staff_id_pair[0].split('=')[1]     
+
+            update_mgr_level(staff_id, first_name, last_name, phone_num, address, sup_id, password, hourly_wage, dob, job)
+            self.send_response(302)
+            self.send_header('Location', '/viewmgrprofile')
             self.end_headers()
 
 

@@ -79,11 +79,25 @@ def load_profile_edit(username):
 def load_staff_profile(username):
     print(username)
     cursor = mydb.cursor()
-    cursor.execute("""SELECT first_name, last_name, staff_id, pswrd, phone_no, addrs, supervisor_id, hourly_wage, dob, job
+    cursor.execute("""SELECT first_name, last_name, staff_id, pswrd, phone_no, addrs, supervisor_id, dob, hourly_wage, job
                       FROM novapark.staff
                       WHERE staff_id = %s;""" % (username,))
     result = cursor.fetchall()
     return result
+
+def load_mgr_edit(username):
+    cursor = mydb.cursor()
+    cursor.execute("""SELECT first_name, last_name, pswrd, phone_no, addrs, supervisor_id, hourly_wage, dob, job                      
+                      FROM novapark.staff
+                      WHERE staff_id = %s;""" % (username,))
+    result = cursor.fetchall()
+    return result
+
+def load_staff_edit(username):
+    cursor = mydb.crsor()
+    cursor.execute("""SELECT first_name, last_name, pswrd, phone_no, addrs
+                      FROM novapark.staff
+                      WHERE staff_id = %s;""" % (username,) )
 
 def load_events():
     cursor = mydb.cursor()
@@ -119,6 +133,23 @@ def update_profile(email, first_name, last_name, phone_num, password):
                       SET first_name = '%s', last_name = '%s', phone = '%s',
                       pswrd = '%s'
                       WHERE email = '%s';""" % (first_name, last_name, phone_num, password, email))
+    mydb.commit()
+
+def update_mgr_level(staff_id, first_name, last_name, phone_num, address, sup_id, password, hourly_wage, dob, job):
+    cursor = mydb.cursor()
+    print(staff_id, first_name, last_name, phone_num, address, password, hourly_wage, dob, job)
+
+    cursor.execute("""UPDATE novapark.staff
+                      SET first_name = '%s', last_name = '%s', pswrd = '%s', phone_no = '%s', addrs = '%s', supervisor_id = %s, 
+                      hourly_wage = %s, dob = '%s', job = '%s'
+                      WHERE staff_id = '%s';""" % (first_name, last_name, password, phone_num, address, sup_id, hourly_wage, dob, job, staff_id))
+    mydb.commit()
+
+def update_staff_level(staff_id, first_name, last_name, phone_num, address, password):
+    cursor = mydb.cursor()
+    cursor.execute("""UPDATE novapark.staff
+                      SET first_name = '%s', last_name = '%s', phone_no = '%s', addrs = '%s', pswrd = '%s'
+                      WHERE staff_id = '%s';""" % (first_name, last_name, phone_num, address, password, staff_id))
     mydb.commit()
 
 def ride_report(start_date, end_date):
@@ -186,20 +217,20 @@ def add_staff(sup_id, first_name, last_name, password, phone_num, address, dob, 
     address = address.replace("+", " ")
     cursor = mydb.cursor()
     cursor.execute("""INSERT INTO novapark.staff (first_name, last_name, pswrd, phone, addrs, dob, job, hourly_wage, supervisor_id)
-                      VALUES '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s';""" 
+                      VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s);""" 
                       % (first_name, last_name, password, phone_num, address, dob, job, hourly_wage, sup_id))
     return "Yay"
 
 def add_ride(ride_name):
     cursor = mydb.cursor()
     cursor.execute("""INSERT INTO novapark.amusement_ride (ride_name, is_working)
-                      VALUES ('%s', '%s');""" % (ride_name, 1))
+                      VALUES ('%s', %s);""" % (ride_name, 1))
     return "Yay"
 
 def add_event(sup_id, event_name, event_descrip, start_date, end_date):
     cursor = mydb.cursor()
     cursor.execute("""INSERT INTO novapark.events (manager_id, e_name, e_descrip, start_date, end_date)
-                      VALUES '%s', '%s', '%s', '%s', '%s';""" % (sup_id, event_name, event_descrip, start_date, end_date))
+                      VALUES (%s, '%s', '%s', '%s', '%s');""" % (sup_id, event_name, event_descrip, start_date, end_date))
     return "Yay"
 
 def del_staff(staff_id):
