@@ -305,6 +305,8 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             for tuple in cust_info:
                 formated_info += "<tr>"
                 for value in tuple:
+                    if type(value) == str:
+                        value = value.replace("%40", "@")
                     formated_info += f'<td>{value}</td>'
                 formated_info += "<td><a href='/editcust?$tuple"+str(tuple_number)+"'>Edit</a></td>"
                 formated_info += "<td><a href='/delcust?$tuple"+str(tuple_number)+"'>Delete</a></td></tr>"
@@ -336,8 +338,26 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             with open('public/skeleton/viewrides.html', 'r') as file:
                 html = file.read()
+        elif (urlinfo.path == "/viewstaffprofile"):
+            info = self.headers['Cookie'].split("; ")
+            staff_pair = [pair for pair in info if pair.startswith('staff_id=')]
+            staff_id = staff_pair[0].split('=')[1]
+            staff_info = load_staff_profile(staff_id)
 
-            updated_html = html.replace("<!--InsertTableHere -->", formated_info)
+            formated_info = ''
+            for tuple in staff_info:
+                for value in tuple:
+                    formated_info += f'<td>{value}</td>'
+            
+            print(formated_info)
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            with open('public/skeleton/viewstaffprofile.html', 'r') as file:
+                html = file.read()
+            
+            updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
             self.wfile.write(updated_html.encode())
         elif (urlinfo.path == '/repair%20log'):
             self.send_response(200)

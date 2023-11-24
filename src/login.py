@@ -76,6 +76,15 @@ def load_profile_edit(username):
     result = cursor.fetchall()
     return result
 
+def load_staff_profile(username):
+    print(username)
+    cursor = mydb.cursor()
+    cursor.execute("""SELECT first_name, last_name, staff_id, pswrd, phone_no, addrs, supervisor_id, hourly_wage, dob, job
+                      FROM novapark.staff
+                      WHERE staff_id = %s;""" % (username,))
+    result = cursor.fetchall()
+    return result
+
 def load_events():
     cursor = mydb.cursor()
     cursor.execute("""SELECT e_name, e_descrip, manager_id, start_date, end_date
@@ -174,16 +183,17 @@ def view_tickets(email):
     return num_silver, num_gold, num_platinum
 
 def add_staff(sup_id, first_name, last_name, password, phone_num, address, dob, job, hourly_wage):
+    address = address.replace("+", " ")
     cursor = mydb.cursor()
-    cursor.execute("""INSERT INTO novapark.staff (first_name, last_name, pswrd, phone, addrs, dob, job, hourly_wage, supervisor_id)
-                      VALUES '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s';""" 
+    cursor.execute("""INSERT INTO novapark.staff (first_name, last_name, pswrd, phone_no, addrs, dob, job, hourly_wage, supervisor_id)
+                      VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s);""" 
                       % (first_name, last_name, password, phone_num, address, dob, job, hourly_wage, sup_id))
     return "Yay"
 
 def add_ride(ride_name):
     cursor = mydb.cursor()
     cursor.execute("""INSERT INTO novapark.amusement_ride (ride_name, is_working)
-                      VALUES '%s', '%s';""" % (ride_name, 1))
+                      VALUES ('%s', '%s');""" % (ride_name, 1))
     return "Yay"
 
 def add_event(sup_id, event_name, event_descrip, start_date, end_date):
