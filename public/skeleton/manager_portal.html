@@ -1,18 +1,206 @@
-<html>
-    <head>
-        <title>
-            Manager Portal
-        </title>
-    </head>
-    <body>
-        <a href="/rides_report">Rides Report</a>
-        <a href="/sales_report">Sales Report</a>
-        <a href="/new_event">New Event</a>
-        <a href="/new_rides">New Rides</a>
-        <a href="/new_staff">New Staff</a>
-        <a href="/viewrides">Rides</a>
-        <a href="/viewstaff">Staff</a>
-        <a href="/viewevents">Events</a>
-        <a href="/viewcustomers">Customers</a>
-    </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Add Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Manager portal</title>
+
+    <style>
+        body {
+            padding-top: 0px;
+        }
+
+        .navbar {
+            background-color: #e5e9ed; 
+        }
+
+        .navbar-brand {
+            color:#010101; 
+            font-weight: bold; 
+        }
+
+        .navbar-toggler-icon {
+            background-color: #0b0606; 
+        }
+
+        .container-fluid {
+            margin-top: 100px;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-picture {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            margin-bottom:0px;
+            margin-top: 85px;
+        }
+
+        .nav-link i {
+            margin-right: 20px; 
+        }
+
+        .nav-link {
+            color: #fefefe; 
+        }
+
+        .nav-item {
+            margin-top: 0px;
+            margin-bottom: 10px; 
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-md navbar-light fixed-top">
+        <a class="navbar-brand" href="#">NovaparkAdmin</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+     <!-- Sidebar -->
+    <div class="container-fluid">
+        <div class="row">
+           
+            <nav class="col-md-2 d-none d-md-block bg-dark sidebar">
+                <div class="sidebar-sticky">
+                    
+                    <div class="text-center">
+                        <img src="https://i.postimg.cc/52StNDyF/Leonardo-Diffusion-XL-logo-for-an-attraction-park-called-nova-2.jpg" alt="Profile Picture" class="profile-picture">
+                    </div>
+                    <p class="text-center" style="color: #fefefe;">Jane Doe</p>
+
+                    
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">
+                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-user"></i> Profile
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="collapse" href="#reportSubmenu">
+                                <i class="fas fa-chart-bar"></i> Report
+                            </a>
+                            <div class="collapse" id="reportSubmenu">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/sales_report">
+                                            <i class="fas fa-chart-line"></i> Sales Report
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/rides_report">
+                                            <i class="fas fa-car"></i> Rides Report
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">
+                                            <i class="fas fa-business-time"></i> Third Report
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="collapse" href="#staffSubmenu">
+                                <i class="fas fa-users"></i> Staff
+                                
+                            </a>
+                            <div class="collapse" id="staffSubmenu">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/new_staff">
+                                            <i class="fas fa-users"></i> New staff
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/viewstaff">
+                                            <i class="fas fa-users"></i> Update staff
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="collapse" href="#RideEventSubmenu">
+                                <i class="fas fa-building"></i> Tasks
+                            </a>
+                                
+                                <div class="collapse" id="RideEventSubmenu">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/new_rides">
+                                                <i class="fas fa-users"></i> New Rides
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/viewrides">
+                                                <i class="fas fa-users"></i> Rides
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/new_event">
+                                                <i class="fas fa-users"></i> New Event
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/viewevents">
+                                                <i class="fas fa-users"></i> Event
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                    
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/viewcustomers">
+                                <i class="fas fa-users"></i> Customers
+                            </a>
+                        </li>
+                    </ul>
+
+                    <button class="btn btn-danger">Logout</button>
+                </div>
+            </nav>
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <h2>Admin Dashboard</h2>
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
 </html>
