@@ -43,13 +43,19 @@ def check_login_cred(username, password):
     
 def sign_up(first_name, last_name, phone_num, username, password):
     cursor = mydb.cursor()
-    cursor.execute("""INSERT INTO novapark.customer (first_name, last_name, pswrd, email, phone, pass_credits, num_passes)
-                      VALUES ('%s', '%s', '%s', '%s', '%s', 0, 0);""" % (first_name, last_name, password, username, phone_num))
+    cursor.execute("""INSERT INTO novapark.customer (first_name, last_name, pswrd, email, phone, pass_credits)
+                      VALUES ('%s', '%s', '%s', '%s', '%s', 0);""" % (first_name, last_name, password, username, phone_num))
     mydb.commit()
     cursor.execute("""SELECT * FROM novapark.customer;""")
     result = cursor.fetchall()
     print(result)
-    return "yay"
+    
+    cookie = SimpleCookie()
+    cookie["first_name"] = first_name
+    cookie["email"] = username
+    cookie["authorization_level"] = "V"
+    
+    return cookie
 
 def load_profile(username):
     print(username)
@@ -58,6 +64,7 @@ def load_profile(username):
                       FROM novapark.customer  
                       WHERE email = '%s';""" % (username,))
     result = cursor.fetchall()
+    
     return result
 
 def load_profile_edit(username):

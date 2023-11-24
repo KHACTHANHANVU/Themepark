@@ -666,7 +666,11 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             email = re.split("=", split_data[3])[1]
             pswrd = re.split("=", split_data[4])[1]
             
-            cookies = sign_up(fname, lname, phone, email, pswrd)
+            cookie = sign_up(fname, lname, phone, email, pswrd)
+            
+            
+            for morsel in cookie.values():
+                self.send_header("Set-Cookie", morsel.OutputString())
             
             self.send_response(302)
             self.send_header('Location', '/portal')
