@@ -188,6 +188,40 @@ def update_staff_level(staff_id, first_name, last_name, phone_num, address, pass
                       WHERE staff_id = '%s';""" % (first_name, last_name, phone_num, address, password, staff_id))
     mydb.commit()
 
+def update_hours_worked(staff_id, hours_worked):
+    cursor = mydb.cursor()
+    cursor.execute("""UPDATE novapark.hours_worked
+                      SET num_hours = %s
+                      WHERE staff_id = %s;""" % (hours_worked, staff_id))
+    mydb.commit()
+
+def update_repair_log(ride_no, date_of_issue, repair_date, repair_cost):
+    cursor = mydb.cursor()
+    cursor.execute("""UPDATE novapark.repair_log
+                      SET repair_date = '%s', repair_cost = %s
+                      WHERE ride_no = %s AND date_of_issue = '%s';""" % (repair_date, repair_cost, ride_no, date_of_issue))
+    mydb.commit()
+
+def update_ride(ride_no, ride_name, is_working, date_of_last_repair):
+    cursor = mydb.cursor()
+    cursor.execute("""UPDATE novapark.amusement_ride
+                      SET ride_name = '%s', is_working = %s, date_of_last_repair = '%s'
+                      WHERE ride_no = %s;""" % (ride_name, is_working, date_of_last_repair, ride_no))
+    mydb.commit()
+
+def update_event(event_num, event_name, event_descrip, sup_id, start_date, end_date):
+    cursor = mydb.cursor()
+    cursor.execute("""UPDATE novapark.events
+                      SET e_name = '%s', e_descrip = '%s', manager_id = %s, start_date = '%s', end_date = '%s'
+                      WHERE event_no = %s;""" % (event_name, event_descrip, sup_id, start_date, end_date))
+    mydb.commit()
+
+def update_bday(date, revenue, expenses):
+    cursor = mydb.cursor()
+    cursor.execute("""UPDATE novapark.business_day
+                      SET revenue = %s, expenses = %s
+                      WHERE b_date = '%s';""" % (revenue, expenses, date))
+
 def rides_report(start_date, end_date):
     cursor = mydb.cursor()
     cursor.execute("""SELECT ar.ride_name, ar.ride_no, ar.date_of_last_repair, 
@@ -348,35 +382,41 @@ def add_bday(date, revenue, expenses):
 
 def del_staff(staff_id):
     cursor = mydb.cursor()
-    #cursor.execute("""DELETE FROM novapark.staff
-#                       WHERE staff_id = %s;""" % (staff_id,))
+    cursor.execute("""DELETE FROM novapark.staff
+                      WHERE staff_id = %s;""" % (staff_id,))
+    mydb.commit()
     return "Del"
 
 def del_customer(email):
     cursor = mydb.cursor()
-    #cursor.execute("""DELETE FROM novpark.customer
-    #                  WHERE email = '%s';""" % (email,))
+    cursor.execute("""DELETE FROM novpark.customer
+                      WHERE email = '%s';""" % (email,))
+    mydb.commit()
     return "Del"
 
 def del_event(event_num):
     cursor = mydb.cursor()
-    #cursor.execute("""DELETE FROM novapark.events
-    #                  WHERE event_no = %s;""" % (event_num,))
+    cursor.execute("""DELETE FROM novapark.events
+                      WHERE event_no = %s;""" % (event_num,))
+    mydb.commit()
     return "Del"
 
 
 def del_ride(ride_no):
     cursor = mydb.cursor()
-    #cursor.execute("""DELETE FROM novapark.amusement_ride
-    #                  WHERE ride_no = %s;""" % (ride_no,))
+    cursor.execute("""DELETE FROM novapark.amusement_ride
+                      WHERE ride_no = %s;""" % (ride_no,))
+    mydb.commit()
     return "Del"
 
 def del_bday(date):
     cursor = mydb.cursor()
-    #cursor.execute("""DELETE FROM novapark.business_day
-    #                  WHERE b_date = '%s';""" % (date,))
+    cursor.execute("""DELETE FROM novapark.business_day
+                      WHERE b_date = '%s';""" % (date,))
+    mydb.commit()
 
 def del_hours(date):
     cursor = mydb.cursor()
-    #cursor.execute("""DELETE FROM novapark.hours_worked
-    #                  WHERE cur_date = '%s';""" % (date,))
+    cursor.execute("""DELETE FROM novapark.hours_worked
+                       WHERE cur_date = '%s';""" % (date,))
+    mydb.commit()
