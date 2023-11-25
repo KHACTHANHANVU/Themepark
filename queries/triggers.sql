@@ -29,7 +29,16 @@ DELIMITER ;
 
 
 
-#find the number of tickets bought in the last 30 days if > 10 then give pass credit?
-#for every purchase over 10 tickets in the past month you gian pass credits?
-# small number that gets added ON
-# larger number that is reset (10 number of tickets since this date)
+
+# If ride is marked for repair, update last repair date and marks it as not working
+DELIMITER //
+
+CREATE TRIGGER trigger_on_ride_repiar_log
+    BEFORE INSERT ON novapark.ride_repair
+    FOR EACH ROW
+BEGIN
+    UPDATE novapark.amusement_ride AS ar
+    SET ar.date_of_last_repair = DATE(NEW.repair_date), ar.is_working = 0
+    WHERE new.ride_no = ar.ride_no;
+END //
+DELIMITER ;
