@@ -6,11 +6,11 @@ BEGIN
     DECLARE last_pass_credit_date DATE;
 	DECLARE total_passes SMALLINT;
 
-    SELECT last_credit_date INTO last_pass_credit_date
+    SELECT last_pass_credit_date INTO last_pass_credit_date
     FROM novapark.customer AS cs
     WHERE NEW.cust_email = cs.email;
 
-    IF DATEDIFF(NEW.date_bought, last_pass_credit_date) >= 30 THEN
+    IF (DATEDIFF(NEW.date_bought, last_pass_credit_date) >= 30 OR last_pass_credit_date = NULL) THEN
 
         SELECT SUM(park.num_passes) INTO total_passes
         FROM novapark.park_pass AS park
