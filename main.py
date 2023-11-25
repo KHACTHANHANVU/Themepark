@@ -543,6 +543,25 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             
             updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
             self.wfile.write(updated_html.encode())
+        elif (urlinfo.path == '/vieweventsstaff'):
+            event_info = load_events()
+
+            formated_info = ''
+            for event_tuple in event_info:
+                formated_info += "<tr>"
+                for value in event_tuple:
+                    formated_info += f'<td>{value}</td>'
+                formated_info += '</tr>'
+            
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            with open('public/skeleton/vieweventsstaff.html', 'r') as file:
+                html = file.read()
+
+            updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
+            self.wfile.write(updated_html.encode())
         elif (urlinfo.path == '/viewstaff'):
             staff_info = load_staff()
                 
@@ -835,6 +854,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             event_descrip = re.split("&", split_data[1])[1]
             start_date = re.split("&", split_data[2])[1]
             end_date = re.split("&", split_data[3])[1]
+            event_descrip = event_descrip.replace("+", " ")
             print(event_name, event_descrip, start_date, end_date)
 
             info = self.headers['Cookie'].split("; ")
