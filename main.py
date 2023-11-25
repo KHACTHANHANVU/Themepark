@@ -893,6 +893,8 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             park_rev = result1[0][0] if result1[0][0] else 0
             park_exp = result1[0][1] if result1[0][1] else 0
             ticket_rev = result2[0][0] if result2[0][0] else 0
+            ticket_rev = float(ticket_rev)
+            wage_expenses = float(wage_expenses)
             ticket_exp = 0
             repair_rev = 0
             repair_exp = result3[0][0] if result3[0][0] else 0
