@@ -215,12 +215,12 @@ def employee_wages(start_date, end_date):
     wage_expenses = 0
     for tuple in staff_ids:
         # Q2: get number of hours worked in time frame for each employee
-        cursor.execute("""SELECT (SUM(num_hours),0)
+        cursor.execute("""SELECT SUM(num_hours)
                             FROM novapark.hours_worked
                             WHERE staff_id = %s AND cur_date BETWEEN '%s' AND '%s';""" % (tuple[0], start_date, end_date)) 
         num_hours = cursor.fetchall()
         num_hours = num_hours[0][0] if num_hours[0][0] else 0
-        wage_expenses = tuple[1] * num_hours[0][0]
+        wage_expenses = tuple[1] * num_hours
     return wage_expenses
 
 def revenue_report(start_date, end_date):
