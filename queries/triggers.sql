@@ -12,7 +12,7 @@ BEGIN
 
     IF DATEDIFF(NEW.date_bought, last_pass_credit_date) >= 30 THEN
 
-        SELECT park.num_passes INTO total_passes
+        SELECT SUM(park.num_passes) INTO total_passes
         FROM novapark.park_pass AS park
         WHERE NEW.cust_email = park.cust_email AND park.date_bought BETWEEN last_pass_credit_date AND NEW.date_bought;
 
@@ -24,3 +24,9 @@ BEGIN
     END IF;
 END //
 DELIMITER ;
+
+
+#find the number of tickets bought in the last 30 days if > 10 then give pass credit?
+#for every purchase over 10 tickets in the past month you gian pass credits?
+# small number that gets added ON
+# larger number that is reset (10 number of tickets since this date)
