@@ -30,6 +30,3 @@ DELIMITER ;
 #for every purchase over 10 tickets in the past month you gian pass credits?
 # small number that gets added ON
 # larger number that is reset (10 number of tickets since this date)
-
-
-

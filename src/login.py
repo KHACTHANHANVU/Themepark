@@ -334,4 +334,3 @@ def employee_wages(start_date, end_date):
         num_hours = cursor.fetchall()
         wage_expenses = tuple[1] * num_hours[0][0]
     return wage_expenses
-        
