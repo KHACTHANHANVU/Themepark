@@ -157,9 +157,16 @@ def load_rides():
 
 def load_rides_cust():
     cursor = mydb.cursor()
-    cursor.execute("""SELECT ride_name, ride_no
+    cursor.execute("""SELECT ride_name
                       FROM novapark.amusement_ride
                       WHERE is_working = 1;""")
+    result = cursor.fetchall()
+    return result
+
+def load_repair_logs():
+    cursor = mydb.cursor()
+    cursor.execute("""SELECT *
+                      FROM novapark.ride_repair;""")
     result = cursor.fetchall()
     return result
 
