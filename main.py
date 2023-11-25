@@ -2,7 +2,6 @@ import http.server
 import socketserver
 from urllib import parse 
 import re
-from src import *
 from src.login import *
 import json
 from http.cookies import SimpleCookie
@@ -31,7 +30,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             
             with open("public/carousel.html", 'r') as file:
                 html = file.read()
-                self.wfile.write(html.encode())            
+                self.wfile.write(html.encode())
         elif (urlinfo.path == '/buyticket'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -193,7 +192,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             print(staff_info)
             
             formated_info = ''
-            tuple_number = 0
             for tuple in staff_info:
                 formated_info += "<tr>"
                 print(tuple[0])
@@ -203,7 +201,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 formated_info += "<td><a href='/edithours?" + str(tuple[0]) + "'>Edit</a></td>"
                 formated_info += "<td><a href='/delhours?" + str(tuple[0]) + "'>Delete</a></td></tr>"
                 '''
-                tuple_number += 1
 
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -406,17 +403,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 first_name = name_pair[0].split('=')[1]
                 file = template_file.substitute(name=first_name.capitalize()).encode('utf-8')
                 self.wfile.write(file)
-        elif (urlinfo.path == '/reservation'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/reservation.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
         elif (urlinfo.path == '/rides_repair'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -495,7 +481,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header('Content-type', 'text/html')
             self.end_headers()
 
-            with open('public/viewprofile.html', 'r') as file:
+            with open('public/skeleton/viewprofile.html', 'r') as file:
                 html = file.read()
             
             updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
@@ -574,7 +560,9 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                     formated_info += f'<td>{value}</td>'
                 formated_info += "<td><a href='/editstaff?"+str(staff_tuple[2])+"'>Edit</a></td>"
                 formated_info += "<td><a href='/delstaff?"+str(staff_tuple[2])+"'>Delete</a></td></tr>"
-                
+            
+            print(formated_info)
+            
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
