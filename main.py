@@ -225,7 +225,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             file = b""
             try:
-                file = open("public/loghours.html", "rb").read()
+                file = open("public/skeleton/loghours.html", "rb").read()
             finally:
                 ...
             self.wfile.write(file)
@@ -807,6 +807,24 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.send_response(302)
             self.send_header("Location", '/manager_portal')
             self.end_headers()
+        elif (urlinfo.path == "/addhours"):
+            data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
+            print(data)
+
+            split_data = re.split("&", data)
+            hours = re.split("&", split_data[0])[1]
+            date = re.split("&", split_data[1])[1]
+            print(hours, date)
+
+            info = self.headers['Cookie'].split("; ")
+            staff_id_pair = [pair for pair in info if pair.startswith('staff_id=')]
+            staff_id = staff_id_pair[0].split('=')[1]
+            print(staff_id)
+
+            add_hours(staff_id, hours, date)
+            self.send_response(302)
+            self.send_header("Location", '/staff_portal')
+            self.end_headers()            
         elif (urlinfo.path == '/signup'):
             self.send_response(302)
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8") 

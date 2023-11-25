@@ -243,6 +243,12 @@ def add_event(sup_id, event_name, event_descrip, start_date, end_date):
                       VALUES (%s, '%s', '%s', '%s', '%s');""" % (sup_id, event_name, event_descrip, start_date, end_date))
     return "Yay"
 
+def add_hours(staff_id, hours, date):
+    cursor = mydb.cursor()
+    cursor.execute("""INSERT INTO novapark.hours_worked (staff_id, num_hours, cur_date)
+                      VALUES (%s, %s, '%s');""" % (staff_id, hours, date))
+    mydb.commit()
+
 def del_staff(staff_id):
     cursor = mydb.cursor()
     #cursor.execute(""";""")
