@@ -38,7 +38,7 @@ CREATE TRIGGER trigger_on_ride_repiar_log
     FOR EACH ROW
 BEGIN
     UPDATE novapark.amusement_ride AS ar
-    SET ar.date_of_last_repair = DATE(NEW.repair_date), ar.is_working = 0
+    SET ar.date_of_last_repair = NEW.repair_date, ar.is_working = 0
     WHERE new.ride_no = ar.ride_no;
 END //
 DELIMITER ;
