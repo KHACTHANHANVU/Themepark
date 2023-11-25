@@ -192,7 +192,7 @@ def rides_report(start_date, end_date):
     cursor = mydb.cursor()
     cursor.execute("""SELECT ar.ride_name, ar.ride_no, ar.date_of_last_repair, 
                       repair_count, total_repair_cost
-                      AS total_cost_of_repairs, ar.is_working
+                      AS total_cost_of_repairs, IF(ar.is_working = 1, 'Yes', 'No') AS operational
                       FROM novapark.amusement_ride ar
                       LEFT JOIN (
                           SELECT ride_no, COUNT(*) AS repair_count, SUM(repair_cost) AS 

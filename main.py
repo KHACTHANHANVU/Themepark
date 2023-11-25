@@ -927,6 +927,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             rides_info = rides_report(start_date, end_date)
 
+
             formated_info = ''
             for tuple in rides_info:
                 formated_info += "<tr>"
@@ -938,7 +939,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header('Content-type', 'text/html')
             self.end_headers()
             
-            with open('public/skeleton/genrevenuereport.html', 'r') as file:
+            with open('public/skeleton/genridesreport.html', 'r') as file:
                 html = file.read()
                 template_html = Template(html)
                 updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
