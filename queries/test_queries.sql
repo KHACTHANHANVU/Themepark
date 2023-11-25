@@ -11,3 +11,4 @@ USE novapark;
 SELECT * FROM novapark.customer;
 
 
+ALTER TABLE novapark.amusement_ride MODIFY ride_name VARCHAR(50);

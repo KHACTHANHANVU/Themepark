@@ -381,7 +381,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
-        elif (urlinfo.path == '/sales_report'):
+        elif (urlinfo.path == '/revenue_report'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
@@ -807,8 +807,8 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             elif (auth_level == "M"):
                 self.send_header("Location", '/manager_portal')
             self.end_headers()        
-        elif (urlinfo.path == '/gen_sales_report'):
-            self.send_response(302)
+        elif (urlinfo.path == '/gen_revenue_report'):
+            self.send_response(200)
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8") 
             print(data)
             
@@ -819,8 +819,33 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             print(start_date)
             print(end_date)
             
-            result = revenue_report(start_date, end_date)
-            print(result)
+            result1, result2, result3 = revenue_report(start_date, end_date)
+            print(result1)
+            print(result2)
+            print(result3)
+            
+            
+            park_rev = result1[0][0] if result1[0][0] else 0
+            park_exp = result1[0][1] if result1[0][1] else 0
+            ticket_rev = result2[0][0] if result2[0][0] else 0
+            ticket_exp = 0
+            repair_rev = 0
+            repair_exp = result3[0][0] if result3[0][0] else 0
+            
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            
+            with open('public/skeleton/editstaff.html', 'r') as file:
+                html = file.read()
+                template_html = Template(html)
+                updated_html = template_html.substitute(ticket_revenue=ticket_rev, ticket_income=(ticket_rev-ticket_exp),
+                                                        repair_costs=repair_exp, repair_income=(repair_rev-repair_exp),
+                                                        park_revenue=park_rev, park_expenses=park_exp, park_income=(park_rev-park_exp),
+                                                        total_revenue=(ticket_rev+park_rev), total_expenses=(repair_exp+park_exp),
+                                                        total_income=((ticket_rev+park_rev) - (repair_exp+park_exp)))
+                self.wfile.write(updated_html.encode())
+            
         elif (urlinfo.path == '/signup'):
             self.send_response(302)
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8") 
