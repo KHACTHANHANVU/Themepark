@@ -192,17 +192,20 @@ def insert_ticket_purchase(card_first_name, card_last_name, ticket_type, card_nu
     cost = 0
     ticket_type = ticket_type.capitalize()
     cur_time = datetime.datetime.now()
-    if(ticket_type == "Silver"):
-        cost = num_tickets * 20
-    elif(ticket_type == "Gold"):
-        cost = num_tickets * 30
+    print(cost)
+
+    if ticket_type == "Silver":
+        cost = int(num_tickets) * 20
+    elif ticket_type == "Gold":
+        cost = int(num_tickets) * 30
     else:
-        cost = num_tickets * 60
+        cost = int(num_tickets) * 60
+        
     cursor = mydb.cursor()
     cursor.execute("""INSERT INTO novapark.park_pass (cust_email, num_passes, sale_cost, 
                       pass_type, date_bought, card_fname, card_lname, card_num, cvv, exp_month,
                       exp_year)
-                      VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');""" 
+                      VALUES ('%s', %s, %s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');""" 
                       % (email, num_tickets, cost, ticket_type, cur_time, card_first_name, card_last_name, card_number, cvv, exp_month, exp_year))
     mydb.commit()
     return "Yay!"

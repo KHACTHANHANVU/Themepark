@@ -893,20 +893,21 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             split_data = re.split("&", data)
             ticket_type = re.split("=", split_data[0])[1]
-            num_tickets = re.split("=", split_data[1])[1]
+            num_tickets = int(re.split("=", split_data[1])[1])
             card_first_name = re.split("=", split_data[2])[1]
             card_last_name = re.split("=", split_data[3])[1]
             card_number = re.split("=", split_data[4])[1]
             cvv = re.split("=", split_data[5])[1]
             exp_month = re.split("=", split_data[6])[1]
             exp_year = re.split("=", split_data[7])[1]
+            card_number = card_number.replace("-","")
             print(card_first_name, card_last_name, ticket_type, card_number, cvv, exp_month, exp_year, num_tickets)
 
             info = self.headers['Cookie'].split("; ")
             email_pair = [pair for pair in info if pair.startswith('email=')]
             email = email_pair[0].split('=')[1]
-            print(email)
-            insert_ticket_purchase(card_first_name, card_last_name, ticket_type, card_number, cvv, exp_month, exp_year, email, num_tickets)
+
+            insert_ticket_purchase(card_first_name, card_last_name, ticket_type, card_number, cvv, exp_month, exp_year[2:4], email, num_tickets)
             self.send_response(302)
             self.send_header('Location', '/portal')
             self.end_headers()
