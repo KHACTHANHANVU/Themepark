@@ -137,6 +137,15 @@ def load_rides():
     result = cursor.fetchall()
     return result
 
+def load_hours_worked(staff_id, date):
+    print(date)
+    cursor = mydb.cursor()
+    cursor.execute("""SELECT num_hours
+                      FROM novapark.hours_worked
+                      WHERE staff_id = %s AND cur_date = '%s';""" % (staff_id, date))
+    result = cursor.fetchall()
+    return result
+
 def update_profile(email, first_name, last_name, phone_num, password):
     cursor = mydb.cursor()
     cursor.execute("""UPDATE novapark.customer
@@ -222,6 +231,15 @@ def view_tickets(email):
 
 
     return num_silver, num_gold, num_platinum
+
+def view_hours_worked(staff_id):
+    cursor = mydb.cursor()
+    cursor.execute("""SELECT cur_date, num_hours
+                      FROM novapark.hours_worked
+                      WHERE staff_id = %s
+                      ORDER BY cur_date DESC;""" % (staff_id,))
+    result = cursor.fetchall()
+    return result
 
 def add_staff(sup_id, first_name, last_name, password, phone_num, address, dob, job, hourly_wage):
     address = address.replace("+", " ")

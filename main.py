@@ -151,13 +151,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             staff_info = load_staff_profile(staff_id)
             print(staff_info)
-
-            first_name = staff_info[0][0]
-            last_name = staff_info[0][1]
-            password = staff_info[0][2]
-            phone_num = staff_info[0][3]
-            address = staff_info[0][4]
-            phone_num = phone_num[0:3] + "-" + phone_num[3:6] + "-" + phone_num[6:]
             
             formated_info = ''
             for tuple in staff_info:
@@ -175,6 +168,35 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
             self.wfile.write(updated_html.encode()) 
+        elif (urlinfo.path == '/viewhoursworked'):
+            info = self.headers['Cookie'].split("; ")
+            staff_id_pair = [pair for pair in info if pair.startswith('staff_id=')]
+            staff_id = staff_id_pair[0].split("=")[1]
+            print(staff_id)
+
+            staff_info = view_hours_worked(staff_id)
+            print(staff_info)
+            
+            formated_info = ''
+            tuple_number = 0
+            for tuple in staff_info:
+                formated_info += "<tr>"
+                print(tuple[0])
+                for value in tuple:
+                    formated_info += f'<td>{value}</td>'
+                formated_info += "<td><a href='/edithours?" + str(tuple[0]) + "'>Edit</a></td>"
+                formated_info += "<td><a href='/delhours?" + str(tuple[0]) + "'>Delete</a></td></tr>"
+                tuple_number += 1
+
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            with open('public/skeleton/viewhoursworked.html', 'r') as file:
+                html = file.read()
+
+            updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
+            self.wfile.write(updated_html.encode())             
         elif (urlinfo.path == '/editstaff'):
             staff_info = load_mgr_edit_staff(urlinfo.query)
             print(staff_info[0])
@@ -195,6 +217,23 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             template_html = Template(html)
             updated_html = template_html.substitute(first_name=first_name, last_name=last_name, job = job, staff_id=urlinfo.query,
                                                     sup_id = sup_id, hourly_wage = hourly_wage)
+            self.wfile.write(updated_html.encode())
+        elif (urlinfo.path == '/edithours'):
+            date = urlinfo.query
+            info = self.headers['Cookie'].split("; ")
+            staff_pair = [pair for pair in info if pair.startswith('staff_id=')]
+            staff_id = staff_pair[0].split('=')[1]
+            staff_info = load_hours_worked(staff_id, date)
+
+            hours_worked = staff_info[0][0]
+
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            with open('public/skeleton/edithours.html', 'r') as file:
+                html = file.read()
+
+            template_html = Template(html)
+            updated_html = template_html.substitute(date = date, hours_worked = hours_worked)
             self.wfile.write(updated_html.encode())
         elif (urlinfo.path == '/Entertainment'):
             self.send_response(200)
@@ -491,8 +530,8 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 print(event_tuple)
                 for value in event_tuple:
                     formated_info += f'<td>{value}</td>'
-                formated_info += "<td><a href='/editevent?$tuple"+str(tuple_number)+"'>Edit</a></td>"
-                formated_info += "<td><a href='/delevent?$tuple"+str(tuple_number)+"'>Delete</a></td></tr>"
+                formated_info += "<td><a href='/editevent?$"+str(tuple_number)+"'>Edit</a></td>"
+                formated_info += "<td><a href='/delevent?$"+str(tuple_number)+"'>Delete</a></td></tr>"
                 tuple_number += 1
                 
             self.send_response(200)
@@ -812,8 +851,9 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             print(data)
 
             split_data = re.split("&", data)
-            hours = re.split("&", split_data[0])[1]
-            date = re.split("&", split_data[1])[1]
+            print(split_data)
+            hours = re.split("=", split_data[0])[1]
+            date = re.split("=", split_data[1])[1]
             print(hours, date)
 
             info = self.headers['Cookie'].split("; ")
