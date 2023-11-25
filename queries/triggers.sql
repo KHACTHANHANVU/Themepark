@@ -1,18 +1,19 @@
 DELIMITER //
+
 CREATE TRIGGER trigger_on_pass_purchase
-	BEFORE INSERT ON novapark.park_pass
-	FOR EACH ROW
+    BEFORE INSERT ON novapark.park_pass
+    FOR EACH ROW
 BEGIN
     DECLARE last_pass_credit_date DATE;
-	DECLARE total_passes SMALLINT;
+    DECLARE total_passes SMALLINT;
 
-    SELECT last_pass_credit_date INTO last_pass_credit_date
+    SELECT cs.last_credit_date INTO last_pass_credit_date
     FROM novapark.customer AS cs
     WHERE NEW.cust_email = cs.email;
 
-    IF (DATEDIFF(NEW.date_bought, last_pass_credit_date) >= 30 OR last_pass_credit_date = NULL) THEN
+    IF (DATEDIFF(NEW.date_bought, last_pass_credit_date) >= 30 OR last_pass_credit_date IS NULL) THEN
 
-        SELECT SUM(park.num_passes) INTO total_passes
+        SELECT COALESCE(SUM(park.num_passes), 0) INTO total_passes
         FROM novapark.park_pass AS park
         WHERE NEW.cust_email = park.cust_email AND park.date_bought BETWEEN last_pass_credit_date AND NEW.date_bought;
 
@@ -23,7 +24,9 @@ BEGIN
         END IF;
     END IF;
 END //
+
 DELIMITER ;
+
 
 
 #find the number of tickets bought in the last 30 days if > 10 then give pass credit?
