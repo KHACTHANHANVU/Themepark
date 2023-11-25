@@ -166,8 +166,8 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             print(staff_info)
             
             formated_info = ''
-            for tuple in staff_info:
-                for value in tuple:
+            for staff_tuple in staff_info:
+                for value in staff_tuple:
                     if (type(value) == str):
                         value = value.replace("%40", "@")
                     formated_info += f'<td>{value}</td>'
@@ -192,10 +192,9 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             print(staff_info)
             
             formated_info = ''
-            for tuple in staff_info:
+            for hours_tuple in staff_info:
                 formated_info += "<tr>"
-                print(tuple[0])
-                for value in tuple:
+                for value in hours_tuple:
                     formated_info += f'<td>{value}</td>'
                 '''
                 formated_info += "<td><a href='/edithours?" + str(tuple[0]) + "'>Edit</a></td>"
@@ -215,14 +214,12 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             bday_info = load_bday()
             
             formated_info = ''
-            tuple_number = 0
-            for tuple in bday_info:
+            for b_tuple in bday_info:
                 formated_info += "<tr>"
-                for value in tuple:
+                for value in b_tuple:
                     formated_info += f'<td>{value}</td>'
-                formated_info += "<td><a href='/editbday?" + str(tuple[0]) + "'>Edit</a></td>"
-                formated_info += "<td><a href='/delbeday?" + str(tuple[0]) + "'>Delete</a></td></tr>"
-                tuple_number += 1
+                formated_info += "<td><a href='/editbday?" + str(b_tuple[0]) + "'>Edit</a></td>"
+                formated_info += "<td><a href='/delbeday?" + str(b_tuple[0]) + "'>Delete</a></td></tr>"
 
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -230,30 +227,25 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             with open('public/skeleton/viewbday.html', 'r') as file:
                 html = file.read()
-
-            updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
-            self.wfile.write(updated_html.encode())                    
-        elif (urlinfo.path == '/editstaff'):
-            staff_info = load_mgr_edit_staff(urlinfo.query)
-            print(staff_info[0])
+                self.wfile.write(html.encode())
+        elif (urlinfo.path == '/editbday'):
+            bday_info = edit_bday(urlinfo.query)
             
-            first_name = staff_info[0][0]
-            last_name = staff_info[0][1]
-            sup_id = staff_info[0][2]
-            hourly_wage = staff_info[0][3]
-            job = staff_info[0][4]
+            b_date = bday_info[0][0]
+            revenue = bday_info[0][1]
+            expenses = bday_info[0][2]
             
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
-            
-            with open('public/skeleton/editstaff.html', 'r') as file:
+
+            with open('public/skeleton/editbday.html', 'r') as file:
                 html = file.read()
-            
+                
             template_html = Template(html)
-            updated_html = template_html.substitute(first_name=first_name, last_name=last_name, job = job, staff_id=urlinfo.query,
-                                                    sup_id = sup_id, hourly_wage = hourly_wage)
-            self.wfile.write(updated_html.encode())
+            updated_html = template_html.substitute(b_date=b_date, revenue=revenue, expenses=expenses)
+            self.wfile.write(updated_html.encode())           
+            
         elif (urlinfo.path == '/edithours'):
             date = urlinfo.query
             info = self.headers['Cookie'].split("; ")
@@ -607,6 +599,34 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             
             updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
             self.wfile.write(updated_html.encode())
+        elif (urlinfo.path == '/editstaff'):
+            staff_info = load_mgr_edit_staff(urlinfo.query)
+            print(staff_info[0])
+            
+            first_name = staff_info[0][0]
+            last_name = staff_info[0][1]
+            sup_id = staff_info[0][2]
+            hourly_wage = staff_info[0][3]
+            job = staff_info[0][4]
+            
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            
+            with open('public/skeleton/editstaff.html', 'r') as file:
+                html = file.read()
+            
+            template_html = Template(html)
+            updated_html = template_html.substitute(first_name=first_name, last_name=last_name, job = job, staff_id=urlinfo.query,
+                                                    sup_id = sup_id, hourly_wage = hourly_wage)
+            self.wfile.write(updated_html.encode())
+        elif (urlinfo.path == '/delstaff'):
+            del_staff(urlinfo.query)
+            
+            self.send_response(302)
+            self.send_header('Location', '/manager_portal')
+            self.end_headers()
+            ...
         elif (urlinfo.path == '/viewcustomers'):
             cust_info = load_customers()
             print(cust_info)
@@ -657,7 +677,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             del_customer(urlinfo.query)
             
             self.send_response(302)
-            self.send_header('Location', '/viewcustomers')
+            self.send_header('Location', '/manager_portal')
             self.end_headers()
         elif (urlinfo.path == "/viewrides"):
             ride_info = load_rides()
@@ -1139,8 +1159,24 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.send_response(302)
             self.send_header('Location', '/portal')
             self.end_headers()
-        elif (urlinfo.path == "/updatecust"):
+        elif (urlinfo.path == "/updatebday"):
+            ##
+            ##  WORK IN PROGRESS
+            ##
+            data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
+            print(data)
+
+            split_data = re.split("&", data)
+            b_date = re.split("=", split_data[0])[1] if re.split("=", split_data[0])[1] else "NULL"
+            revenue = re.split("=", split_data[1])[1] if re.split("=", split_data[1])[1] else 0
+            expenses = re.split("=", split_data[2])[1] if re.split("=", split_data[2])[1] else 0
             
+            update_bday(b_date, revenue, expenses)
+
+            self.send_response(302)
+            self.send_header('Location', '/manager_portal')
+            self.end_headers()
+        elif (urlinfo.path == "/updatecust"):
             ##
             ##  WORK IN PROGRESS
             ##

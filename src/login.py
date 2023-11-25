@@ -187,6 +187,14 @@ def load_bday():
     result = cursor.fetchall()
     return result
 
+def edit_bday(bday):
+    cursor = mydb.cursor()
+    cursor.execute("""SELECT *
+                      FROM novapark.business_day
+                      WHERE b_date = '%s';""" % (bday))
+    result = cursor.fetchall()
+    return result
+
 def update_customer(email, first_name, last_name, phone_num, password, last_pass_credit_date):
     cursor = mydb.cursor()
     cursor.execute("""UPDATE novapark.customer

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Business Day</title>
+</head>
+<body>
+  <h1>Edit Business Day</h1>
+  <form action="/updatebday?$b_date" method="post">
+    <label for="b_date">Business Day: $b_date</label>
+    <input type="date" id="b_date" name="b_date" value="$b_date" required readonly><br><br>
+
+    <label for="revenue">Revenue:</label>
+    <input type="text" id="revenue" name="revenue" value="$revenue" required><br><br>
+
+    <label for="expenses">Expenses:</label>
+    <input type="tel" id="expenses" name="expenses" value ="$expenses"required><br><br>
+
+    <input type="submit" value="Submit">
+  </form>
+</body>
+</html>
