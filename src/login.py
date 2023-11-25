@@ -188,6 +188,29 @@ def ride_report(start_date, end_date):
     result = cursor.fetchall()
     return result
 
+def revenue_report(start_date, end_date):
+    cursor = mydb.cursor()
+
+    # Q1: get the total revenue and expenses from business day
+    cursor.execute("""SELECT SUM(revenue), SUM(expenses)
+                      FROM novapark.business_day
+                      WHERE b_date BETWEEN '%s' AND '%s';""" % (start_date, end_date))
+    result1 = cursor.fetchall()
+
+    # Q2: get total ticket revenue
+    cursor.execute("""SELECT SUM(sale_cost)
+                      FROM novapark.park_pass
+                      WHERE b_date BETWEEN '%s' AND '%s';""" % (start_date, end_date))
+    result2 = cursor.fetchall()
+
+    # Q3: get total expenses from repairs
+    cursor.execute("""SELECT SUM(repair_costs)
+                      FROM novapark.ride_repair
+                      WHERE date_of_issue BETWEEN '%s' AND '%s';""" % (start_date, end_date))
+    result3 = cursor.fetchall()
+    
+    return result1, result2, result3
+
 def insert_ticket_purchase(card_first_name, card_last_name, ticket_type, card_number, cvv, exp_month, exp_year, email, num_tickets):
     cost = 0
     ticket_type = ticket_type.capitalize()
@@ -274,12 +297,14 @@ def add_hours(staff_id, hours, date):
 
 def del_staff(staff_id):
     cursor = mydb.cursor()
-    #cursor.execute(""";""")
+    #cursor.execute("""DELETE FROM novapark.staff
+#                       WHERE staff_id = %s;""" % (staff_id,))
     return "Del"
 
 def del_customer(email):
     cursor = mydb.cursor()
-    #cursor.execute(""";""")
+    #cursor.execute("""DELETE FROM novpark.customer
+    #                  WHERE email = '%s';""" % (email,))
     return "Del"
 
 def del_event(event_num):
