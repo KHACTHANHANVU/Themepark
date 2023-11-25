@@ -61,7 +61,7 @@ def load_profile(username):
     print(username)
     cursor = mydb.cursor()
     cursor.execute("""SELECT first_name, last_name, email, phone, pass_credits
-                      FROM novapark.customer  
+                      FROM novapark.customer as c
                       WHERE c.email = '%s';""" % (username,))
     result = cursor.fetchall()
     
@@ -81,7 +81,7 @@ def load_profile_edit(username):
     cursor = mydb.cursor()
     cursor.execute("""SELECT first_name, last_name, phone, pswrd
                       FROM novapark.customer as c
-                      WHERE c.email = '%s';""" % (username,))
+                      WHERE email = '%s';""" % (username,))
     result = cursor.fetchall()
     return result
 
