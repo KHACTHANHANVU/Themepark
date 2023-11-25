@@ -687,40 +687,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
-        elif (urlinfo.path == '/src/connect.js'):
-            self.send_response(200)
-            self.send_header('Content-type', 'application/javascript')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("src/connect.js", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
-
-        elif (urlinfo.path == '/src/rides_script.js'):
-            self.send_response(200)
-            self.send_header('Content-type', 'application/javascript')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("src/rides_script.js", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
-        elif (urlinfo.path == '/src/sales_script.js'):
-            self.send_response(200)
-            self.send_header('Content-type', 'application/javascript')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("src/sales_script.js", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)       
         else:
             self.send_response(404)
             self.send_header('Content-type', 'text/html')
@@ -845,7 +811,9 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             event_descrip = re.split("=", split_data[1])[1]
             start_date = re.split("=", split_data[2])[1]
             end_date = re.split("=", split_data[3])[1]
+            event_name = event_name.replace("+", " ")            
             event_descrip = event_descrip.replace("+", " ")
+            
             print(event_name, event_descrip, start_date, end_date)
 
             info = self.headers['Cookie'].split("; ")
