@@ -28,25 +28,18 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/carousel.html", "rb").read()
-            finally:
-                ...
-            # print(file)
-            self.wfile.write(file)
+            
+            with open("public/carousel.html", 'r') as file:
+                html = file.read()
+                self.wfile.write(html.encode())            
         elif (urlinfo.path == '/buyticket'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
 
-            file = b""
-            try:
-                file = open("public/buy_ticket.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
+            with open("public/buy_ticket.html", 'r') as file:
+                html = file.read()
+                self.wfile.write(html.encode())   
         elif (urlinfo.path == '/connect'):
             print(self.headers['Cookie'])
             # cookie = json.loads(self.rfile.read(length))
@@ -234,39 +227,14 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             template_html = Template(html)
             updated_html = template_html.substitute(date = date, hours_worked = hours_worked)
             self.wfile.write(updated_html.encode())
-        elif (urlinfo.path == '/Entertainment'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/Entertainment.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
-        elif (urlinfo.path == '/feature'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/feature.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
         elif (urlinfo.path == '/loghours'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/skeleton/loghours.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
+            
+            with open('public/skeleton/loghours.html', 'r') as file:
+                html = file.read()
+                self.wfile.write(html.encode())
         elif (urlinfo.path == '/manager_portal'):
             cookie = SimpleCookie()
             cookie.load(self.headers['Cookie'])
@@ -420,18 +388,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             file = b""
             try:
-                file = open("public/sales_report.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
-        elif (urlinfo.path == '/sales'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/sales.html", "rb").read()
+                file = open("public/revenue_report.html", "rb").read()
             finally:
                 ...
             self.wfile.write(file)
@@ -665,14 +622,14 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
-        elif (urlinfo.path == '/sales_style.css'):
+        elif (urlinfo.path == '/revenue_style.css'):
             self.send_response(200)
             self.send_header('Content-type', 'text/css')
             self.end_headers()
 
             file = b""
             try:
-                file = open("public/sales_style.css", "rb").read()
+                file = open("public/revenue_style.css", "rb").read()
             finally:
                 ...
             self.wfile.write(file)
