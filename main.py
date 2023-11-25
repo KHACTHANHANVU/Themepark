@@ -176,8 +176,10 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 print(tuple[0])
                 for value in tuple:
                     formated_info += f'<td>{value}</td>'
+                '''
                 formated_info += "<td><a href='/edithours?" + str(tuple[0]) + "'>Edit</a></td>"
                 formated_info += "<td><a href='/delhours?" + str(tuple[0]) + "'>Delete</a></td></tr>"
+                '''
                 tuple_number += 1
 
             self.send_response(200)
@@ -366,7 +368,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             file = b""
             try:
-                file = open("public/repair log.html", "rb").read()
+                file = open("public/skeleton/rides_repair.html", "rb").read()
             finally:
                 ...
             self.wfile.write(file)
@@ -744,6 +746,20 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             add_staff(sup_id, first_name, last_name, password, phone_num, address, dob, job, hourly_wage)
 
 
+            self.send_response(302)
+            self.send_header("Location", '/manager_portal')
+            self.end_headers()
+        elif (urlinfo.path == '/addrepairlog'):
+            data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
+            print(data)
+
+            split_data = re.split("&", data)
+            ride_no = re.split("=", split_data[0])[1]
+            date_of_issue = re.split("=", split_data[1])[1]
+            repair_date = re.split("=", split_data[2])[1]
+            repair_cost = re.split("=", split_data[3])[1]
+
+            add_repair_log(ride_no, date_of_issue, repair_date, repair_cost)
             self.send_response(302)
             self.send_header("Location", '/manager_portal')
             self.end_headers()
