@@ -318,6 +318,17 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
+        elif (urlinfo.path == '/newbday'):
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            file = b""
+            try:
+                file = open("public/skeleton/newbday.html", "rb").read()
+            finally:
+                ...
+            self.wfile.write(file)
         elif (urlinfo.path == '/portal'):
             cookie = SimpleCookie()
             cookie.load(self.headers['Cookie'])
@@ -787,12 +798,13 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             info = self.headers['Cookie'].split("; ")
             auth_level_pair = [pair for pair in info if pair.startswith('authorization_level=')]
             auth_level = auth_level_pair[0].split('=')[1]
+
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
             print(data)
 
             split_data = re.split("&", data)
-            hours = re.split("&", split_data[0])[1]
-            date = re.split("&", split_data[1])[1]
+            hours = re.split("=", split_data[0])[1]
+            date = re.split("=", split_data[1])[1]
             print(hours, date)
 
             info = self.headers['Cookie'].split("; ")
@@ -806,7 +818,18 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_header("Location", '/staff_portal')
             elif (auth_level == "M"):
                 self.send_header("Location", '/manager_portal')
-            self.end_headers()        
+            self.end_headers()
+        elif (urlinfo.path == "/addbday"):
+            data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
+            print(data)
+
+            split_data = re.split("&", data)
+            date = re.split("&", split_data[0])[1]
+            revenue = re.split("=", split_data[1])[1]
+            expenses = re.split("=", split_data[2])[1]
+            print(date, revenue, expenses)
+
+            
         elif (urlinfo.path == '/gen_revenue_report'):
             self.send_response(200)
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8") 
@@ -819,10 +842,11 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             print(start_date)
             print(end_date)
             
-            result1, result2, result3 = revenue_report(start_date, end_date)
+            result1, result2, result3, wage_expenses = revenue_report(start_date, end_date)
             print(result1)
             print(result2)
             print(result3)
+            print(wage_expenses)
             
             
             park_rev = result1[0][0] if result1[0][0] else 0
@@ -831,19 +855,23 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             ticket_exp = 0
             repair_rev = 0
             repair_exp = result3[0][0] if result3[0][0] else 0
+            total_revenue = ticket_rev + park_rev
+            total_expenses = repair_exp + park_exp + wage_expenses
+            total_income = total_revenue - total_expenses
             
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
             
-            with open('public/skeleton/editstaff.html', 'r') as file:
+            with open('public/skeleton/genrevenuereport.html', 'r') as file:
                 html = file.read()
                 template_html = Template(html)
                 updated_html = template_html.substitute(ticket_revenue=ticket_rev, ticket_income=(ticket_rev-ticket_exp),
                                                         repair_costs=repair_exp, repair_income=(repair_rev-repair_exp),
                                                         park_revenue=park_rev, park_expenses=park_exp, park_income=(park_rev-park_exp),
-                                                        total_revenue=(ticket_rev+park_rev), total_expenses=(repair_exp+park_exp),
-                                                        total_income=((ticket_rev+park_rev) - (repair_exp+park_exp)))
+                                                        wage_expenses = wage_expenses, total_revenue=total_revenue, 
+                                                        total_expenses=total_expenses,
+                                                        total_income=total_income)
                 self.wfile.write(updated_html.encode())
             
         elif (urlinfo.path == '/signup'):

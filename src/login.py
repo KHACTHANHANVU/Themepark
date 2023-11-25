@@ -188,6 +188,24 @@ def ride_report(start_date, end_date):
     result = cursor.fetchall()
     return result
 
+def employee_wages(start_date, end_date):
+    cursor = mydb.cursor()
+    # Q1: get list of all staff ids
+    cursor.execute("""SELECT staff_id, hourly_wage
+                      FROM novapark.staff;""")
+    staff_ids = cursor.fetchall()
+
+    wage_expenses = 0
+    for tuple in staff_ids:
+        # Q2: get number of hours worked in time frame for each employee
+        cursor.execute("""SELECT (SUM(num_hours),0)
+                            FROM novapark.hours_worked
+                            WHERE staff_id = %s AND cur_date BETWEEN '%s' AND '%s';""" % (tuple[0], start_date, end_date)) 
+        num_hours = cursor.fetchall()
+        num_hours = num_hours[0][0] if num_hours[0][0] else 0
+        wage_expenses = tuple[1] * num_hours[0][0]
+    return wage_expenses
+
 def revenue_report(start_date, end_date):
     cursor = mydb.cursor()
 
@@ -208,8 +226,10 @@ def revenue_report(start_date, end_date):
                       FROM novapark.ride_repair as r
                       WHERE r.date_of_issue BETWEEN '%s' AND '%s';""" % (start_date, end_date))
     result3 = cursor.fetchall()
+
+    wage_expenses = employee_wages(start_date, end_date)
     
-    return result1, result2, result3
+    return result1, result2, result3, wage_expenses
 
 def insert_ticket_purchase(card_first_name, card_last_name, ticket_type, card_number, cvv, exp_month, exp_year, email, num_tickets):
     cost = 0
@@ -295,6 +315,12 @@ def add_hours(staff_id, hours, date):
                       VALUES (%s, %s, '%s');""" % (staff_id, hours, date))
     mydb.commit()
 
+def add_bday(date, revenue, expenses):
+    cursor = mydb.cursor()
+    cursor.execute("""INSERT INTO novapark.business_day (b_date, revenue, expenses)
+                      VALUES ('%s', %s, %s);""" % (date, revenue, expenses))
+    mydb.commit()
+
 def del_staff(staff_id):
     cursor = mydb.cursor()
     #cursor.execute("""DELETE FROM novapark.staff
@@ -317,20 +343,3 @@ def del_ride(ride_no):
     cursor = mydb.cursor()
     #cursor.execute(""";""")
     return "Del"
-
-def employee_wages(start_date, end_date):
-    cursor = mydb.cursor()
-    # Q1: get list of all staff ids
-    cursor.execute("""SELECT staff_id, hourly_wage
-                      FROM novapark.staff;""")
-    staff_ids = cursor.fetchall()
-
-    wage_expenses = 0
-    for tuple in staff_ids:
-        # Q2: get number of hours worked in time frame for each employee
-        cursor.execute("""SELECT SUM(num_hours)
-                            FROM novapark.hours_worked
-                            WHERE staff_id = %s AND cur_date BETWEEN '%s' AND '%s';""" % (tuple[0], start_date, end_date)) 
-        num_hours = cursor.fetchall()
-        wage_expenses = tuple[1] * num_hours[0][0]
-    return wage_expenses

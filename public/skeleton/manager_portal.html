@@ -95,21 +95,72 @@
 
                     
                     <ul class="nav flex-column">
+
                         <li class="nav-item">
-                            <a class="nav-link" href="/viewmgrprofile">
+                            <a class="nav-link" data-toggle="collapse" href="#ProfileSubmenu">
                                 <i class="fas fa-user"></i> Profile
                             </a>
+                            <div class="collapse" id="ProfileSubmenu">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/viewmgrprofile">
+                                            <i class="fas fa-user"></i> Profile
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/viewhoursworked">
+                                            <i class="fas fa-user-clock"></i> Hours Worked
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/loghours">
+                                            <i class="fas fa-user-clock"></i> Log Hours
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/viewhoursworked">
-                                <i class="fas fa-user-clock"></i> Hours Worked
+                            <a class="nav-link" data-toggle="collapse" href="#RideEventSubmenu">
+                                <i class="fas fa-building"></i> Tasks
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/loghours">
-                                <i class="fas fa-user-clock"></i> Log Hours
-                            </a>
-                        </li>
+                                
+                                <div class="collapse" id="RideEventSubmenu">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/new_rides">
+                                                <i class="fas fa-users"></i> New Rides
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/viewrides">
+                                                <i class="fas fa-users"></i> Rides
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/new_event">
+                                                <i class="fas fa-users"></i> New Event
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/viewevents">
+                                                <i class="fas fa-users"></i> Event
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/newbday">
+                                                <i class="fas fa-building"></i> Log Business Day
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/viewbday">
+                                                <i class="fas fa-building"></i> View Business Days
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="collapse" href="#reportSubmenu">
                                 <i class="fas fa-chart-bar"></i> Report
@@ -154,37 +205,8 @@
                                 </ul>
                             </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="collapse" href="#RideEventSubmenu">
-                                <i class="fas fa-building"></i> Tasks
-                            </a>
-                                
-                                <div class="collapse" id="RideEventSubmenu">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/new_rides">
-                                                <i class="fas fa-users"></i> New Rides
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/viewrides">
-                                                <i class="fas fa-users"></i> Rides
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/new_event">
-                                                <i class="fas fa-users"></i> New Event
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/viewevents">
-                                                <i class="fas fa-users"></i> Event
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
+
                     
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link active" href="/viewcustomers">
                                 <i class="fas fa-users"></i> Customers
