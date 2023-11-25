@@ -1051,18 +1051,18 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             print(data)
 
             split_data = re.split("&", data)
-            event_num = re.split("=", split_data[0])[1]
-            event_name = re.split("=", split_data[1])[1]
-            phone_num = re.split("=", split_data[2])[1]
-            password = re.split("=", split_data[3])[1]
+            first_name = re.split("=", split_data[0])[1] if re.split("=", split_data[0])[1] else "NULL"
+            last_name = re.split("=", split_data[1])[1] if re.split("=", split_data[1])[1] else "NULL"
+            password = re.split("=", split_data[2])[1] if re.split("=", split_data[2])[1] else "NULL"
+            phone_num = re.split("=", split_data[3])[1] if re.split("=", split_data[3])[1] else "NULL"
+            last_pass_credit_date = re.split("=", split_data[4])[1] if re.split("=", split_data[4])[1] else "1970-01-01"
             phone_num = phone_num.replace("-","")
-            print(first_name, last_name, phone_num, password)   
+            email = urlinfo.query
             
-            update_customer()
+            update_customer(email, first_name, last_name, phone_num, password, last_pass_credit_date)
 
-            update_profile(email, first_name, last_name, phone_num, password)
             self.send_response(302)
-            self.send_header('Location', '/profile')
+            self.send_header('Location', '/manager_portal')
             self.end_headers()
         elif (urlinfo.path == "/updateevent"):
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
@@ -1071,15 +1071,16 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             split_data = re.split("&", data)
             event_name = re.split("=", split_data[0])[1]
             manager_id = re.split("=", split_data[1])[1]
-            event_num = re.split("=", split_data[2])[1]
-            event_descrip = re.split("=", split_data[3])[1]
-            start_date = re.split("=", split_data[4])[1]
-            end_date = re.split("=", split_data[5])[1]
-
+            event_num = urlinfo.query # re.split("=", split_data[2])[1]
+            event_descrip = re.split("=", split_data[2])[1]
+            start_date = re.split("=", split_data[3])[1]
+            end_date = re.split("=", split_data[4])[1]
+            
+            event_descrip = event_descrip.replace("+", " ")
             update_event(event_num, event_name, event_descrip, manager_id, start_date, end_date)
 
             self.send_response(302)
-            self.send_header('Location', '/profile')
+            self.send_header('Location', '/manager_portal')
             self.end_headers()
         elif (urlinfo.path == "/updateprofile"):
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
@@ -1089,8 +1090,12 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             first_name = re.split("=", split_data[0])[1]
             last_name = re.split("=", split_data[1])[1]
             phone_num = re.split("=", split_data[2])[1]
-            password = re.split("=", split_data[3])[1]
-            phone_num = phone_num.replace("-","")
+            address = re.split("=", split_data[3])[1]
+            sup_id = re.split("=", split_data[4])[1]
+            dob = re.split("=", split_data[5])[1]
+            job = re.split("=", split_data[6])[1]
+            hourly_wage = re.split("=", split_data[7])[1]
+            password = re.split("=", split_data[8])[1]
             print(first_name, last_name, phone_num, password)
 
             info = self.headers['Cookie'].split("; ")

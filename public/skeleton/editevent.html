@@ -6,15 +6,14 @@
 </head>
 <body>
   <h1>Edit Event #$event_no</h1>
-  <form action="/updateevent" method="post">
+  <form action="/updateevent?$event_no" method="post">
     <label for="e_name">Event Name:</label>
-    <input type="text" id="e_name" name="e_name" value="$e_name" required readonly><br><br>
+    <input type="text" id="e_name" name="e_name" value="$e_name" required><br><br>
 
     <label for="manager_id">manager ID:</label>
     <input type="text" id="manager_id" name="manager_id" value="$manager_id" required><br><br>
 
-    <label for="event_no">Event Number</label>
-    <input type="text" id="event_no" name="event_no" value="$event_no" require readonly><br><br>
+    <label for="event_no">Event Number: $event_no</label>
 
     <label for="e_descrip">Event Description:</label>
     <textarea type="text" id="e_descrip" name="e_descrip" rows="4" cols="50" maxlength="200" required>$e_descrip</textarea> <br><br>
@@ -22,7 +21,7 @@
     <label for="start_date">Start Date:</label><br>
     <input type="date" id="start_date" name="start_date" value="$start_date"><br><br>
 
-    <label for="end_date">Start Date:</label><br>
+    <label for="end_date">End Date:</label><br>
     <input type="date" id="end_date" name="end_date" value="$end_date"><br><br>
 
     <input type="submit" value="Submit">

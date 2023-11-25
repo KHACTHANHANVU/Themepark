@@ -172,6 +172,15 @@ def load_bday():
     result = cursor.fetchall()
     return result
 
+def update_customer(email, first_name, last_name, phone_num, password, last_pass_credit_date):
+    cursor = mydb.cursor()
+    cursor.execute("""UPDATE novapark.customer
+                      SET first_name = '%s', last_name = '%s', pswrd = '%s', phone = '%s',
+                      last_pass_credit_date = '%s'
+                      WHERE email = '%s';""" % (first_name, last_name, password, phone_num, last_pass_credit_date, email))
+    mydb.commit()
+
+
 def update_profile(email, first_name, last_name, phone_num, password):
     cursor = mydb.cursor()
     cursor.execute("""UPDATE novapark.customer
@@ -222,7 +231,7 @@ def update_event(event_num, event_name, event_descrip, sup_id, start_date, end_d
     cursor = mydb.cursor()
     cursor.execute("""UPDATE novapark.events
                       SET e_name = '%s', e_descrip = '%s', manager_id = %s, start_date = '%s', end_date = '%s'
-                      WHERE event_no = %s;""" % (event_name, event_descrip, sup_id, start_date, end_date))
+                      WHERE event_no = %s;""" % (event_name, event_descrip, sup_id, start_date, end_date, event_num))
     mydb.commit()
 
 def update_bday(date, revenue, expenses):

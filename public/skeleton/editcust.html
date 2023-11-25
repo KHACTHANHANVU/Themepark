@@ -29,18 +29,17 @@
 </head>
 <body>
   <h1>Edit Customer</h1>
-  <form action="/updatecust" method="post">
+  <form action="/updatecust?$email" method="post">
     <label for="first_name">First Name:</label>
-    <input type="text" id="first_name" name="first_name" value="$first_name" required readonly><br><br>
+    <input type="text" id="first_name" name="first_name" value="$first_name" required><br><br>
 
     <label for="last_name">Last Name:</label>
-    <input type="text" id="last_name" name="last_name" value="$last_name" required readonly><br><br>
+    <input type="text" id="last_name" name="last_name" value="$last_name" required><br><br>
 
     <label for="pswrd">Password:</label>
     <input type="text" id="pswrd" name="pswrd" value="$pswrd" required><br><br>
 
-    <label for="email">Email</label>
-    <input type="text" id="email" name="email" value="$email" require readonly><br><br>
+    <label for="email">Email: $email</label>
 
     <label for="phone_num">Phone Number:</label>
     <input type="tel" id="phone_num" name="phone_num" value ="$phone_num" oninput="formatPhoneNumber(this)" required><br><br>
