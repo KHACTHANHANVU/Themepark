@@ -33,7 +33,7 @@ DELIMITER ;
 # If ride is marked for repair, update last repair date and marks it as not working
 DELIMITER //
 
-CREATE TRIGGER trigger_on_ride_repiar_log
+CREATE TRIGGER trigger_on_ride_repair_log
     BEFORE INSERT ON novapark.ride_repair
     FOR EACH ROW
 BEGIN

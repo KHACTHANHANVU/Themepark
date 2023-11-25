@@ -54,19 +54,6 @@ CREATE TABLE novapark.park_pass (
     FOREIGN KEY (cust_email) REFERENCES novapark.customer(email)
 );
 
-CREATE TABLE novapark.ride_injury (
-    reporter_id SMALLINT,
-    ride_no SMALLINT,
-    email_of_injured VARCHAR(35),
-    injury_date DATETIME,
-    injury_description VARCHAR(100),
-    PRIMARY KEY (injury_date, email_of_injured),
-    FOREIGN KEY (reporter_id) REFERENCES novapark.staff(staff_id),
-    FOREIGN KEY (email_of_injured) REFERENCES novapark.customer(email),
-    FOREIGN KEY (ride_no) REFERENCES novapark.amusement_ride(ride_no)
-);
-
-
 CREATE TABLE novapark.amusement_ride (
 	ride_name VARCHAR(50) NOT NULL,
     ride_no SMALLINT AUTO_INCREMENT,
