@@ -155,6 +155,14 @@ def load_rides():
     result = cursor.fetchall()
     return result
 
+def load_rides_cust():
+    cursor = mydb.cursor()
+    cursor.execute("""SELECT ride_name, ride_no
+                      FROM novapark.amusement_ride
+                      WHERE is_working = 1;""")
+    result = cursor.fetchall()
+    return result
+
 def load_hours_worked(staff_id, date):
     print(date)
     cursor = mydb.cursor()
@@ -199,11 +207,18 @@ def update_mgr_level(staff_id, first_name, last_name, phone_num, address, sup_id
                       WHERE staff_id = '%s';""" % (first_name, last_name, password, phone_num, address, sup_id, hourly_wage, dob, job, staff_id))
     mydb.commit()
 
-def update_staff_level(staff_id, first_name, last_name, phone_num, address, password):
+def update_staff_profile(staff_id, first_name, last_name, phone_num, address, password):
     cursor = mydb.cursor()
     cursor.execute("""UPDATE novapark.staff
                       SET first_name = '%s', last_name = '%s', phone_no = '%s', addrs = '%s', pswrd = '%s'
                       WHERE staff_id = '%s';""" % (first_name, last_name, phone_num, address, password, staff_id))
+    mydb.commit()
+
+def update_staff_level(staff_id, first_name, last_name, sup_id, job, hourly_wage):
+    cursor = mydb.cursor()
+    cursor.execute("""UPDATE novapark.staff
+                      SET first_name = '%s', last_name = '%s', supervisor_id = %s, job = '%s', hourly_wage = %s
+                      WHERE staff_id = %s;""" % (first_name, last_name, sup_id, job, hourly_wage, staff_id))
     mydb.commit()
 
 def update_hours_worked(staff_id, hours_worked):
