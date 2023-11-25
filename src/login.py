@@ -256,6 +256,7 @@ def add_ride(ride_name):
     cursor = mydb.cursor()
     cursor.execute("""INSERT INTO novapark.amusement_ride (ride_name, is_working)
                       VALUES ('%s', %s);""" % (ride_name, 1))
+    mydb.commit()
     return "Yay"
 
 def add_event(sup_id, event_name, event_descrip, start_date, end_date):

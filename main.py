@@ -82,7 +82,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 html = file.read()
                 
             template_html = Template(html)
-
             updated_html = template_html.substitute(first_name=first_name, last_name=last_name, phone_num = phone, password = password) # .format(first_name = first_name, last_name = last_name, phone_num = phone, password = password)
             self.wfile.write(updated_html.encode())
         elif (urlinfo.path == "/editprofilemgr"):
@@ -381,18 +380,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 first_name = name_pair[0].split('=')[1]
                 file = template_file.substitute(name=first_name.capitalize()).encode('utf-8')
                 self.wfile.write(file)
-
-        elif (urlinfo.path == '/pricing'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/pricing.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
         elif (urlinfo.path == '/reservation'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -609,9 +596,9 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             formated_info = ''
             tuple_number = 0
-            for tuple in ride_info:
+            for ride_tuple in ride_info:
                 formated_info += "<tr>"
-                for value in tuple:
+                for value in ride_tuple:
                     formated_info += f'<td>{value}</td>'
                 formated_info += "<td><a href='/editride?$tuple"+str(tuple_number)+"'>Edit</a></td>"
                 formated_info += "<td><a href='/delride?$tuple"+str(tuple_number)+"'>Delete</a></td></tr>"
@@ -622,6 +609,9 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             with open('public/skeleton/viewrides.html', 'r') as file:
                 html = file.read()
+            
+            updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
+            self.wfile.write(updated_html.encode())        
         elif (urlinfo.path == "/viewmgrprofile"):
             info = self.headers['Cookie'].split("; ")
             staff_pair = [pair for pair in info if pair.startswith('staff_id=')]
@@ -662,7 +652,8 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             with open('public/skeleton/viewstaffprofile.html', 'r') as file:
                 html = file.read()
             
-            updated_html = html.replace('<!-- InsertTableHere -->', formated_info)            
+            updated_html = html.replace('<!-- InsertTableHere -->', formated_info)  
+            self.wfile.write(updated_html.encode())          
         elif (urlinfo.path == '/rides_style.css'):
             self.send_response(200)
             self.send_header('Content-type', 'text/css')
@@ -838,7 +829,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             print(data)
 
             split_data = re.split("&", data)
-            ride_name = re.split("&", split_data[0])[1]
+            ride_name = re.split("=", split_data[0])[1]
             print(ride_name)
 
             add_ride(ride_name)
@@ -850,10 +841,10 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             print(data)
 
             split_data = re.split("&", data)
-            event_name = re.split("&", split_data[0])[1]
-            event_descrip = re.split("&", split_data[1])[1]
-            start_date = re.split("&", split_data[2])[1]
-            end_date = re.split("&", split_data[3])[1]
+            event_name = re.split("=", split_data[0])[1]
+            event_descrip = re.split("=", split_data[1])[1]
+            start_date = re.split("=", split_data[2])[1]
+            end_date = re.split("=", split_data[3])[1]
             event_descrip = event_descrip.replace("+", " ")
             print(event_name, event_descrip, start_date, end_date)
 
@@ -874,9 +865,8 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             print(data)
 
             split_data = re.split("&", data)
-            print(split_data)
-            hours = re.split("=", split_data[0])[1]
-            date = re.split("=", split_data[1])[1]
+            hours = re.split("&", split_data[0])[1]
+            date = re.split("&", split_data[1])[1]
             print(hours, date)
 
             info = self.headers['Cookie'].split("; ")
