@@ -806,7 +806,21 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_header("Location", '/staff_portal')
             elif (auth_level == "M"):
                 self.send_header("Location", '/manager_portal')
-            self.end_headers()            
+            self.end_headers()        
+        elif (urlinfo.path == '/gen_sales_report'):
+            self.send_response(302)
+            data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8") 
+            print(data)
+            
+            split_data = re.split("&", data)
+            start_date = re.split("=", split_data[0])[1]
+            end_date = re.split("=", split_data[1])[1]
+            
+            print(start_date)
+            print(end_date)
+            
+            result = revenue_report(start_date, end_date)
+            print(result)
         elif (urlinfo.path == '/signup'):
             self.send_response(302)
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8") 

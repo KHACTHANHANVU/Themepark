@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="sales_style.css">
+    <link rel="stylesheet" href="revenue_style.css">
     <title>Sales Report</title>
 </head>
 <body>
     <div class="container">
         <h1>Sales Report</h1>
         <div class="input-box">
-            <form id="dateForm">
+            <form action="/gen_sales_report" method="post">
                 <div class="input-group">
                     <label for="startDate">Start Date (MM/DD/YYYY):</label>
                     <input type="date" id="startDate" name="startDate" required>
@@ -22,11 +22,8 @@
                     <input type="date" id="endDate" name="endDate" required>
                     <div class="error-message" id="endDateError"></div>
                 </div>
-                <div class="input-group">
-                    <form action="/gen_sales_report" method="post">
-                        <button type="submit">Generate</button>
-                    </form>
-                </div>
+
+                <button type="submit">Generate</button>
             </form>
         </div>
     </div>
