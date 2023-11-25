@@ -1120,6 +1120,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header('Location', '/portal')
             self.end_headers()
         elif (urlinfo.path == "/updatecust"):
+            
             ##
             ##  WORK IN PROGRESS
             ##
