@@ -116,7 +116,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             updated_html = template_html.substitute(first_name=first_name, last_name=last_name, phone_num = phone_num, dob = dob, job = job,
                                                     password = password, address = address, sup_id = sup_id, hourly_wage = hourly_wage)
             self.wfile.write(updated_html.encode())
-        elif (urlinfo.path == "/viewprofilestaff"):
+        elif (urlinfo.path == "/editprofilestaff"):
             info = self.headers['Cookie'].split("; ")
             staff_id_pair = [pair for pair in info if pair.startswith('staff_id=')]
             staff_id = staff_id_pair[0].split("=")[1]
@@ -136,12 +136,44 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header('Content-type', 'text/html')
             self.end_headers()
 
-            with open('public/skeleton/viewstaffprofile.html', 'r') as file:
+            with open('public/skeleton/editprofilestaff.html', 'r') as file:
                 html = file.read()
             
             template_html = Template(html)
-            updated_html = template_html.substitute(first_name=first_name, last_name=last_name, phone_num = phone_num,
-                                                    password = password, address = address, )
+            updated_html = template_html.substitute(first_name=first_name, last_name=last_name, phone_num = phone_num, 
+                                                    password = password, address = address)
+            self.wfile.write(updated_html.encode())            
+        elif (urlinfo.path == "/viewprofilestaff"):
+            info = self.headers['Cookie'].split("; ")
+            staff_id_pair = [pair for pair in info if pair.startswith('staff_id=')]
+            staff_id = staff_id_pair[0].split("=")[1]
+            print(staff_id)
+
+            staff_info = load_staff_profile(staff_id)
+            print(staff_info)
+
+            first_name = staff_info[0][0]
+            last_name = staff_info[0][1]
+            password = staff_info[0][2]
+            phone_num = staff_info[0][3]
+            address = staff_info[0][4]
+            phone_num = phone_num[0:3] + "-" + phone_num[3:6] + "-" + phone_num[6:]
+            
+            formated_info = ''
+            for tuple in staff_info:
+                for value in tuple:
+                    if (type(value) == str):
+                        value = value.replace("%40", "@")
+                    formated_info += f'<td>{value}</td>'
+            
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            with open('public/skeleton/viewstaffprofile.html', 'r') as file:
+                html = file.read()
+
+            updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
             self.wfile.write(updated_html.encode()) 
         elif (urlinfo.path == '/editstaff'):
             staff_info = load_mgr_edit_staff(urlinfo.query)
@@ -866,6 +898,27 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.send_response(302)
             self.send_header('Location', '/viewmgrprofile')
             self.end_headers()
+        elif (urlinfo.path == "/updatestaff"):
+            data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
+            
+            split_data = re.split("&", data)
+            first_name = re.split("=", split_data[0])[1]
+            last_name = re.split("=", split_data[1])[1]
+            phone_num = re.split("=", split_data[2])[1]
+            address = re.split("=", split_data[3])[1]
+            password = re.split("=", split_data[4])[1]
+
+            address = address.replace("+", " ")
+            phone_num = phone_num.replace('-', "")
+
+            info = self.headers['Cookie'].split("; ")
+            staff_id_pair = [pair for pair in info if pair.startswith('staff_id=')]
+            staff_id = staff_id_pair[0].split('=')[1]     
+
+            update_staff_level(staff_id, first_name, last_name, phone_num, address, password)
+            self.send_response(302)
+            self.send_header('Location', '/viewprofilestaff')
+            self.end_headers()            
 
 
             
