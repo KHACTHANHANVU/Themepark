@@ -82,7 +82,7 @@ CREATE TABLE novapark.ride_repair (
     date_of_issue DATETIME NOT NULL,
     repair_date DATETIME NOT NULL,
     repair_cost FLOAT NOT NULL,
-    PRIMARY KEY (ride_no),
+    PRIMARY KEY (ride_no, date_of_issue),
     FOREIGN KEY (ride_no) REFERENCES novapark.amusement_ride(ride_no)
 );
 
