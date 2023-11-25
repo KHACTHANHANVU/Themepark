@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Customer</title>
+  <script>
+    function formatPhoneNumber(input) {
+      // Remove all non-numeric characters from the input value
+      var cleaned = input.value.replace(/\D/g, '');
+      
+      // Check if the input length is greater than 10 characters
+      if (cleaned.length > 10) {
+        cleaned = cleaned.slice(0, 10); // Limit input to 10 characters
+      }
+      
+      // Apply the formatting (e.g., XXX-XXX-XXXX)
+      var formattedNumber = '';
+      for (var i = 0; i < cleaned.length; i++) {
+        if (i === 3 || i === 6) {
+          formattedNumber += '-';
+        }
+        formattedNumber += cleaned[i];
+      }
+      
+      // Set the formatted value back to the input
+      input.value = formattedNumber;
+    }
+  </script>
+</head>
+<body>
+  <h1>Edit Customer</h1>
+  <form action="/updatecust" method="post">
+    <label for="first_name">First Name:</label>
+    <input type="text" id="first_name" name="first_name" value="$first_name" required readonly><br><br>
+
+    <label for="last_name">Last Name:</label>
+    <input type="text" id="last_name" name="last_name" value="$last_name" required readonly><br><br>
+
+    <label for="pswrd">Password:</label>
+    <input type="text" id="pswrd" name="pswrd" value="$pswrd" required><br><br>
+
+    <label for="email">Email</label>
+    <input type="text" id="email" name="email" value="$email" require readonly><br><br>
+
+    <label for="phone_num">Phone Number:</label>
+    <input type="tel" id="phone_num" name="phone_num" value ="$phone_num" oninput="formatPhoneNumber(this)" required><br><br>
+
+    <label for="last_pass_credit_date">Last Time Credit Received:</label><br>
+    <input type="date" id="last_pass_credit_date" name="last_pass_credit_date" value="$last_pass_credit_date"><br><br>
+
+    <input type="submit" value="Submit">
+  </form>
+</body>
+</html>

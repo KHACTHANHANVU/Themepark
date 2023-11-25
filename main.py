@@ -584,18 +584,18 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.wfile.write(updated_html.encode())
         elif (urlinfo.path == '/viewcustomers'):
             cust_info = load_customers()
+            print(cust_info)
 
             formated_info = ''
             tuple_number = 0
-            for tuple in cust_info:
+            for cust_tuple in cust_info:
                 formated_info += "<tr>"
-                for value in tuple:
+                for value in cust_tuple:
                     if type(value) == str:
                         value = value.replace("%40", "@")
                     formated_info += f'<td>{value}</td>'
-                formated_info += "<td><a href='/editcust?$tuple"+str(tuple_number)+"'>Edit</a></td>"
-                formated_info += "<td><a href='/delcust?$tuple"+str(tuple_number)+"'>Delete</a></td></tr>"
-                tuple_number += 1
+                formated_info += "<td><a href='/editcust?"+str(cust_tuple[2])+"'>Edit</a></td>"
+                formated_info += "<td><a href='/delcust?"+str(cust_tuple[2])+"'>Delete</a></td></tr>"
 
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -604,7 +604,37 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 html = file.read()
             
             updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
-            self.wfile.write(updated_html.encode())        
+            self.wfile.write(updated_html.encode())
+        elif (urlinfo.path == '/editcust'):
+            customer = load_customers_edit(urlinfo.query)
+            print(customer)
+            
+            first_name = customer[0][0]
+            last_name = customer[0][1]
+            email = customer[0][2] # urlinfo.query
+            pswrd = customer[0][3]
+            phone_num = customer[0][4]
+            last_pass_credit_date = customer[0][0]
+            
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            
+            with open('public/skeleton/editcust.html', 'r') as file:
+                html = file.read()
+
+            template_html = Template(html)
+            updated_html = template_html.substitute(first_name=first_name, last_name=last_name, pswrd=pswrd, email=email,
+                                                    phone_num=phone_num, last_pass_credit_date=last_pass_credit_date)
+            self.wfile.write(updated_html.encode())
+            
+        elif (urlinfo.path == '/delcust'):
+            print(urlinfo.query)
+            del_customer(urlinfo.query)
+            
+            self.send_response(302)
+            self.send_header('Location', '/viewcustomers')
+            self.end_headers()
         elif (urlinfo.path == "/viewrides"):
             ride_info = load_rides()
 
@@ -1013,7 +1043,10 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.send_response(302)
             self.send_header('Location', '/portal')
             self.end_headers()
-        elif (urlinfo.path == "/updateevent"):
+        elif (urlinfo.path == "/updatecust"):
+            ##
+            ##  WORK IN PROGRESS
+            ##
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
             print(data)
 
@@ -1023,13 +1056,28 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             phone_num = re.split("=", split_data[2])[1]
             password = re.split("=", split_data[3])[1]
             phone_num = phone_num.replace("-","")
-            print(first_name, last_name, phone_num, password)
-
-            info = self.headers['Cookie'].split("; ")
-            email_pair = [pair for pair in info if pair.startswith('email=')]
-            email = email_pair[0].split('=')[1]          
+            print(first_name, last_name, phone_num, password)   
+            
+            update_customer()
 
             update_profile(email, first_name, last_name, phone_num, password)
+            self.send_response(302)
+            self.send_header('Location', '/profile')
+            self.end_headers()
+        elif (urlinfo.path == "/updateevent"):
+            data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
+            print(data)
+
+            split_data = re.split("&", data)
+            event_name = re.split("=", split_data[0])[1]
+            manager_id = re.split("=", split_data[1])[1]
+            event_num = re.split("=", split_data[2])[1]
+            event_descrip = re.split("=", split_data[3])[1]
+            start_date = re.split("=", split_data[4])[1]
+            end_date = re.split("=", split_data[5])[1]
+
+            update_event(event_num, event_name, event_descrip, manager_id, start_date, end_date)
+
             self.send_response(302)
             self.send_header('Location', '/profile')
             self.end_headers()
@@ -1099,7 +1147,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             update_staff_level(staff_id, first_name, last_name, phone_num, address, password)
             self.send_response(302)
             self.send_header('Location', '/viewprofilestaff')
-            self.end_headers()            
+            self.end_headers()
 
 
             

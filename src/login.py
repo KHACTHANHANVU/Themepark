@@ -139,6 +139,15 @@ def load_customers():
     result = cursor.fetchall()
     return result
 
+
+def load_customers_edit(email):
+    cursor = mydb.cursor()
+    cursor.execute("""SELECT first_name, last_name, email, pswrd, phone, pass_credits
+                      FROM novapark.customer
+                      WHERE email = '%s';""" % (email,))
+    result = cursor.fetchall()
+    return result
+
 def load_rides():
     cursor = mydb.cursor()
     cursor.execute("""SELECT ride_name, ride_no, is_working, date_of_last_repair
