@@ -155,6 +155,14 @@ def load_rides():
     result = cursor.fetchall()
     return result
 
+def load_rides_cust():
+    cursor = mydb.cursor()
+    cursor.execute("""SELECT ride_name, ride_no
+                      FROM novapark.amusement_ride
+                      WHERE is_working = 1;""")
+    result = cursor.fetchall()
+    return result
+
 def load_hours_worked(staff_id, date):
     print(date)
     cursor = mydb.cursor()

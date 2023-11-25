@@ -616,7 +616,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             updated_html = template_html.substitute(first_name=first_name, last_name=last_name, pswrd=pswrd, email=email,
                                                     phone_num=phone_num, last_pass_credit_date=last_pass_credit_date)
             self.wfile.write(updated_html.encode())
-            
         elif (urlinfo.path == '/delcust'):
             print(urlinfo.query)
             del_customer(urlinfo.query)
@@ -644,7 +643,24 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 html = file.read()
             
             updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
-            self.wfile.write(updated_html.encode())        
+            self.wfile.write(updated_html.encode())
+        elif (urlinfo.path == "/customerviewrides"):
+            ride_info = load_rides_cust()
+
+            formated_info = ''
+            for ride_tuple in ride_info:
+                formated_info += "<tr>"
+                for value in ride_tuple:
+                    formated_info += f'<td>{value}</td>'
+            
+            self.send_response(200)
+            self.send_header("Content-type", 'text/html')
+            self.end_headers()
+            with open('public/skeleton/customerviewrides.html', 'r') as file:
+                html = file.read()
+            
+            updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
+            self.wfile.write(updated_html.encode())
         elif (urlinfo.path == "/viewmgrprofile"):
             info = self.headers['Cookie'].split("; ")
             staff_pair = [pair for pair in info if pair.startswith('staff_id=')]
