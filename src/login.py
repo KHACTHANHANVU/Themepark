@@ -293,6 +293,15 @@ def add_staff(sup_id, first_name, last_name, password, phone_num, address, dob, 
     cursor.execute("""INSERT INTO novapark.staff (first_name, last_name, pswrd, phone_no, addrs, dob, job, hourly_wage, supervisor_id)
                       VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s);""" 
                       % (first_name, last_name, password, phone_num, address, dob, job, hourly_wage, sup_id))
+    mydb.commit()
+    return "Yay"
+
+def add_repair_log(ride_no, date_of_issue, repair_date, repair_cost):
+    cursor = mydb.cursor()
+    cursor.execute("""INSERT INTO novapark.ride_repair (ride_no, date_of_issue, repair_date, repair_cost)
+                      VALUES (%s, '%s', '%s', %s);""" 
+                      % (ride_no, date_of_issue, repair_date, repair_cost))
+    mydb.commit()
     return "Yay"
 
 def add_ride(ride_name):
