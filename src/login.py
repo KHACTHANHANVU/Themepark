@@ -322,6 +322,59 @@ def revenue_report(start_date, end_date):
     
     return result1, result2, result3, wage_expenses
 
+def get_events():
+    cursor = mydb.cursor()
+    cursor.execute("""SELECT event_no, e_name
+                      FROM novapark.events;""")
+    result = cursor.fetchall()
+    return result
+
+def events_report(event_num):
+    
+    cursor = mydb.cursor()
+
+    # Q1: get the info about the event
+    cursor.execute("""SELECT e_name, manager_id, start_date, end_date 
+                                FROM novapark.events
+                                WHERE event_no = %s;""" % (event_num,))
+    result1 = cursor.fetchall()
+    manager_id = result1[0][1]
+    start_date = result1[0][2]
+    end_date = result1[0][3]
+
+    print(start_date, end_date)
+    # Q2: get the number of silver tickets sold during the time frame
+    cursor.execute("""SELECT SUM(num_passes), SUM(sale_cost)
+                                FROM novapark.park_pass
+                                WHERE pass_type = 'Silver' AND date_bought BETWEEN '%s' AND '%s';""" % (start_date, end_date))
+    result2 = cursor.fetchall()
+
+    # Q3: get the number of gold tickets sold during the time frame
+    cursor.execute("""SELECT SUM(num_passes), SUM(sale_cost)
+                                FROM novapark.park_pass
+                                WHERE pass_type = 'Gold' AND date_bought BETWEEN '%s' AND '%s';""" % (start_date, end_date))
+    result3 = cursor.fetchall()
+    
+    # Q4: get the number of platinum tickets sold during the time frame
+    cursor.execute("""SELECT SUM(num_passes), SUM(sale_cost)
+                                FROM novapark.park_pass
+                                WHERE pass_type = 'Platinum' AND date_bought BETWEEN '%s' AND '%s';""" % (start_date, end_date))
+    result4 = cursor.fetchall()
+
+    # Q5: get the name of the manager
+    cursor.execute("""SELECT first_name, last_name
+                                FROM novapark.staff
+                                WHERE staff_id = %s;""" % (manager_id,))
+    result5 = cursor.fetchall()
+    
+    # Q6: get the park revenue over timeframe
+    cursor.execute("""SELECT SUM(revenue)
+                      FROM novapark.business_day
+                      WHERE b_date BETWEEN '%s' AND '%s';""" % (start_date, end_date))
+    result6 = cursor.fetchall()
+
+    return result1, result2, result3, result4, result5, result6
+
 def insert_ticket_purchase(card_first_name, card_last_name, ticket_type, card_number, cvv, exp_month, exp_year, email, num_tickets):
     cost = 0
     ticket_type = ticket_type.capitalize()
