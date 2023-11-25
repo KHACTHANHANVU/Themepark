@@ -53,28 +53,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
-        elif (urlinfo.path == '/editevent'):
-            event = load_event_edit(urlinfo.query)
-            print(event[0])
-            
-            event_no = event[0][0]
-            manager_id = event[0][1]
-            e_name = event[0][2]
-            e_descrip = event[0][3]
-            start_date = event[0][4]
-            end_date = event[0][5]
-            
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-            
-            with open('public/skeleton/editevent.html', 'r') as file:
-                html = file.read()
-            
-            template_html = Template(html)
-            updated_html = template_html.substitute(event_no=event_no, manager_id=manager_id, e_name=e_name, e_descrip=e_descrip,
-                                                    start_date=start_date, end_date=end_date)
-            self.wfile.write(updated_html.encode())
         elif (urlinfo.path == '/editprofile'):
             info = self.headers['Cookie'].split("; ")
             email_pair = [pair for pair in info if pair.startswith('email=')]
@@ -525,13 +503,15 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             event_info = load_events()
 
             formated_info = ''
+            tuple_number = 0
             for event_tuple in event_info:
                 formated_info += "<tr>"
                 print(event_tuple)
                 for value in event_tuple:
                     formated_info += f'<td>{value}</td>'
-                formated_info += "<td><a href='/editevent?"+str(event_tuple[-1])+"'>Edit</a></td>"
-                formated_info += "<td><a href='/delevent?"+str(event_tuple[-1])+"'>Delete</a></td></tr>"
+                formated_info += "<td><a href='/editevent?$"+str(tuple_number)+"'>Edit</a></td>"
+                formated_info += "<td><a href='/delevent?$"+str(tuple_number)+"'>Delete</a></td></tr>"
+                tuple_number += 1
                 
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -731,7 +711,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             # rides_script.generate_report(content['startDate'], content['endDate'])
             print(content['startDate'])
             print(content['endDate'])
-            rides = ride_report(content['startDate'], content['endDate'])
+            rides = rides_report(content['startDate'], content['endDate'])
             print(rides)
         elif (urlinfo.path == '/login'):
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8") 
@@ -960,7 +940,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 html = file.read()
                 template_html = Template(html)
                 updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
-                self.wfile.write(updated_html.encode()) 
+            self.wfile.write(updated_html.encode()) 
 
         elif (urlinfo.path == '/signup'):
             self.send_response(302)
