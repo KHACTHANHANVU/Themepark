@@ -82,7 +82,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 html = file.read()
                 
             template_html = Template(html)
-
             updated_html = template_html.substitute(first_name=first_name, last_name=last_name, phone_num = phone, password = password) # .format(first_name = first_name, last_name = last_name, phone_num = phone, password = password)
             self.wfile.write(updated_html.encode())
         elif (urlinfo.path == "/editprofilemgr"):
@@ -196,28 +195,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             updated_html = template_html.substitute(first_name=first_name, last_name=last_name, job = job, staff_id=urlinfo.query,
                                                     sup_id = sup_id, hourly_wage = hourly_wage)
             self.wfile.write(updated_html.encode())
-        elif (urlinfo.path == '/Entertainment'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/Entertainment.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
-        elif (urlinfo.path == '/feature'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/feature.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
         elif (urlinfo.path == '/loghours'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -342,18 +319,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 first_name = name_pair[0].split('=')[1]
                 file = template_file.substitute(name=first_name.capitalize()).encode('utf-8')
                 self.wfile.write(file)
-
-        elif (urlinfo.path == '/pricing'):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            file = b""
-            try:
-                file = open("public/pricing.html", "rb").read()
-            finally:
-                ...
-            self.wfile.write(file)
         elif (urlinfo.path == '/reservation'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -551,9 +516,9 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             formated_info = ''
             tuple_number = 0
-            for tuple in ride_info:
+            for ride_tuple in ride_info:
                 formated_info += "<tr>"
-                for value in tuple:
+                for value in ride_tuple:
                     formated_info += f'<td>{value}</td>'
                 formated_info += "<td><a href='/editride?$tuple"+str(tuple_number)+"'>Edit</a></td>"
                 formated_info += "<td><a href='/delride?$tuple"+str(tuple_number)+"'>Delete</a></td></tr>"
@@ -564,6 +529,9 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             with open('public/skeleton/viewrides.html', 'r') as file:
                 html = file.read()
+            
+            updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
+            self.wfile.write(updated_html.encode())        
         elif (urlinfo.path == "/viewmgrprofile"):
             info = self.headers['Cookie'].split("; ")
             staff_pair = [pair for pair in info if pair.startswith('staff_id=')]
@@ -604,7 +572,8 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             with open('public/skeleton/viewstaffprofile.html', 'r') as file:
                 html = file.read()
             
-            updated_html = html.replace('<!-- InsertTableHere -->', formated_info)            
+            updated_html = html.replace('<!-- InsertTableHere -->', formated_info)  
+            self.wfile.write(updated_html.encode())          
         elif (urlinfo.path == '/rides_style.css'):
             self.send_response(200)
             self.send_header('Content-type', 'text/css')
