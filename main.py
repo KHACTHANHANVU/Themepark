@@ -830,6 +830,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             split_data = re.split("&", data)
             ride_name = re.split("=", split_data[0])[1]
+            ride_name = ride_name.replace("+", " ")
             print(ride_name)
 
             add_ride(ride_name)
