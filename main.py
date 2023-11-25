@@ -867,6 +867,9 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header("Location", '/manager_portal')
             self.end_headers()
         elif (urlinfo.path == "/addhours"):
+            info = self.headers['Cookie'].split("; ")
+            auth_level_pair = [pair for pair in info if pair.startswith('authorization_level=')]
+            auth_level = auth_level_pair[0].split('=')[1]
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
             print(data)
 
@@ -880,10 +883,13 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             staff_id_pair = [pair for pair in info if pair.startswith('staff_id=')]
             staff_id = staff_id_pair[0].split('=')[1]
             print(staff_id)
-
-            add_hours(staff_id, hours, date)
+            print(auth_level)
+            #add_hours(staff_id, hours, date)
             self.send_response(302)
-            self.send_header("Location", '/staff_portal')
+            if (auth_level == "S"):
+                self.send_header("Location", '/staff_portal')
+            elif (auth_level == "M"):
+                self.send_header("Location", '/manager_portal')
             self.end_headers()            
         elif (urlinfo.path == '/signup'):
             self.send_response(302)
