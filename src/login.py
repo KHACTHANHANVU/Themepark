@@ -193,20 +193,20 @@ def revenue_report(start_date, end_date):
 
     # Q1: get the total revenue and expenses from business day
     cursor.execute("""SELECT SUM(revenue), SUM(expenses)
-                      FROM novapark.business_day
-                      WHERE b_date BETWEEN '%s' AND '%s';""" % (start_date, end_date))
+                      FROM novapark.business_day as b
+                      WHERE b.b_date BETWEEN '%s' AND '%s';""" % (start_date, end_date))
     result1 = cursor.fetchall()
 
     # Q2: get total ticket revenue
     cursor.execute("""SELECT SUM(sale_cost)
-                      FROM novapark.park_pass
-                      WHERE b_date BETWEEN '%s' AND '%s';""" % (start_date, end_date))
+                      FROM novapark.park_pass as p
+                      WHERE p.date_bought BETWEEN '%s' AND '%s';""" % (start_date, end_date))
     result2 = cursor.fetchall()
 
     # Q3: get total expenses from repairs
-    cursor.execute("""SELECT SUM(repair_costs)
-                      FROM novapark.ride_repair
-                      WHERE date_of_issue BETWEEN '%s' AND '%s';""" % (start_date, end_date))
+    cursor.execute("""SELECT SUM(repair_cost)
+                      FROM novapark.ride_repair as r
+                      WHERE r.date_of_issue BETWEEN '%s' AND '%s';""" % (start_date, end_date))
     result3 = cursor.fetchall()
     
     return result1, result2, result3
