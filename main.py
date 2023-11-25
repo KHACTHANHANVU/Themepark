@@ -190,7 +190,29 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 html = file.read()
 
             updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
-            self.wfile.write(updated_html.encode())             
+            self.wfile.write(updated_html.encode())
+        elif (urlinfo.path == '/viewbday'):
+            bday_info = load_bday()
+            
+            formated_info = ''
+            tuple_number = 0
+            for tuple in bday_info:
+                formated_info += "<tr>"
+                for value in tuple:
+                    formated_info += f'<td>{value}</td>'
+                formated_info += "<td><a href='/editbday?" + str(tuple[0]) + "'>Edit</a></td>"
+                formated_info += "<td><a href='/delbeday?" + str(tuple[0]) + "'>Delete</a></td></tr>"
+                tuple_number += 1
+
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            with open('public/skeleton/viewbday.html', 'r') as file:
+                html = file.read()
+
+            updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
+            self.wfile.write(updated_html.encode())                    
         elif (urlinfo.path == '/editstaff'):
             staff_info = load_mgr_edit_staff(urlinfo.query)
             print(staff_info[0])
@@ -390,7 +412,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             file = b""
             try:
-                file = open("public/rides.html", "rb").read()
+                file = open("public/rides_report.html", "rb").read()
             finally:
                 ...
             self.wfile.write(file)
@@ -840,12 +862,15 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             print(data)
 
             split_data = re.split("&", data)
-            date = re.split("&", split_data[0])[1]
+            date = re.split("=", split_data[0])[1]
             revenue = re.split("=", split_data[1])[1]
             expenses = re.split("=", split_data[2])[1]
             print(date, revenue, expenses)
 
-            
+            add_bday(date, revenue, expenses)
+            self.send_response(302)
+            self.send_header("Location", '/manager_portal')
+            self.end_headers()
         elif (urlinfo.path == '/gen_revenue_report'):
             self.send_response(200)
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8") 
@@ -889,7 +914,34 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                                                         total_expenses=total_expenses,
                                                         total_income=total_income)
                 self.wfile.write(updated_html.encode())
+        elif (urlinfo.path == '/gen_rides_report'):
+            data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
+            print(data)
+
+            split_data = re.split("&", data)
+            start_date = re.split("=", split_data[0])[1]
+            end_date = re.split("=", split_data[1])[1]
+            print(start_date, end_date)
+
+            rides_info = rides_report(start_date, end_date)
+
+            formated_info = ''
+            for tuple in rides_info:
+                formated_info += "<tr>"
+                for value in tuple:
+                    formated_info += f'<td>{value}</td>'
+                formated_info += "</tr>"
+
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
             
+            with open('public/skeleton/genrevenuereport.html', 'r') as file:
+                html = file.read()
+                template_html = Template(html)
+                updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
+                self.wfile.write(updated_html.encode()) 
+
         elif (urlinfo.path == '/signup'):
             self.send_response(302)
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8") 

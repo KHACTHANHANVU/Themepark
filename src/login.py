@@ -146,6 +146,14 @@ def load_hours_worked(staff_id, date):
     result = cursor.fetchall()
     return result
 
+def load_bday():
+    cursor = mydb.cursor()
+    cursor.execute("""SELECT *
+                      FROM novapark.business_day
+                      ORDER BY b_date DESC;""")
+    result = cursor.fetchall()
+    return result
+
 def update_profile(email, first_name, last_name, phone_num, password):
     cursor = mydb.cursor()
     cursor.execute("""UPDATE novapark.customer
@@ -171,10 +179,10 @@ def update_staff_level(staff_id, first_name, last_name, phone_num, address, pass
                       WHERE staff_id = '%s';""" % (first_name, last_name, phone_num, address, password, staff_id))
     mydb.commit()
 
-def ride_report(start_date, end_date):
+def rides_report(start_date, end_date):
     cursor = mydb.cursor()
     cursor.execute("""SELECT ar.ride_name, ar.ride_no, ar.date_of_last_repair, 
-                      COALESCE(repair_count, 0) AS times_repaired, COALESCE(total_repair_cost, 0.0)
+                      repair_count, total_repair_cost
                       AS total_cost_of_repairs, ar.is_working
                       FROM novapark.amusement_ride ar
                       LEFT JOIN (
@@ -252,7 +260,6 @@ def insert_ticket_purchase(card_first_name, card_last_name, ticket_type, card_nu
                       % (email, num_tickets, cost, ticket_type, cur_time, card_first_name, card_last_name, card_number, cvv, exp_month, exp_year))
     mydb.commit()
     return "Yay!"
-
 
 def view_tickets(email):
     cursor = mydb.cursor()
@@ -344,11 +351,23 @@ def del_customer(email):
 
 def del_event(event_num):
     cursor = mydb.cursor()
-    #cursor.execute(""";""")
+    #cursor.execute("""DELETE FROM novapark.events
+    #                  WHERE event_no = %s;""" % (event_num,))
     return "Del"
 
 
 def del_ride(ride_no):
     cursor = mydb.cursor()
-    #cursor.execute(""";""")
+    #cursor.execute("""DELETE FROM novapark.amusement_ride
+    #                  WHERE ride_no = %s;""" % (ride_no,))
     return "Del"
+
+def del_bday(date):
+    cursor = mydb.cursor()
+    #cursor.execute("""DELETE FROM novapark.business_day
+    #                  WHERE b_date = '%s';""" % (date,))
+
+def del_hours(date):
+    cursor = mydb.cursor()
+    #cursor.execute("""DELETE FROM novapark.hours_worked
+    #                  WHERE cur_date = '%s';""" % (date,))
