@@ -1013,6 +1013,26 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.send_response(302)
             self.send_header('Location', '/portal')
             self.end_headers()
+        elif (urlinfo.path == "/updateevent"):
+            data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
+            print(data)
+
+            split_data = re.split("&", data)
+            event_num = re.split("=", split_data[0])[1]
+            event_name = re.split("=", split_data[1])[1]
+            phone_num = re.split("=", split_data[2])[1]
+            password = re.split("=", split_data[3])[1]
+            phone_num = phone_num.replace("-","")
+            print(first_name, last_name, phone_num, password)
+
+            info = self.headers['Cookie'].split("; ")
+            email_pair = [pair for pair in info if pair.startswith('email=')]
+            email = email_pair[0].split('=')[1]          
+
+            update_profile(email, first_name, last_name, phone_num, password)
+            self.send_response(302)
+            self.send_header('Location', '/profile')
+            self.end_headers()
         elif (urlinfo.path == "/updateprofile"):
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
             print(data)
