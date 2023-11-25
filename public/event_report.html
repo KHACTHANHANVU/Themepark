@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="rides_style.css">
+    <title>Event Report</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Event Report</h1>
+        <div class="input-box">
+            <form action="/gen_event_report" method="post">
+                <div class="dropdown">
+                    <label for="eventSelect">Select an Event:</label>
+                    <select id="eventSelect" name="event">
+                        <!-- InsertTableHere -->
+                    </select>
+                </div>
+              <br><br>
+                <button type="submit">Generate</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

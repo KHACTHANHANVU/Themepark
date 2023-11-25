@@ -61,3 +61,13 @@ label {
     padding: 5px;
     cursor: pointer;
 }
+
+.dropdown label,
+.dropdown select {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.dropdown select {
+    margin-left: 10px; /* Adjust margin as needed */
+}

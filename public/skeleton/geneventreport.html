@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Event Report</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th, td {
+        border: 1px solid black;
+        padding: 8px;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      .center-align {
+        text-align: center;
+      }
+    </style>
+</head>
+<body>
+  <table>
+    <thead>
+      <tr>
+        <th colspan="3" class='center-align'>$event_name</th>
+      </tr>
+      <tr>
+        <th colspan="3" class='center-align'>Timeframe: $start_date - $end_date</th>
+      </tr>
+      <tr>
+        <th colspan='3' class='center-align'>Manager: $manager_name  Id: $manager_id</th>
+      </tr>
+      <tr>
+        <th></th>
+        <th>Number of Tickets Sold</th>
+        <th>Revenue</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Silver Tickets:</td>
+        <td>$num_silver</td>
+        <td>$silver_revenue</td>
+      </tr>
+      <tr>
+        <td>Gold Tickets:</td>
+        <td>$num_gold</td>
+        <td>$gold_revenue</td>
+      </tr>
+      <tr>
+        <td>Platinum Tickets:</td>
+        <td>$num_platinum</td>
+        <td>$platinum_revenue</td>
+      </tr>
+      <tr>
+        <td>Park:</td>
+        <td>N/A</td>
+        <td>$park_revenue</td>
+      </tr>
+      <tr>
+        <td>Total:</td>
+        <td>$total_tickets</td>
+        <td>$total_revenue</td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>

@@ -449,6 +449,22 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
+        elif (urlinfo.path == '/event_report'):
+            event_info = get_events()
+
+            formated_info = ''
+            for tuple in event_info:
+                    formated_info += f'<option value={tuple[0]}>{tuple[1]}</option>'
+            print(formated_info)
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            with open('public/event_report.html', 'r') as file:
+                html = file.read()
+            
+            updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
+            self.wfile.write(updated_html.encode())       
         elif (urlinfo.path == '/staff_portal'):
             cookie = SimpleCookie()
             cookie.load(self.headers['Cookie'])
@@ -996,7 +1012,55 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 template_html = Template(html)
                 updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
             self.wfile.write(updated_html.encode()) 
+        elif (urlinfo.path == '/gen_event_report'):
+            data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
+            print(data)
 
+            split_data = re.split("&", data)
+            event_num = re.split("=", split_data[0])[1]
+            print(event_num)
+            
+            result1, result2, result3, result4, result5, result6 = events_report(event_num)
+
+            event_name = result1[0][0]
+            mgr_id = result1[0][1]
+            start_date = result1[0][2]
+            end_date = result1[0][3]
+
+            num_silver = result2[0][0] if result2[0][0] else 0
+            silver_revenue = result2[0][1] if result2[0][1] else 0
+
+            num_gold = result3[0][0] if result3[0][0] else 0
+            gold_revenue = result3[0][1] if result3[0][1] else 0
+
+            num_platinum = result4[0][0] if result4[0][0] else 0
+            platinum_revenue = result4[0][1] if result4[0][1] else 0
+
+            mgr_name = result5[0][0].capitalize() + " " + result5[0][1].capitalize()
+
+            park_revenue = result6[0][0] if result6[0][0] else 0
+
+            total_tickets = num_silver + num_gold + num_platinum
+            total_revenue = silver_revenue + gold_revenue + platinum_revenue + park_revenue
+
+            print(event_name, mgr_id, mgr_name, start_date, end_date)
+            print(num_silver, num_gold, num_platinum)
+
+
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            
+            with open('public/skeleton/geneventreport.html', 'r') as file:
+                html = file.read()
+                template_html = Template(html)
+                updated_html = template_html.substitute(event_name = event_name, manager_id = mgr_id, start_date = start_date, 
+                                                        end_date = end_date, num_silver = num_silver, silver_revenue = silver_revenue,
+                                                        num_gold = num_gold, gold_revenue = gold_revenue, num_platinum = num_platinum,
+                                                        platinum_revenue = platinum_revenue, manager_name = mgr_name,
+                                                        park_revenue = park_revenue, total_tickets = total_tickets, total_revenue =
+                                                        total_revenue)
+            self.wfile.write(updated_html.encode())             
         elif (urlinfo.path == '/signup'):
             self.send_response(302)
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8") 
