@@ -67,7 +67,7 @@ CREATE TABLE novapark.ride_injury (
 
 
 CREATE TABLE novapark.amusement_ride (
-	ride_name VARCHAR(12) NOT NULL,
+	ride_name VARCHAR(50) NOT NULL,
     ride_no SMALLINT AUTO_INCREMENT,
     is_working BOOL DEFAULT TRUE,
     date_of_last_repair DATETIME,

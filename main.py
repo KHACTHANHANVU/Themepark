@@ -749,7 +749,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             print(data)
 
             split_data = re.split("&", data)
-            ride_name = re.split("&", split_data[0])[1]
+            ride_name = re.split("=", split_data[0])[1]
             print(ride_name)
 
             add_ride(ride_name)
@@ -761,10 +761,10 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             print(data)
 
             split_data = re.split("&", data)
-            event_name = re.split("&", split_data[0])[1]
-            event_descrip = re.split("&", split_data[1])[1]
-            start_date = re.split("&", split_data[2])[1]
-            end_date = re.split("&", split_data[3])[1]
+            event_name = re.split("=", split_data[0])[1]
+            event_descrip = re.split("=", split_data[1])[1]
+            start_date = re.split("=", split_data[2])[1]
+            end_date = re.split("=", split_data[3])[1]
             print(event_name, event_descrip, start_date, end_date)
 
             info = self.headers['Cookie'].split("; ")
@@ -781,8 +781,8 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             print(data)
 
             split_data = re.split("&", data)
-            hours = re.split("&", split_data[0])[1]
-            date = re.split("&", split_data[1])[1]
+            hours = re.split("=", split_data[0])[1]
+            date = re.split("=", split_data[1])[1]
             print(hours, date)
 
             info = self.headers['Cookie'].split("; ")
