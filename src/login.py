@@ -62,17 +62,26 @@ def load_profile(username):
     cursor = mydb.cursor()
     cursor.execute("""SELECT first_name, last_name, email, phone, pass_credits
                       FROM novapark.customer  
-                      WHERE email = '%s';""" % (username,))
+                      WHERE c.email = '%s';""" % (username,))
     result = cursor.fetchall()
     
+    return result
+
+
+def load_event_edit(event_no):
+    cursor = mydb.cursor()
+    cursor.execute("""SELECT event_no, manager_id, e_name, e_descrip, start_date, end_date
+                      FROM novapark.events as e
+                      WHERE e.event_no = %s;""" % (event_no,))
+    result = cursor.fetchall()
     return result
 
 def load_profile_edit(username):
     print(username)
     cursor = mydb.cursor()
     cursor.execute("""SELECT first_name, last_name, phone, pswrd
-                      FROM novapark.customer  
-                      WHERE email = '%s';""" % (username,))
+                      FROM novapark.customer as c
+                      WHERE c.email = '%s';""" % (username,))
     result = cursor.fetchall()
     return result
 
@@ -111,7 +120,7 @@ def load_staff_edit(username):
 
 def load_events():
     cursor = mydb.cursor()
-    cursor.execute("""SELECT e_name, e_descrip, manager_id, start_date, end_date
+    cursor.execute("""SELECT e_name, e_descrip, manager_id, start_date, end_date, event_no
                       FROM novapark.events;""")
     result = cursor.fetchall()
     return result
