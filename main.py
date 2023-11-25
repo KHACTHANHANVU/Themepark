@@ -884,7 +884,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             staff_id = staff_id_pair[0].split('=')[1]
             print(staff_id)
             print(auth_level)
-            #add_hours(staff_id, hours, date)
+            add_hours(staff_id, hours, date)
             self.send_response(302)
             if (auth_level == "S"):
                 self.send_header("Location", '/staff_portal')
