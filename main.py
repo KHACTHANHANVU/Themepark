@@ -592,7 +592,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                                                     start_date=start_date, end_date=end_date)
             self.wfile.write(updated_html.encode())
         elif (urlinfo.path == '/vieweventsstaff'):
-            event_info = load_events()
+            event_info = load_events_cust()
 
             formated_info = ''
             for event_tuple in event_info:
