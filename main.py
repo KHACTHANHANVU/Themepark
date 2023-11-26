@@ -525,16 +525,15 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.wfile.write(updated_html.encode())
         elif (urlinfo.path == '/editrepairlog'):
             repair_info = load_repair_log_edit(urlinfo.query.split("&")[0],
-                                               urlinfo.query.split("&")[1])
-            print(staff_info[0])
-            repair_date = staff_info[0][0]
-            repair_cost = staff_info[0][1]
-            
+                                               parse.unquote(urlinfo.query.split("&")[1]))
+            print(repair_info[0])
+            repair_date = repair_info[0][0]
+            repair_cost = repair_info[0][1]        
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
             
-            with open('public/skeleton/editstaff.html', 'r') as file:
+            with open('public/skeleton/editrepairlog.html', 'r') as file:
                 html = file.read()
             
             template_html = Template(html)
