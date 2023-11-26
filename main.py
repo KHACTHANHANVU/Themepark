@@ -1325,7 +1325,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             update_hours_worked(staff_id, hours_worked, date)
             self.send_response(302)
-            self.send_header('Location', '/profile')
+            self.send_header('Location', '/manager_portal')
             self.end_headers()
         elif (urlinfo.path == "/updateprofile"):
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
