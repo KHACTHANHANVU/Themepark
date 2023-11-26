@@ -1,50 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Edit Customer</title>
-  <script>
-    function formatPhoneNumber(input) {
-      // Remove all non-numeric characters from the input value
-      var cleaned = input.value.replace(/\D/g, '');
-      
-      // Check if the input length is greater than 10 characters
-      if (cleaned.length > 10) {
-        cleaned = cleaned.slice(0, 10); // Limit input to 10 characters
-      }
-      
-      // Apply the formatting (e.g., XXX-XXX-XXXX)
-      var formattedNumber = '';
-      for (var i = 0; i < cleaned.length; i++) {
-        if (i === 3 || i === 6) {
-          formattedNumber += '-';
+    <meta charset="UTF-8">
+    <title>Edit Customer</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa; /* Set a background color for better visualization */
         }
-        formattedNumber += cleaned[i];
-      }
-      
-      // Set the formatted value back to the input
-      input.value = formattedNumber;
-    }
-  </script>
+
+        .container-form {
+            width: 50%;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px; /* Add some border radius for a nicer look */
+            background-color: #ffffff; /* White background color for the form */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow for a card-like appearance */
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #343a40; /* Dark background color for table head */
+            color: #fff; /* White text color for table head */
+        }
+    </style>
+    <script>
+        function formatPhoneNumber(input) {
+            // Remove all non-numeric characters from the input value
+            var cleaned = input.value.replace(/\D/g, '');
+
+            // Check if the input length is greater than 10 characters
+            if (cleaned.length > 10) {
+                cleaned = cleaned.slice(0, 10); // Limit input to 10 characters
+            }
+
+            // Apply the formatting (e.g., XXX-XXX-XXXX)
+            var formattedNumber = '';
+            for (var i = 0; i < cleaned.length; i++) {
+                if (i === 3 || i === 6) {
+                    formattedNumber += '-';
+                }
+                formattedNumber += cleaned[i];
+            }
+
+            // Set the formatted value back to the input
+            input.value = formattedNumber;
+        }
+    </script>
 </head>
 <body>
-  <h1>Edit Customer</h1>
-  <form action="/updatecust?$email" method="post">
-    <label for="first_name">First Name:</label>
-    <input type="text" id="first_name" name="first_name" value="$first_name" required><br><br>
 
-    <label for="last_name">Last Name:</label>
-    <input type="text" id="last_name" name="last_name" value="$last_name" required><br><br>
+    <!-- Bootstrap Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Manager Dashboard</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <!-- Add your navbar items here if needed -->
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    <label for="pswrd">Password:</label>
-    <input type="text" id="pswrd" name="pswrd" value="$pswrd" required><br><br>
+    <!-- Centered Container for the form -->
+    <div class="container container-form">
+        <h1 class="text-center">Edit Customer</h1>
 
-    <label for="email">Email: $email</label><br><br>
+        <form action="/updatecust?$email" method="post">
+            <label for="first_name">First Name:</label>
+            <input type="text" id="first_name" name="first_name" value="$first_name" required class="form-control"><br><br>
 
-    <label for="phone_num">Phone Number:</label>
-    <input type="tel" id="phone_num" name="phone_num" value ="$phone_num" oninput="formatPhoneNumber(this)" required><br><br>
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name" name="last_name" value="$last_name" required class="form-control"><br><br>
 
-    <input type="submit" value="Submit">
-  </form>
+            <label for="pswrd">Password:</label>
+            <input type="text" id="pswrd" name="pswrd" value="$pswrd" required class="form-control"><br><br>
+
+            <label for="email">Email: $email</label><br><br>
+
+            <label for="phone_num">Phone Number:</label>
+            <input type="tel" id="phone_num" name="phone_num" value="$phone_num" oninput="formatPhoneNumber(this)" required class="form-control"><br><br>
+
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </form>
+    </div>
+
+    <!-- Bootstrap JS (optional, for responsive features) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
