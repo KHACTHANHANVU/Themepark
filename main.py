@@ -1189,8 +1189,8 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             park_revenue = result6[0][0] if result6[0][0] else 0
 
-            total_tickets = num_silver + num_gold + num_platinum
-            total_revenue = silver_revenue + gold_revenue + platinum_revenue + park_revenue
+            total_tickets = float(num_silver) + float(num_gold) + float(num_platinum)
+            total_revenue = float(silver_revenue) + float(gold_revenue) + float(platinum_revenue) + float(park_revenue)
 
             print(event_name, mgr_id, mgr_name, start_date, end_date)
             print(num_silver, num_gold, num_platinum)
