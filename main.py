@@ -512,18 +512,35 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
 
             formated_info = ''
-            for tuple in reapir_info:
+            for repair_tuple in reapir_info:
                 formated_info += '<tr>'
-                for value in tuple:
+                for value in repair_tuple:
                     formated_info += f'<td>{value}</td>'
-                formated_info += "<td><a href='/editrepairlog?"+str(tuple[0])+"'>Edit</a></td>"
+                formated_info += "<td><a href='/editrepairlog?"+str(repair_tuple[0])+"&"+str(repair_tuple[1])+"'>Edit</a></td>"
 
             with open('public/skeleton/viewrepairlogs.html', 'r') as file:
                 html = file.read()
 
             updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
             self.wfile.write(updated_html.encode())
-
+        elif (urlinfo.path == '/editrepairlog'):
+            repair_info = load_repair_log_edit(urlinfo.query.split("&")[0],
+                                               urlinfo.query.split("&")[1])
+            print(staff_info[0])
+            repair_date = staff_info[0][0]
+            repair_cost = staff_info[0][1]
+            
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            
+            with open('public/skeleton/editstaff.html', 'r') as file:
+                html = file.read()
+            
+            template_html = Template(html)
+            updated_html = template_html.substitute(ride_no=urlinfo.query.split("&")[0], date_of_issue=urlinfo.query.split("&")[1],
+                                                    repair_date=repair_date, repair_cost=repair_cost,)
+            self.wfile.write(updated_html.encode())
         elif (urlinfo.path == '/viewtickets'):
             info = self.headers['Cookie'].split("; ")
             email_pair = [pair for pair in info if pair.startswith('email=')]
