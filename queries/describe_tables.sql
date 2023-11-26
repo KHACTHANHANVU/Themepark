@@ -1,3 +1,0 @@
-
-
-DESCRIBE novapark.visitor;
