@@ -711,8 +711,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             email = customer[0][2].replace("%40", "@") # urlinfo.query
             pswrd = customer[0][3]
             phone_num = customer[0][4]
-            last_pass_credit_date = customer[0][0]
-            
+                        
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
@@ -722,7 +721,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             template_html = Template(html)
             updated_html = template_html.substitute(first_name=first_name, last_name=last_name, pswrd=pswrd, email=email,
-                                                    phone_num=phone_num, last_pass_credit_date=last_pass_credit_date)
+                                                    phone_num=phone_num)
             self.wfile.write(updated_html.encode())
         elif (urlinfo.path == '/delcust'):
             print(urlinfo.query)
@@ -1189,8 +1188,8 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             park_revenue = result6[0][0] if result6[0][0] else 0
 
-            total_tickets = num_silver + num_gold + num_platinum
-            total_revenue = silver_revenue + gold_revenue + platinum_revenue + park_revenue
+            total_tickets = float(num_silver) + float(num_gold) + float(num_platinum)
+            total_revenue = float(silver_revenue) + float(gold_revenue) + float(platinum_revenue) + float(park_revenue)
 
             print(event_name, mgr_id, mgr_name, start_date, end_date)
             print(num_silver, num_gold, num_platinum)
@@ -1325,7 +1324,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             update_hours_worked(staff_id, hours_worked, date)
             self.send_response(302)
-            self.send_header('Location', '/profile')
+            self.send_header('Location', '/manager_portal')
             self.end_headers()
         elif (urlinfo.path == "/updateprofile"):
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
@@ -1377,17 +1376,22 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.send_response(302)
             self.send_header('Location', '/viewmgrprofile')
             self.end_headers()
-        elif (urlinfo.path == "/updateride"):
+        elif (urlinfo.path == "/updaterepairlog"):
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
             print(data)
             
             split_data = re.split("&", data)
             repair_date = re.split("=", split_data[0])[1]
             repair_cost =  re.split("=", split_data[1])[1]
-            date_of_last_repair = re.split("=", split_data[2])[1]
 
             ride_no = urlinfo.query.split("&")[0]
-            date_of_issue = urlinfo.query.split("&")[0]
+            date_of_issue = urlinfo.query.split("&")[1]
+            
+            print(parse.unquote(date_of_issue))
+            print(parse.unquote(repair_date))
+            
+            date_of_issue = datetime.strptime(parse.unquote(date_of_issue), '%Y-%m-%d %H:%M:%S')
+            repair_date = datetime.strptime(parse.unquote(repair_date), '%Y-%m-%dT%H:%M')
             
             update_repair_log(ride_no, date_of_issue, repair_date, repair_cost)
             
