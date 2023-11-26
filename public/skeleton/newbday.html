@@ -1,21 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>New Business Day</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container-form {
+            margin-top: 50px;
+            max-width: 600px; /* Adjust the max-width as needed */
+        }
+    </style>
 </head>
 <body>
-<h1>New Business Day</h1>
-<form action="/addbday" method="post">
-    <label for="date">Date:</label><br>
-    <input type="date" id="date" name="date"><br><br>
 
-    <label for="revenue">Revenue</label><br>
-    <input type="text" id="revenue" name="revenue"><br><br>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Manager Dashboard</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    <label for="expenses">Expenses</label><br>
-    <input type="text" id="expenses" name="expenses"><br><br>
+    <div class="container container-form mx-auto">
+        <h1 class="text-center">New Business Day</h1>
 
-    <input type="submit" value="Submit">
-</form>
+        <form action="/addbday" method="post">
+            <label for="date">Date:</label><br>
+            <input type="date" id="date" name="date" class="form-control"><br><br>
+
+            <label for="revenue">Revenue:</label><br>
+            <input type="text" id="revenue" name="revenue" class="form-control"><br><br>
+
+            <label for="expenses">Expenses:</label><br>
+            <input type="text" id="expenses" name="expenses" class="form-control"><br><br>
+
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
