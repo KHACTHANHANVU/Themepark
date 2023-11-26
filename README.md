@@ -4,6 +4,6 @@ This is the official repository for the COSC 3380 Team 3 project. We were asked 
 
 To see this site, go to http://themeparkproject.azurewebsites.net/, or to run it locally, make sure you have Python 3.11 or greater downloaded. It also requires the mysql-connector-python module, which can be installed using pip3.
 
-Run python3 main.py and the website should be up. Go to localhost:8000 to see the website hosted locally.
+Run the main.py file (python3 main.py, python main.py, py main.py) and the website should be up. Go to localhost:8000 to see the website hosted locally.
 
 This branch used a Python backend rather than NodeJS. The reason why was that almost all examples of NodeJS online used the express framework, and given that we couldn't use any frameworks, the first example we found was one using Python.
