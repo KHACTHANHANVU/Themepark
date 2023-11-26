@@ -186,6 +186,15 @@ def load_repair_logs():
     result = cursor.fetchall()
     return result
 
+
+def load_repair_log_edit(ride_no, date):
+    cursor = mydb.cursor()
+    cursor.execute("""SELECT repair_date, repair_cost
+                      FROM novapark.ride_repair
+                      WHERE ride_no = %s AND date_of_issue = '%s'""" % (ride_no, date))
+    result = cursor.fetchall()
+    return result
+
 def load_hours_worked(staff_id, date):
     print(date)
     cursor = mydb.cursor()
