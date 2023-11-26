@@ -227,8 +227,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 formated_info += "<tr>"
                 for value in b_tuple:
                     formated_info += f'<td>{value}</td>'
-                formated_info += "<td><a href='/editbday?" + str(b_tuple[0]) + "'>Edit</a></td>"
-                formated_info += "<td><a href='/delbday?" + str(b_tuple[0]) + "'>Delete</a></td></tr>"
 
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -236,7 +234,9 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             with open('public/skeleton/viewbday.html', 'r') as file:
                 html = file.read()
-                self.wfile.write(html.encode())
+
+            updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
+            self.wfile.write(updated_html.encode())    
         elif (urlinfo.path == '/editbday'):
             bday_info = edit_bday(urlinfo.query)
             
@@ -593,7 +593,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.wfile.write(updated_html.encode())
         elif (urlinfo.path == '/delevent'):
             print(urlinfo.query)
-            del_customer(urlinfo.query)
+            del_event(urlinfo.query)
             
             self.send_response(302)
             self.send_header('Location', '/manager_portal')
