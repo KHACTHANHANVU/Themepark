@@ -8,8 +8,9 @@
   <h1>Edit Ride #$ride_no</h1>
   <form action="/updateride?$ride_no" method="post">
     <label for="ride_name">Ride Name</label>
-    <input type="date" id="ride_name" name="ride_name" value="$ride_name" required readonly><br><br>
+    <input type="text" id="ride_name" name="ride_name" value="$ride_name" required><br><br>
 
+    <label for="is_working">Is Working</label>
     <select id="is_working" name="is_working">
         <option value="true">true</option>
         <option value="false">false</option>
