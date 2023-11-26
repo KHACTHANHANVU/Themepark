@@ -760,6 +760,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             is_working = ride[0][1]
             date_of_last_repair = ride[0][2]
             
+
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
@@ -1035,7 +1036,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             event_descrip = re.split("=", split_data[1])[1]
             start_date = re.split("=", split_data[2])[1]
             end_date = re.split("=", split_data[3])[1]
-            
+
             event_name = event_name.replace("+", " ")
             event_descrip = event_descrip.replace("+", " ")
             
@@ -1409,7 +1410,9 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             is_working = 1 if re.split("=", split_data[1])[1] == "true" else 0
             date_of_last_repair = re.split("=", split_data[2])[1]
 
+            date_of_last_repair = datetime.strptime(parse.unquote(date_of_last_repair), '%Y-%m-%dT%H:%M')
             ride_no = urlinfo.query
+            ride_name = ride_name.replace("+", " ")
 
             update_ride(ride_no, ride_name, is_working, date_of_last_repair)
             self.send_response(302)
