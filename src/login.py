@@ -236,11 +236,11 @@ def update_staff_level(staff_id, first_name, last_name, sup_id, job, hourly_wage
                       WHERE staff_id = %s;""" % (first_name, last_name, sup_id, job, hourly_wage, staff_id))
     mydb.commit()
 
-def update_hours_worked(staff_id, hours_worked):
+def update_hours_worked(staff_id, hours_worked, cur_date):
     cursor = mydb.cursor()
     cursor.execute("""UPDATE novapark.hours_worked
                       SET num_hours = %s
-                      WHERE staff_id = %s;""" % (hours_worked, staff_id))
+                      WHERE staff_id = %s and cur_date = '%s';""" % (hours_worked, staff_id, cur_date))
     mydb.commit()
 
 def update_repair_log(ride_no, date_of_issue, repair_date, repair_cost):
@@ -516,8 +516,8 @@ def del_bday(date):
                       WHERE b_date = '%s';""" % (date,))
     mydb.commit()
 
-def del_hours(date):
+def del_hours(date, staff_id):
     cursor = mydb.cursor()
     cursor.execute("""DELETE FROM novapark.hours_worked
-                       WHERE cur_date = '%s';""" % (date,))
+                       WHERE cur_date = '%s' and staff_id = '%s';""" % (date, staff_id))
     mydb.commit()

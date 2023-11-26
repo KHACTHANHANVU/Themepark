@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>New Ride Information</title>
+    <title>Edit Hours Information</title>
 </head>
 <body>
 <h1>Edit Hours Worked on $date</h1>
-<form action="/updatehours" method="post">
+<form action="/updatehours?$date" method="post">
     <label for="hours">Hours</label>
     <input type="text" id="hours" name="hours" value=$hours_worked><br><br>
 

@@ -190,16 +190,17 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             staff_info = view_hours_worked(staff_id)
             print(staff_info)
-            
+                        
             formated_info = ''
             for hours_tuple in staff_info:
                 formated_info += "<tr>"
                 for value in hours_tuple:
                     formated_info += f'<td>{value}</td>'
-                '''
-                formated_info += "<td><a href='/edithours?" + str(tuple[0]) + "'>Edit</a></td>"
-                formated_info += "<td><a href='/delhours?" + str(tuple[0]) + "'>Delete</a></td></tr>"
-                '''
+                
+                formated_info += "<td><a href='/edithours?" + str(hours_tuple[0]) + "'>Edit</a></td>"
+                formated_info += "<td><a href='/delhours?" + str(hours_tuple[0]) + "'>Delete</a></td></tr>"
+                
+            print(formated_info)
 
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -210,6 +211,16 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
             self.wfile.write(updated_html.encode())
+        elif (urlinfo.path == '/delhours'):
+            date = urlinfo.query
+            info = self.headers['Cookie'].split("; ")
+            staff_pair = [pair for pair in info if pair.startswith('staff_id=')]
+            staff_id = staff_pair[0].split('=')[1]
+            del_hours(date, staff_id)
+            
+            self.send_response(302)
+            self.send_header('Location', '/manager_portal')
+            self.end_headers()
         elif (urlinfo.path == '/viewbday'):
             bday_info = load_bday()
             
@@ -219,7 +230,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 for value in b_tuple:
                     formated_info += f'<td>{value}</td>'
                 formated_info += "<td><a href='/editbday?" + str(b_tuple[0]) + "'>Edit</a></td>"
-                formated_info += "<td><a href='/delbeday?" + str(b_tuple[0]) + "'>Delete</a></td></tr>"
+                formated_info += "<td><a href='/delbday?" + str(b_tuple[0]) + "'>Delete</a></td></tr>"
 
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -248,9 +259,10 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             
         elif (urlinfo.path == '/edithours'):
             date = urlinfo.query
-            info = self.headers['Cookie'].split("; ")
-            staff_pair = [pair for pair in info if pair.startswith('staff_id=')]
-            staff_id = staff_pair[0].split('=')[1]
+            cookie = SimpleCookie()
+            cookie.load(self.headers['Cookie'])
+            
+            staff_id = cookie["staff_id"].output().split("=")[1]
             staff_info = load_hours_worked(staff_id, date)
 
             hours_worked = staff_info[0][0]
@@ -259,10 +271,11 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header('Content-type', 'text/html')
             with open('public/skeleton/edithours.html', 'r') as file:
                 html = file.read()
-
-            template_html = Template(html)
-            updated_html = template_html.substitute(date = date, hours_worked = hours_worked)
-            self.wfile.write(updated_html.encode())
+                template_html = Template(html)
+                updated_html = template_html.substitute(date = date, hours_worked = hours_worked)
+                self.wfile.write(updated_html.encode())
+            self.end_headers()
+            
         elif (urlinfo.path == '/loghours'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -434,7 +447,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             formated_info = ''
             for tuple in event_info:
                     formated_info += f'<option value={tuple[0]}>{tuple[1]}</option>'
-            print(formated_info)
+
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
@@ -588,9 +601,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                     formated_info += f'<td>{value}</td>'
                 formated_info += "<td><a href='/editstaff?"+str(staff_tuple[2])+"'>Edit</a></td>"
                 formated_info += "<td><a href='/delstaff?"+str(staff_tuple[2])+"'>Delete</a></td></tr>"
-            
-            print(formated_info)
-            
+                        
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
@@ -626,7 +637,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.send_response(302)
             self.send_header('Location', '/manager_portal')
             self.end_headers()
-            ...
+            
         elif (urlinfo.path == '/viewcustomers'):
             cust_info = load_customers()
             print(cust_info)
@@ -728,7 +739,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 for value in tuple:
                     formated_info += f'<td>{value}</td>'
             
-            print(formated_info)
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
@@ -749,7 +759,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 for value in tuple:
                     formated_info += f'<td>{value}</td>'
             
-            print(formated_info)
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
@@ -1214,6 +1223,21 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             self.send_response(302)
             self.send_header('Location', '/viewevents')
+            self.end_headers()
+        elif (urlinfo.path == "/updatehours"):
+            data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
+            print(data)
+            cookie = SimpleCookie()
+            cookie.load(self.headers['Cookie'])
+            
+            staff_id = cookie["staff_id"].output().split("=")[1]
+            date = urlinfo.query
+            hours_worked = re.split("=", data)[1]            
+            print(staff_id, date, hours_worked)
+
+            update_hours_worked(staff_id, hours_worked, date)
+            self.send_response(302)
+            self.send_header('Location', '/profile')
             self.end_headers()
         elif (urlinfo.path == "/updateprofile"):
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
