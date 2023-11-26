@@ -708,6 +708,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 formated_info += "<tr>"
                 for value in ride_tuple:
                     formated_info += f'<td>{value}</td>'
+                formated_info += "</tr>"
             
             self.send_response(200)
             self.send_header("Content-type", 'text/html')
@@ -717,6 +718,24 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             
             updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
             self.wfile.write(updated_html.encode())
+        elif (urlinfo.path == "/customerviewevents"):
+            event_info = load_events_cust()
+
+            formated_info = ''
+            for event_tuple in event_info:
+                formated_info += "<tr>"
+                for value in event_tuple:
+                    formated_info += f'<td>{value}</td>'
+                formated_info += "</tr>"
+
+            self.send_response(200)
+            self.send_header("Content-type", 'text/html')
+            self.end_headers()
+            with open('public/skeleton/customerviewevents.html', 'r') as file:
+                html = file.read()
+            
+            updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
+            self.wfile.write(updated_html.encode())           
         elif (urlinfo.path == "/viewmgrprofile"):
             info = self.headers['Cookie'].split("; ")
             staff_pair = [pair for pair in info if pair.startswith('staff_id=')]
