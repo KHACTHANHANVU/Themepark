@@ -711,8 +711,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             email = customer[0][2].replace("%40", "@") # urlinfo.query
             pswrd = customer[0][3]
             phone_num = customer[0][4]
-            last_pass_credit_date = customer[0][0]
-            
+                        
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
@@ -722,7 +721,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             template_html = Template(html)
             updated_html = template_html.substitute(first_name=first_name, last_name=last_name, pswrd=pswrd, email=email,
-                                                    phone_num=phone_num, last_pass_credit_date=last_pass_credit_date)
+                                                    phone_num=phone_num)
             self.wfile.write(updated_html.encode())
         elif (urlinfo.path == '/delcust'):
             print(urlinfo.query)
