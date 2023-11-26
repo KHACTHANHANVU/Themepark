@@ -591,6 +591,13 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             updated_html = template_html.substitute(event_no=event_no, manager_id=manager_id, e_name=e_name, e_descrip=e_descrip,
                                                     start_date=start_date, end_date=end_date)
             self.wfile.write(updated_html.encode())
+        elif (urlinfo.path == '/delevent'):
+            print(urlinfo.query)
+            del_customer(urlinfo.query)
+            
+            self.send_response(302)
+            self.send_header('Location', '/manager_portal')
+            self.end_headers()
         elif (urlinfo.path == '/vieweventsstaff'):
             event_info = load_events_cust()
 
@@ -717,8 +724,8 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 formated_info += "<tr>"
                 for value in ride_tuple:
                     formated_info += f'<td>{value}</td>'
-                formated_info += "<td><a href='/editride?$tuple"+str(tuple_number)+"'>Edit</a></td>"
-                formated_info += "<td><a href='/delride?$tuple"+str(tuple_number)+"'>Delete</a></td></tr>"
+                formated_info += "<td><a href='/editride?"+str(ride_tuple[1])+"'>Edit</a></td>"
+                formated_info += "<td><a href='/delride?"+str(ride_tuple[1])+"'>Delete</a></td></tr>"
                 tuple_number += 1
             
             self.send_response(200)
@@ -729,6 +736,31 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             
             updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
             self.wfile.write(updated_html.encode())
+        elif (urlinfo.path == "/editride"):
+            ride = load_rides_edit(urlinfo.query)
+            print(ride)
+            
+            ride_name = ride[0][0]
+            is_working = ride[0][1]
+            date_of_last_repair = ride[0][2]
+            
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            
+            with open('public/skeleton/editride.html', 'r') as file:
+                html = file.read()
+            
+            template_html = Template(html)
+            updated_html = template_html.substitute(ride_no=urlinfo.query, ride_name=ride_name,
+                                                    date_of_last_repair=date_of_last_repair)
+            self.wfile.write(updated_html.encode())
+        elif (urlinfo.path == "/delride"):
+            del_ride(urlinfo.query)
+            
+            self.send_response(302)
+            self.send_header('Location', '/manager_portal')
+            self.end_headers()
         elif (urlinfo.path == "/customerviewrides"):
             ride_info = load_rides_cust()
 
@@ -1328,6 +1360,21 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             update_mgr_level(staff_id, first_name, last_name, phone_num, address, sup_id, password, hourly_wage, dob, job)
             self.send_response(302)
             self.send_header('Location', '/viewmgrprofile')
+            self.end_headers()
+        elif (urlinfo.path == "/updateride"):
+            data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
+            print(data)
+            
+            split_data = re.split("&", data)
+            ride_name = re.split("=", split_data[0])[1]
+            is_working = 1 if re.split("=", split_data[1])[1] == "true" else 0
+            date_of_last_repair = re.split("=", split_data[2])[1]
+
+            ride_no = urlinfo.query
+
+            update_ride(ride_no, ride_name, is_working, date_of_last_repair)
+            self.send_response(302)
+            self.send_header('Location', '/manager_portal')
             self.end_headers()
         elif (urlinfo.path == "/updatestaff"):
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")

@@ -170,6 +170,15 @@ def load_rides_cust():
     result = cursor.fetchall()
     return result
 
+def load_rides_edit(ride_no):
+    cursor = mydb.cursor()
+    cursor.execute("""SELECT ride_name, IF (is_working, "TRUE", "FALSE"), date_of_last_repair
+                      FROM novapark.amusement_ride
+                      WHERE ride_no = %s;""" % (ride_no))
+    result = cursor.fetchall()
+    return result
+
+
 def load_repair_logs():
     cursor = mydb.cursor()
     cursor.execute("""SELECT *
