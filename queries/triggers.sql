@@ -13,15 +13,11 @@ BEGIN
 
     IF (DATEDIFF(NEW.date_bought, last_credit_date) >= 30 OR last_credit_date IS NULL) THEN
 
-        SELECT SUM(park.num_passes) INTO total_passes
+        SELECT COALESCE(SUM(park.num_passes), 0) INTO total_passes
         FROM novapark.park_pass AS park
         WHERE NEW.cust_email = park.cust_email AND park.date_bought BETWEEN last_credit_date AND NEW.date_bought;
-
-        IF (total_passes = NONE) THEN
-            total_passes = 0;
-        END IF;
         
-        IF (total_passes + NEW.num_passes) > 10 THEN
+        IF (total_passes + NEW.num_passes > 10) THEN
             UPDATE novapark.customer AS cs
             SET cs.last_pass_credit_date = NEW.date_bought, cs.pass_credits = cs.pass_credits + 10 
             WHERE NEW.cust_email = cs.email;
