@@ -1,30 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Edit Staff</title>
+    <meta charset="UTF-8">
+    <title>Edit Event #$event_no</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa; 
+        }
+
+        .container-form {
+            width: 50%;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px; 
+            background-color: #ffffff; 
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+        }
+    </style>
 </head>
 <body>
-  <h1>Edit Event #$event_no</h1>
-  <form action="/updateevent?$event_no" method="post">
-    <label for="e_name">Event Name:</label>
-    <input type="text" id="e_name" name="e_name" value="$e_name" required><br><br>
 
-    <label for="manager_id">manager ID:</label>
-    <input type="text" id="manager_id" name="manager_id" value="$manager_id" required><br><br>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Manager Dashboard</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    <label for="event_no">Event Number: $event_no</label><br><br>
+    <div class="container container-form">
+        <h1 class="text-center">Edit Event</h1>
 
-    <label for="e_descrip">Event Description:</label>
-    <textarea type="text" id="e_descrip" name="e_descrip" rows="4" cols="50" maxlength="200" required>$e_descrip</textarea> <br><br>
+        <form action="/updateevent?$event_no" method="post">
+            <label for="e_name">Event Name:</label>
+            <input type="text" id="e_name" name="e_name" value="$e_name" required class="form-control"><br><br>
 
-    <label for="start_date">Start Date:</label><br>
-    <input type="date" id="start_date" name="start_date" value="$start_date"><br><br>
+            <label for="manager_id">Manager ID:</label>
+            <input type="text" id="manager_id" name="manager_id" value="$manager_id" required class="form-control"><br><br>
 
-    <label for="end_date">End Date:</label><br>
-    <input type="date" id="end_date" name="end_date" value="$end_date"><br><br>
+            <label for="event_no">Event Number: $event_no</label><br><br>
 
-    <input type="submit" value="Submit">
-  </form>
+            <label for="e_descrip">Event Description:</label>
+            <textarea type="text" id="e_descrip" name="e_descrip" rows="4" cols="50" maxlength="200" required class="form-control">$e_descrip</textarea> <br><br>
+
+            <label for="start_date">Start Date:</label><br>
+            <input type="date" id="start_date" name="start_date" value="$start_date" class="form-control"><br><br>
+
+            <label for="end_date">End Date:</label><br>
+            <input type="date" id="end_date" name="end_date" value="$end_date" class="form-control"><br><br>
+
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
