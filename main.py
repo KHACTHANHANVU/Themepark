@@ -164,28 +164,47 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             info = self.headers['Cookie'].split("; ")
             staff_id_pair = [pair for pair in info if pair.startswith('staff_id=')]
             staff_id = staff_id_pair[0].split("=")[1]
+            auth_level_pair = [pair for pair in info if pair.startswith('authorization_level=')]
+            auth_level = auth_level_pair[0].split("=")[1]
             print(staff_id)
 
             staff_info = view_hours_worked(staff_id)
             print(staff_info)
                         
-            formated_info = ''
-            for hours_tuple in staff_info:
-                formated_info += "<tr>"
-                for value in hours_tuple:
-                    formated_info += f'<td>{value}</td>'
-                
-                formated_info += "<td><a href='/edithours?" + str(hours_tuple[0]) + "'>Edit</a></td>"
-                formated_info += "<td><a href='/delhours?" + str(hours_tuple[0]) + "'>Delete</a></td></tr>"
-                
-            print(formated_info)
 
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
+            if auth_level == 'M':
+                formated_info = ''
+                for hours_tuple in staff_info:
+                    formated_info += "<tr>"
+                    for value in hours_tuple:
+                        formated_info += f'<td>{value}</td>'
+                    
+                    formated_info += "<td><a href='/edithours?" + str(hours_tuple[0]).replace("-","_") + "'>Edit</a></td>"
+                    formated_info += "<td><a href='/delhours?" + str(hours_tuple[0]).replace("-","_") + "'>Delete</a></td></tr>"
+                
+                print(formated_info)
 
-            with open('public/skeleton/viewhoursworked.html', 'r') as file:
-                html = file.read()
+                self.send_response(200)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+                with open('public/skeleton/viewhoursworkedmgr.html', 'r') as file:
+                    html = file.read()
+            else:
+                formated_info = ''
+                for hours_tuple in staff_info:
+                    formated_info += "<tr>"
+                    for value in hours_tuple:
+                        formated_info += f'<td>{value}</td>'
+                    formated_info += "</tr>"
+                
+                print(formated_info)
+
+                self.send_response(200)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+                with open('public/skeleton/viewhoursworked.html', 'r') as file:
+                    html = file.read()
+
 
             updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
             self.wfile.write(updated_html.encode())
