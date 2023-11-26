@@ -125,6 +125,13 @@ def load_events():
     result = cursor.fetchall()
     return result
 
+def load_events_cust():
+    cursor = mydb.cursor()
+    cursor.execute("""SELECT e_name, e_descrip, start_date, end_date
+                      FROM novapark.events""")
+    result = cursor.fetchall()
+    return result
+
 def load_staff():
     cursor = mydb.cursor()
     cursor.execute("""SELECT first_name, last_name, staff_id, pswrd, phone_no, addrs, dob, supervisor_id, job, hourly_wage
