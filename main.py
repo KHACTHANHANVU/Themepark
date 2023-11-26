@@ -1336,12 +1336,9 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             first_name = re.split("=", split_data[0])[1]
             last_name = re.split("=", split_data[1])[1]
             phone_num = re.split("=", split_data[2])[1]
-            address = re.split("=", split_data[3])[1]
-            sup_id = re.split("=", split_data[4])[1]
-            dob = re.split("=", split_data[5])[1]
-            job = re.split("=", split_data[6])[1]
-            hourly_wage = re.split("=", split_data[7])[1]
-            password = re.split("=", split_data[8])[1]
+            password = re.split("=", split_data[3])[1]
+            
+            phone_num = phone_num.replace("-", "")
             print(first_name, last_name, phone_num, password)
 
             info = self.headers['Cookie'].split("; ")
@@ -1350,7 +1347,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             update_profile(email, first_name, last_name, phone_num, password)
             self.send_response(302)
-            self.send_header('Location', '/profile')
+            self.send_header('Location', '/portal')
             self.end_headers()
         elif (urlinfo.path == "/updatemgr"):
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
