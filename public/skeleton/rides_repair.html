@@ -1,28 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Log in new repair</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Log in new repair</title>
+   
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container-form {
+            margin-top: 50px;
+            max-width: 600px; 
+        }
+    </style>
 </head>
 <body>
 
-  <h1>Log ride to repair</h1>
 
-  <form action="/addrepairlog" method="post">
-    <label for="ride_no">Ride Number:</label><br>
-    <input type="text" id="ride_no" name="ride_no"><br><br>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Repair Log Management</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                  
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    <label for="date_of_issue">Date of Issue:</label><br>
-    <input type="datetime-local" id="date_of_issue" name="date_of_issue" value="2023-11-25T00:00"><br><br>
+    <div class="container container-form mx-auto">
+        <h1 class="text-center">Log Ride to Repair</h1>
 
-    <label for="repair_date">Repair Date:</label><br>
-    <input type="datetime-local" id="repair_date" name="repair_date" value="2023-11-25T00:00"><br><br>
+        <form action="/addrepairlog" method="post">
+            <label for="ride_no">Ride Number:</label><br>
+            <input type="text" id="ride_no" name="ride_no" class="form-control"><br><br>
 
-    <label for="repair_cost">Repair Cost:</label><br>
-    <input type="text" id="repair_cost" name="repair_cost"><br><br>
+            <label for="date_of_issue">Date of Issue:</label><br>
+            <input type="datetime-local" id="date_of_issue" name="date_of_issue" value="2023-11-25T00:00" class="form-control"><br><br>
 
-    <input type="submit" value="Submit">
-  </form>
+            <label for="repair_date">Repair Date:</label><br>
+            <input type="datetime-local" id="repair_date" name="repair_date" value="2023-11-25T00:00" class="form-control"><br><br>
 
+            <label for="repair_cost">Repair Cost:</label><br>
+            <input type="text" id="repair_cost" name="repair_cost" class="form-control"><br><br>
+
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </form>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
