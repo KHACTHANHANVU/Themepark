@@ -497,7 +497,7 @@ def del_staff(staff_id):
 
 def del_customer(email):
     cursor = mydb.cursor()
-    cursor.execute("""DELETE FROM novpark.customer
+    cursor.execute("""DELETE FROM novapark.customer
                       WHERE email = '%s';""" % (email,))
     mydb.commit()
     return "Del"

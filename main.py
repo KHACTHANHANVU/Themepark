@@ -6,6 +6,7 @@ from src.login import *
 import json
 from http.cookies import SimpleCookie
 from string import Template
+from datetime import datetime
 
 PORT = 8000
 
@@ -516,7 +517,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 for value in tuple:
                     formated_info += f'<td>{value}</td>'
                 formated_info += "<td><a href='/editrepairlog?"+str(tuple[0])+"'>Edit</a></td>"
-                formated_info += "<td><a href='/delrepairlog??"+str(tuple[0])+"'>Delete</a></td></tr>"
 
             with open('public/skeleton/viewrepairlogs.html', 'r') as file:
                 html = file.read()
@@ -951,9 +951,12 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             split_data = re.split("&", data)
             ride_no = re.split("=", split_data[0])[1]
-            date_of_issue = re.split("=", split_data[1])[1]
-            repair_date = re.split("=", split_data[2])[1]
+            date_of_issue_str = re.split("=", split_data[1])[1]
+            repair_date_str = re.split("=", split_data[2])[1]
             repair_cost = re.split("=", split_data[3])[1]
+
+            date_of_issue = datetime.strptime(parse.unquote(date_of_issue_str), '%Y-%m-%dT%H:%M')
+            repair_date = datetime.strptime(parse.unquote(repair_date_str), '%Y-%m-%dT%H:%M')
 
             add_repair_log(ride_no, date_of_issue, repair_date, repair_cost)
             self.send_response(302)
