@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Ride</title>
+</head>
+<body>
+  <h1>Edit Ride #$ride_no</h1>
+  <form action="/updateride?$ride_no" method="post">
+    <label for="ride_name">Ride Name</label>
+    <input type="date" id="ride_name" name="ride_name" value="$ride_name" required readonly><br><br>
+
+    <select id="is_working" name="is_working">
+        <option value="true">true</option>
+        <option value="false">false</option>
+      </select><br><br>
+
+    <label for="date_of_last_repair">Date of Last Repair</label>
+    <input type="date" id="date_of_last_repair" name="date_of_last_repair" value ="$date_of_last_repair"required><br><br>
+
+    <input type="submit" value="Submit">
+  </form>
+</body>
+</html>

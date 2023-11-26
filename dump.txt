@@ -37,7 +37,7 @@ CREATE TABLE `amusement_ride` (
 
 LOCK TABLES `amusement_ride` WRITE;
 /*!40000 ALTER TABLE `amusement_ride` DISABLE KEYS */;
-INSERT INTO `amusement_ride` VALUES ('The+Amazing+Rollercoaster',3,1,NULL),('Pretty Nice Carousel',4,0,'2023-11-30 00:00:00');
+INSERT INTO `amusement_ride` VALUES ('The Amazing Rollercoaster',3,1,NULL),('Pretty Nice Carousel',4,0,'2023-11-30 00:00:00');
 /*!40000 ALTER TABLE `amusement_ride` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -123,7 +123,7 @@ CREATE TABLE `events` (
 
 LOCK TABLES `events` WRITE;
 /*!40000 ALTER TABLE `events` DISABLE KEYS */;
-INSERT INTO `events` VALUES (3,100,'Christmas%252BSpecial','The Christmas Special is an event hosted by novapark.','2023-11-20','2023-11-27'),(4,102,'Test Event','Lots of fun','2023-11-15','2023-11-30');
+INSERT INTO `events` VALUES (3,100,'Christmas Special','The Christmas Special is an event hosted by novapark.','2023-11-20','2023-11-27'),(4,102,'Test Event','Lots of fun','2023-11-15','2023-11-30');
 /*!40000 ALTER TABLE `events` ENABLE KEYS */;
 UNLOCK TABLES;
 
