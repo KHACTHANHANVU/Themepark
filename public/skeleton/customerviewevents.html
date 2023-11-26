@@ -4,33 +4,52 @@
   <meta charset="UTF-8">
   <title>Customer View Events</title>
   <style>
+    body {
+        background: url('https://i.postimg.cc/3xSph0j4/amusement-park-blue-sky-carnival-2884693.jpg') no-repeat center center fixed;
+        background-size: cover;
+    }
+    .table-container {
+      width: 50%;
+      margin: 20px auto; 
+    }
+
     table {
       border-collapse: collapse;
       width: 100%;
+      table-layout: fixed; 
+      margin-top: 70px;
     }
+
     th, td {
-      border: 1px solid black;
+      border: 1px solid rgb(11, 11, 11);
       padding: 8px;
       text-align: left;
+      overflow: hidden; 
+      white-space: nowrap; 
+      text-overflow: ellipsis; 
     }
+
     th {
-      background-color: #f2f2f2;
+      background-color: #e9e3e3; 
+      color: rgb(0, 0, 0); 
     }
   </style>
 </head>
 <body>
-  <table>
-    <thead>
-      <tr>
-        <th>Event Name</th>
-        <th>Event Description</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-      </tr>
-    </thead>
-    <tbody>
-        <!-- InsertTableHere -->
-    </tbody>
-  </table>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 25%;">Event Name</th>
+          <th style="width: 25%;">Event Description</th>
+          <th style="width: 25%;">Start Date</th>
+          <th style="width: 25%;">End Date</th>
+        </tr>
+      </thead>
+      <tbody>
+          <!-- InsertTableHere -->
+      </tbody>
+    </table>
+  </div>
 </body>
 </html>
