@@ -52,28 +52,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             finally:
                 ...
             self.wfile.write(file)
-        elif (urlinfo.path == '/editevent'):
-            event = load_event_edit(urlinfo.query)
-            print(event[0])
-
-            event_no = event[0][0]
-            manager_id = event[0][1]
-            e_name = event[0][2]
-            e_descrip = event[0][3]
-            start_date = event[0][4]
-            end_date = event[0][5]
-
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-
-            with open('public/skeleton/editevent.html', 'r') as file:
-                html = file.read()
-
-            template_html = Template(html)
-            updated_html = template_html.substitute(event_no=event_no, manager_id=manager_id, e_name=e_name, e_descrip=e_descrip,
-                                                    start_date=start_date, end_date=end_date)
-            self.wfile.write(updated_html.encode())
         elif (urlinfo.path == '/editprofile'):
             info = self.headers['Cookie'].split("; ")
             email_pair = [pair for pair in info if pair.startswith('email=')]
@@ -269,12 +247,12 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
 
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
+            self.end_headers()
             with open('public/skeleton/edithours.html', 'r') as file:
                 html = file.read()
                 template_html = Template(html)
                 updated_html = template_html.substitute(date = date, hours_worked = hours_worked)
                 self.wfile.write(updated_html.encode())
-            self.end_headers()
             
         elif (urlinfo.path == '/loghours'):
             self.send_response(200)
@@ -572,6 +550,28 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             
             updated_html = html.replace('<!-- InsertTableHere -->', formated_info)
             self.wfile.write(updated_html.encode())
+        elif (urlinfo.path == '/editevent'):
+            event = load_event_edit(urlinfo.query)
+            print(event[0])
+
+            event_no = event[0][0]
+            manager_id = event[0][1]
+            e_name = event[0][2]
+            e_descrip = event[0][3]
+            start_date = event[0][4]
+            end_date = event[0][5]
+
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            with open('public/skeleton/editevent.html', 'r') as file:
+                html = file.read()
+
+            template_html = Template(html)
+            updated_html = template_html.substitute(event_no=event_no, manager_id=manager_id, e_name=e_name, e_descrip=e_descrip,
+                                                    start_date=start_date, end_date=end_date)
+            self.wfile.write(updated_html.encode())
         elif (urlinfo.path == '/vieweventsstaff'):
             event_info = load_events()
 
@@ -637,7 +637,6 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.send_response(302)
             self.send_header('Location', '/manager_portal')
             self.end_headers()
-            
         elif (urlinfo.path == '/viewcustomers'):
             cust_info = load_customers()
             print(cust_info)
