@@ -572,8 +572,8 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                 print(event_tuple)
                 for value in event_tuple:
                     formated_info += f'<td>{value}</td>'
-                formated_info += "<td><a href='/editevent?"+str(event_tuple[-1])+"'>Edit</a></td>"
-                formated_info += "<td><a href='/delevent?"+str(event_tuple[-1])+"'>Delete</a></td></tr>"
+                formated_info += "<td><a href='/editevent?"+str(event_tuple[1])+"'>Edit</a></td>"
+                formated_info += "<td><a href='/delevent?"+str(event_tuple[1])+"'>Delete</a></td></tr>"
                 tuple_number += 1
                 
             self.send_response(200)
@@ -595,6 +595,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             e_descrip = event[0][3]
             start_date = event[0][4]
             end_date = event[0][5]
+
 
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -1035,6 +1036,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             event_descrip = re.split("=", split_data[1])[1]
             start_date = re.split("=", split_data[2])[1]
             end_date = re.split("=", split_data[3])[1]
+            
             event_name = event_name.replace("+", " ")
             event_descrip = event_descrip.replace("+", " ")
             
@@ -1299,14 +1301,13 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             print(data)
 
             split_data = re.split("&", data)
-            event_name = re.split("=", split_data[0])[1]
+            event_name = re.split("=", split_data[0])[1].replace("+", " ")
             manager_id = re.split("=", split_data[1])[1]
             event_num = urlinfo.query # re.split("=", split_data[2])[1]
-            event_descrip = re.split("=", split_data[2])[1]
+            event_descrip = re.split("=", split_data[2])[1].replace("+", " ")
             start_date = re.split("=", split_data[3])[1]
             end_date = re.split("=", split_data[4])[1]
             
-            event_descrip = event_descrip.replace("+", " ")
             update_event(event_num, event_name, event_descrip, manager_id, start_date, end_date)
 
             self.send_response(302)

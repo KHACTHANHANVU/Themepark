@@ -120,7 +120,7 @@ def load_staff_edit(username):
 
 def load_events():
     cursor = mydb.cursor()
-    cursor.execute("""SELECT e_name, e_descrip, manager_id, start_date, end_date, event_no
+    cursor.execute("""SELECT e_name, event_no, e_descrip, manager_id, start_date, end_date
                       FROM novapark.events;""")
     result = cursor.fetchall()
     return result
