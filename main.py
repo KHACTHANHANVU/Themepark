@@ -1384,13 +1384,15 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             split_data = re.split("&", data)
             repair_date = re.split("=", split_data[0])[1]
             repair_cost =  re.split("=", split_data[1])[1]
-            date_of_last_repair = re.split("=", split_data[2])[1]
 
             ride_no = urlinfo.query.split("&")[0]
-            date_of_issue = urlinfo.query.split("&")[0]
+            date_of_issue = urlinfo.query.split("&")[1]
             
-            date_of_issue = datetime.strptime(parse.unquote(date_of_issue_str), '%Y-%m-%dT%H:%M')
-            repair_date = datetime.strptime(parse.unquote(repair_date_str), '%Y-%m-%dT%H:%M')
+            print(parse.unquote(date_of_issue))
+            print(parse.unquote(repair_date))
+            
+            date_of_issue = datetime.strptime(parse.unquote(date_of_issue), '%Y-%m-%d %H:%M:%S')
+            repair_date = datetime.strptime(parse.unquote(repair_date), '%Y-%m-%dT%H:%M')
             
             update_repair_log(ride_no, date_of_issue, repair_date, repair_cost)
             

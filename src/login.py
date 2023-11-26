@@ -270,7 +270,7 @@ def update_hours_worked(staff_id, hours_worked, cur_date):
 
 def update_repair_log(ride_no, date_of_issue, repair_date, repair_cost):
     cursor = mydb.cursor()
-    cursor.execute("""UPDATE novapark.repair_log
+    cursor.execute("""UPDATE novapark.ride_repair
                       SET repair_date = '%s', repair_cost = %s
                       WHERE ride_no = %s AND date_of_issue = '%s';""" % (repair_date, repair_cost, ride_no, date_of_issue))
     mydb.commit()
