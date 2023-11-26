@@ -14,7 +14,7 @@ CREATE TABLE novapark.staff (
     hourly_wage NUMERIC(8,2) NOT NULL CHECK(hourly_wage > 7.25),
     dob DATE NOT NULL,
     job ENUM('manager', 'repair', 'rides') NOT NULL,
-    FOREIGN KEY (supervisor_id) REFERENCES novapark.staff(staff_id)
+    FOREIGN KEY (supervisor_id) REFERENCES novapark.staff(staff_id) ON DELETE CASCADE
 );
 
 ALTER TABLE novapark.staff AUTO_INCREMENT = 100;
@@ -24,7 +24,7 @@ CREATE TABLE novapark.hours_worked (
     num_hours SMALLINT,
     cur_date DATE,
     PRIMARY KEY (staff_id, cur_date),
-    FOREIGN KEY (staff_id) REFERENCES novapark.staff(staff_id)
+    FOREIGN KEY (staff_id) REFERENCES novapark.staff(staff_id) ON DELETE CASCADE
 );
 
 CREATE TABLE novapark.customer (
@@ -51,7 +51,7 @@ CREATE TABLE novapark.park_pass (
     exp_month VARCHAR(2),
     exp_year VARCHAR(2),
     PRIMARY KEY (cust_email, date_bought),
-    FOREIGN KEY (cust_email) REFERENCES novapark.customer(email)
+    FOREIGN KEY (cust_email) REFERENCES novapark.customer(email) ON DELETE CASCADE
 );
 
 CREATE TABLE novapark.amusement_ride (
@@ -70,7 +70,7 @@ CREATE TABLE novapark.ride_repair (
     repair_date DATETIME NOT NULL,
     repair_cost FLOAT NOT NULL,
     PRIMARY KEY (ride_no, date_of_issue),
-    FOREIGN KEY (ride_no) REFERENCES novapark.amusement_ride(ride_no)
+    FOREIGN KEY (ride_no) REFERENCES novapark.amusement_ride(ride_no) ON DELETE CASCADE
 );
 
 CREATE TABLE novapark.events (
@@ -80,7 +80,7 @@ CREATE TABLE novapark.events (
     e_descrip VARCHAR(200),
     start_date DATE,
     end_date DATE,
-    FOREIGN KEY (manager_id) REFERENCES novapark.staff(staff_id)
+    FOREIGN KEY (manager_id) REFERENCES novapark.staff(staff_id) ON DELETE CASCADE
 );
 
 ALTER TABLE novapark.events AUTO_INCREMENT = 1;
