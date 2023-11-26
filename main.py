@@ -1377,7 +1377,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             self.send_response(302)
             self.send_header('Location', '/viewmgrprofile')
             self.end_headers()
-        elif (urlinfo.path == "/updateride"):
+        elif (urlinfo.path == "/updaterepairlog"):
             data = self.rfile.read(int(self.headers["Content-Length"])).decode("utf-8")
             print(data)
             
