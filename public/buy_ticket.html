@@ -5,69 +5,100 @@
   <title>Buy Tickets</title>
   <script>
     function formatCardNumber(input) {
-      // Remove non-numeric characters
-      let cardNumber = input.value.replace(/\D/g, '');
-      
-      // Format the card number with spaces after every 4 digits
-      cardNumber = cardNumber.replace(/(\d{4})(?=\d)/g, '$1-');
-      
-      // Limit card number to 10 digits
-      if (cardNumber.length > 19) {
-        cardNumber = cardNumber.slice(0, 19);
+        // Remove non-numeric characters
+        let cardNumber = input.value.replace(/\D/g, '');
+        
+        // Format the card number with spaces after every 4 digits
+        cardNumber = cardNumber.replace(/(\d{4})(?=\d)/g, '$1-');
+        
+        // Limit card number to 10 digits
+        if (cardNumber.length > 19) {
+          cardNumber = cardNumber.slice(0, 19);
+        }
+        
+        input.value = cardNumber;
       }
-      
-      input.value = cardNumber;
-    }
-
-    function restrictToNumbers(event) {
-      // Allow only numeric characters in the input fields
-      const charCode = event.which ? event.which : event.keyCode;
-      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-        event.preventDefault();
+  
+      function restrictToNumbers(event) {
+        // Allow only numeric characters in the input fields
+        const charCode = event.which ? event.which : event.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+          event.preventDefault();
+        }
       }
-    }
-
-    function limitCVVLength(input) {
-      // Limit CVV to 3 digits
-      if (input.value.length > 3) {
-        input.value = input.value.slice(0, 3);
+  
+      function limitCVVLength(input) {
+        // Limit CVV to 3 digits
+        if (input.value.length > 3) {
+          input.value = input.value.slice(0, 3);
+        }
       }
-    }
   </script>
+  <style>
+    body {
+        background: url('https://i.postimg.cc/3xSph0j4/amusement-park-blue-sky-carnival-2884693.jpg') no-repeat center center fixed;
+        background-size: cover;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        position: relative;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      margin-top: 100px;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.8); 
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    form {
+      text-align: center;
+    }
+
+  </style>
 </head>
 <body>
-  <h1>Buy Tickets</h1>
-  
-  <form action="/ticketpurchase" method="post">
-    <label for="ticketType">Select Ticket Type:</label>
-    <select id="ticketType" name="ticketType">
-      <option value="silver">Silver - $20</option>
-      <option value="gold">Gold - $30</option>
-      <option value="platinum">Platinum - $60</option>
-    </select>
-    <label for="numtickets">Number of Tickets</label>
-    <input type="text" id="numtickets" name="numtickets" placeholder="Enter number of tickets">
-    <br><br>
-    <label for="firstname">First Name</label>
-    <input type="text" id="firstname" name="firstname" placeholder="Enter first name">
-    <label for="lastname">Last Name</label>
-    <input type="text" id="lastname" name="lastname" placeholder="Enter last name">
-    <br><br>
-    <label for="cardNumber">Card Number:</label>
-    <input type="text" id="cardNumber" name="cardNumber" placeholder="Enter card number" oninput="formatCardNumber(this)" onkeypress="restrictToNumbers(event)" required>
-    <br><br>
-    
-    <label for="cvv">CVV:</label>
-    <input type="text" id="cvv" name="cvv" placeholder="Enter CVV" onkeypress="restrictToNumbers(event); limitCVVLength(this)" required maxlength="3">
-    <br><br>
-    
-    <label for="expirationMonth">Expiration Month:</label>
-    <input type="text" id="expirationMonth" name="expirationMonth" placeholder="MM" onkeypress="restrictToNumbers(event)" required maxlength="2">
-    /
-    <input type="text" id="expirationYear" name="expirationYear" placeholder="YYYY" onkeypress="restrictToNumbers(event)" required maxlength="4">
-    <br><br>
-    
-    <input type="submit" value="Purchase Tickets">
-  </form>
+  <div class="container">
+    <h1>Buy Tickets</h1>
+    <form action="/ticketpurchase" method="post">
+        <form action="/ticketpurchase" method="post">
+            <label for="ticketType">Select Ticket Type:</label>
+            <select id="ticketType" name="ticketType">
+              <option value="silver">Silver - $20</option>
+              <option value="gold">Gold - $30</option>
+              <option value="platinum">Platinum - $60</option>
+            </select>
+            <label for="numtickets">Number of Tickets</label>
+            <input type="text" id="numtickets" name="numtickets" placeholder="Enter number of tickets">
+            <br><br>
+            <label for="firstname">First Name</label>
+            <input type="text" id="firstname" name="firstname" placeholder="Enter first name">
+            <label for="lastname">Last Name</label>
+            <input type="text" id="lastname" name="lastname" placeholder="Enter last name">
+            <br><br>
+            <label for="cardNumber">Card Number:</label>
+            <input type="text" id="cardNumber" name="cardNumber" placeholder="Enter card number" oninput="formatCardNumber(this)" onkeypress="restrictToNumbers(event)" required>
+            <br><br>
+            
+            <label for="cvv">CVV:</label>
+            <input type="text" id="cvv" name="cvv" placeholder="Enter CVV" onkeypress="restrictToNumbers(event); limitCVVLength(this)" required maxlength="3">
+            <br><br>
+            
+            <label for="expirationMonth">Expiration Month:</label>
+            <input type="text" id="expirationMonth" name="expirationMonth" placeholder="MM" onkeypress="restrictToNumbers(event)" required maxlength="2">
+            /
+            <input type="text" id="expirationYear" name="expirationYear" placeholder="YYYY" onkeypress="restrictToNumbers(event)" required maxlength="4">
+            <br><br>
+            
+            <input type="submit" value="Purchase Tickets">
+    </form>
+  </div>
+
 </body>
 </html>
