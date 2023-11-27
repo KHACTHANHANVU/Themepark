@@ -181,7 +181,7 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
                         formated_info += f'<td>{value}</td>'
                     
                     formated_info += "<td><a href='/edithours?" + str(hours_tuple[0]).replace("-","_") + "'>Edit</a></td>"
-                    formated_info += "<td><a href='/delhours?" + str(hours_tuple[0]).replace("-","_") + "'>Delete</a></td></tr>"
+                    #formated_info += "<td><a href='/delhours?" + str(hours_tuple[0]).replace("-","_") + "'>Delete</a></td></tr>"
                 
                 print(formated_info)
 
