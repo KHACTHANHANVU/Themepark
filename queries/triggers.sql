@@ -11,7 +11,11 @@ BEGIN
     FROM novapark.customer AS cs
     WHERE NEW.cust_email = cs.email;
 
-    IF (DATEDIFF(NEW.date_bought, last_credit_date) >= 30 OR last_credit_date IS NULL) THEN
+    IF (last_credit_date IS NULL) THEN
+		SET last_credit_date = "2000-01-01";
+    END IF;
+
+    IF (DATEDIFF(NEW.date_bought, last_credit_date) >= 30) THEN
 
         SELECT COALESCE(SUM(park.num_passes), 0) INTO total_passes
         FROM novapark.park_pass AS park
