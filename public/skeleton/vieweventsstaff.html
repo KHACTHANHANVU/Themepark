@@ -3,12 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <title>Staff</title>
-  <style>
-      body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa; 
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
             margin: 0;
             padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container-table {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
         }
 
         table {
@@ -18,38 +26,45 @@
         }
 
         th, td {
-            border: 1px solid #dee2e6; 
-            padding: 12px;
+            border: 1px solid black;
+            padding: 8px;
             text-align: left;
         }
 
         th {
-            background-color: #25282b; 
-            color: #fff; 
+            background-color: #343a40;
+            color: #fff;
         }
-
-        tbody tr:nth-child(even) {
-            background-color: #f9f9f9; 
-        }
-
-        tbody tr:hover {
-            background-color: #e9ecef;
-        }
-  </style>
+    </style>
 </head>
 <body>
-  <table>
-    <thead>
-      <tr>
-        <th>Event Name</th>
-        <th>Event Description</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-      </tr>
-    </thead>
-    <tbody>
-        <!-- InsertTableHere -->
-    </tbody>
-  </table>
+   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Staff Dashboard</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <!-- You can add any navbar links here if needed -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+  <div class="container container-table mx-auto">
+    <table>
+      <thead>
+        <tr>
+          <th>Event Name</th>
+          <th>Event Description</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+        </tr>
+      </thead>
+      <tbody>
+          <!-- InsertTableHere -->
+      </tbody>
+    </table>
+  </div>
 </body>
 </html>

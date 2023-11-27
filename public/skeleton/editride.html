@@ -3,23 +3,90 @@
 <head>
   <meta charset="UTF-8">
   <title>Edit Ride</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .container-form {
+      width: 80%;
+      margin: 50px auto;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.7);
+    }
+
+    form {
+      width: 100%;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    select,
+    input[type="datetime-local"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+
+    input[type="submit"] {
+      background-color: #2788e8;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <h1>Edit Ride #$ride_no</h1>
-  <form action="/updateride?$ride_no" method="post">
-    <label for="ride_name">Ride Name</label>
-    <input type="text" id="ride_name" name="ride_name" value="$ride_name" required><br><br>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Manager Dashboard</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-    <label for="is_working">Is Working</label>
-    <select id="is_working" name="is_working">
-        <option value="true">true</option>
-        <option value="false">false</option>
-      </select><br><br>
+  <div class="container container-form mx-auto">
+    <h1>Edit Ride #$ride_no</h1>
+    <form action="/updateride?$ride_no" method="post">
+      <div>
+        <label for="ride_name">Ride Name:</label>
+        <input type="text" id="ride_name" name="ride_name" value="$ride_name" required>
+      </div>
 
-    <label for="date_of_last_repair">Date of Last Repair</label>
-    <input type="datetime-local" id="date_of_last_repair" name="date_of_last_repair" value ="$date_of_last_repair"required><br><br>
+      <div>
+        <label for="is_working">Is Working:</label>
+        <select id="is_working" name="is_working">
+          <option value="true">True</option>
+          <option value="false">False</option>
+        </select>
+      </div>
 
-    <input type="submit" value="Submit">
-  </form>
+      <div>
+        <label for="date_of_last_repair">Date of Last Repair:</label>
+        <input type="datetime-local" id="date_of_last_repair" name="date_of_last_repair" value="$date_of_last_repair" required>
+      </div>
+
+      <div>
+        <input type="submit" value="Submit">
+      </div>
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
