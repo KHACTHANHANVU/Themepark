@@ -1287,11 +1287,10 @@ class ThemeParkHandler(http.server.SimpleHTTPRequestHandler):
             last_name = re.split("=", split_data[1])[1] if re.split("=", split_data[1])[1] else "NULL"
             password = re.split("=", split_data[2])[1] if re.split("=", split_data[2])[1] else "NULL"
             phone_num = re.split("=", split_data[3])[1] if re.split("=", split_data[3])[1] else "NULL"
-            last_pass_credit_date = re.split("=", split_data[4])[1] if re.split("=", split_data[4])[1] else "1970-01-01"
             phone_num = phone_num.replace("-","")
             email = urlinfo.query.replace("@", "%40")
             
-            update_customer(email, first_name, last_name, phone_num, password, last_pass_credit_date)
+            update_customer(email, first_name, last_name, phone_num, password)
 
             self.send_response(302)
             self.send_header('Location', '/manager_portal')

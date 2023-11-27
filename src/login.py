@@ -220,12 +220,11 @@ def edit_bday(bday):
     result = cursor.fetchall()
     return result
 
-def update_customer(email, first_name, last_name, phone_num, password, last_pass_credit_date):
+def update_customer(email, first_name, last_name, phone_num, password, ):
     cursor = mydb.cursor()
     cursor.execute("""UPDATE novapark.customer
-                      SET first_name = '%s', last_name = '%s', pswrd = '%s', phone = '%s',
-                      last_pass_credit_date = '%s'
-                      WHERE email = '%s';""" % (first_name, last_name, password, phone_num, last_pass_credit_date, email))
+                      SET first_name = '%s', last_name = '%s', pswrd = '%s', phone = '%s'
+                      WHERE email = '%s';""" % (first_name, last_name, password, phone_num, email))
     mydb.commit()
 
 
