@@ -16,78 +16,102 @@
     <link rel="stylesheet" href="./styles.css">
 
     <title>Portal</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            background-color: #343a40;
+            color: #fff;
+        }
+
+        .container-table {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        body {
+            background: url('https://i.postimg.cc/3xSph0j4/amusement-park-blue-sky-carnival-2884693.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .scrolling {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .footer {
+            margin-top: auto;
+            text-align: center;
+            padding: 10px;
+            background-color: #343a40;
+            color: #fff;
+        }
+    </style>
 </head>
 <body class="scrolling">
     <header class="separation p-3 mb-3 border-bottom">
         <div class="container">
-          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
-              <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
-            </a>
-    
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-              <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
-              <li><a href="./viewprofile" class="nav-link px-2 link-body-emphasis">Profile</a></li>
-              <li><a href="./customerviewrides" class="nav-link px-2 link-body-emphasis">Rides</a></li>
-              <li><a href="./customerviewevents" class="nav-link px-2 link-body-emphasis">Events</a></li>
-              
-            </ul>
-            <form id="logout-form" method="post" action="/logout">
-              <button class="w-10 btn btn-primary btn-lg mb-4" type="submit">Logout</button>
-            </form>
-          </div>
-        </div>
-      </header>
-      <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-body-tertiary">
-    <div class="col-md-6 p-lg-5 mx-auto mb-3">
-      <h1 class="display-1 fw-bold"> Welcome $name </h1>
-    
-    <div class="product-device shadow-sm d-none d-md-block"></div>
-    <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
-  </div>
-      <div class="container">
-        <div class="row">
-            <div class="col-sm-6 mb-3 mb-sm-0">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Start discover our park</h5>
-                  <p class="card-text">Please fill all the information needed in order for your order to process</p>
-                  <a href="./buyticket" class="btn btn-primary">Buy a ticket</a>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 mb-3">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Already bought a ticket?</h5>
-                  <p class="card-text">Press the button below to see what content you can access with your ticket</p>
-                  <a href="./viewtickets" class="btn btn-primary">See your tickets</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          
-      </div>
-    </div>
-         
-
-        
-      <footer id="section-3">
-        <div class="container">
-            <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-              <p class="col-md-4 mb-0 text-muted">© 2023 Team 3</p>
-          
-              <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-                <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+              <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
+                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
               </a>
-          
-              <ul class="nav col-md-4 justify-content-end">
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
-                <li class="nav-item"><a href="./customerviewrides" class="nav-link px-2 text-muted">Rides</a></li>
+      
+              <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
+                <li><a href="./viewprofile" class="nav-link px-2 link-body-emphasis">Profile</a></li>
+                <li><a href="./customerviewrides" class="nav-link px-2 link-body-emphasis">Rides</a></li>
+                <li><a href="./customerviewevents" class="nav-link px-2 link-body-emphasis">Events</a></li>
+                
               </ul>
-            </footer>
+              <form id="logout-form" method="post" action="/logout">
+                <button class="w-10 btn btn-primary btn-lg mb-4" type="submit">Logout</button>
+              </form>
+            </div>
           </div>
-      </footer>
+    </header>
+
+    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-body-tertiary">
+        <div class="col-md-6 p-lg-5 mx-auto mb-3">
+           <h1 class="display-1 fw-bold" style="color: rgb(238, 227, 227);"> Welcome $name </h1>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Start discover our park</h5>
+                            <p class="card-text">Please fill all the information needed in order for your order to process</p>
+                            <a href="./buyticket" class="btn btn-primary">Buy a ticket</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Already bought a ticket?</h5>
+                            <p class="card-text">Press the button below to see what content you can access with your ticket</p>
+                            <a href="./viewtickets" class="btn btn-primary">See your tickets</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        &copy; 2023 Team3. All Rights Reserved.
+    </footer>
 </body>
 </html>
